@@ -35,6 +35,7 @@ export default function ProductPage({ onNavigate }) {
           <div className="flex gap-4 text-sm text-primary-black/70 dark:text-primary-white/70">
             <button onClick={() => onNavigate?.('home')} className="hover:text-primary-orange transition-smooth">Home</button>
             <button onClick={() => onNavigate?.('pricing')} className="hover:text-primary-orange transition-smooth">Pricing</button>
+            <button onClick={() => onNavigate?.('services')} className="hover:text-primary-orange transition-smooth">Services</button>
           </div>
         </div>
       </nav>

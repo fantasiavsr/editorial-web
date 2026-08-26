@@ -36,6 +36,7 @@ export default function LandingPage({ onNavigate }) {
             <a href="#teams" className="hover:text-primary-orange transition-smooth">Teams</a>
             <button onClick={() => onNavigate?.('products')} className="hover:text-primary-orange transition-smooth text-left">Products</button>
             <button onClick={() => onNavigate?.('pricing')} className="hover:text-primary-orange transition-smooth text-left">Pricing</button>
+            <button onClick={() => onNavigate?.('services')} className="hover:text-primary-orange transition-smooth text-left">Services</button>
           </div>
         </div>
       </nav>

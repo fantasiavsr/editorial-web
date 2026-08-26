@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import LandingPage from './pages/landing/LandingPage';
 import ProductPage from './pages/product/ProductPage';
 import PricingPage from './pages/pricing/PricingPage';
+import ServicePage from './pages/service/ServicePage';
 
 function App() {
   const [currentPage, setCurrentPage] = useState(
@@ -33,6 +34,8 @@ function App() {
         <ProductPage onNavigate={setCurrentPage} />
       ) : currentPage === 'pricing' ? (
         <PricingPage onNavigate={setCurrentPage} />
+      ) : currentPage === 'services' ? (
+        <ServicePage onNavigate={setCurrentPage} />
       ) : (
         <LandingPage onNavigate={setCurrentPage} />
       )}
