@@ -1,193 +1,185 @@
-# Dark Theme Implementation Guide
+# Styling Guide
 
 ## Overview
 
-This project uses **next-themes** package with **Tailwind CSS v4** for seamless light/dark theme switching.
+This project uses **Tailwind CSS v4** with custom animations, **next-themes** for dark mode, and semantic HTML for styling consistency.
 
-## Files Modified/Created
+---
 
-### 1. `src/index.css` - Theme Variables
-Defines CSS variables for both light and dark themes:
+## Dark Mode
 
-```css
-:root {
-  --bg-primary: #ffffff;
-  --text-primary: #000000;
-  --border-primary: rgba(0, 0, 0, 0.1);
-}
+### Setup
+- **Package:** `next-themes`
+- **CSS Config:** `src/index.css` with `@variant dark`
+- **Provider:** `src/App.jsx` wraps app with `<ThemeProvider>`
+- **Toggle:** `src/components/ThemeToggle.jsx` for theme switching
 
-.dark {
-  --bg-primary: #0a0a0a;
-  --text-primary: #ffffff;
-  --border-primary: rgba(255, 255, 255, 0.1);
-}
-```
+### Using Dark Mode in Components
 
-Also includes dark mode scrollbar styling:
-```css
-::-webkit-scrollbar-track { background: #f3f3f3; }
-.dark ::-webkit-scrollbar-track { background: #1a1a1a; }
-```
-
-### 2. `src/App.jsx` - ThemeProvider Setup
-Wraps the entire app with next-themes provider:
-
+Add `dark:` prefix to Tailwind classes:
 ```jsx
-import { ThemeProvider } from 'next-themes';
-
-function App() {
-  return (
-    <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
-      <LandingPage />
-    </ThemeProvider>
-  );
-}
+className="bg-primary-white dark:bg-primary-dark-bg text-primary-black dark:text-primary-white"
 ```
 
-**Options:**
-- `attribute="class"` — Adds/removes `.dark` class on root element
-- `defaultTheme="light"` — Default theme on first visit
-- `enableSystem` — Auto-detect system preference (prefers-color-scheme)
-
-### 3. `src/components/ThemeToggle.jsx` - Toggle Button
-React component with theme switching:
-
+**Common patterns:**
 ```jsx
-import { useTheme } from 'next-themes';
-import { Moon, Sun } from 'lucide-react';
-import { useEffect, useState } from 'react';
+// Text
+className="text-primary-black dark:text-primary-white"
 
-export default function ThemeToggle() {
-  const { theme, setTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true); // Prevent hydration mismatch
-  }, []);
-
-  if (!mounted) return null;
-
-  return (
-    <button onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}>
-      {theme === 'dark' ? <Sun /> : <Moon />}
-    </button>
-  );
-}
-```
-
-**Key points:**
-- `useEffect` prevents flash of unstyled content (FOUC)
-- `setTheme()` updates theme and saves to localStorage
-- Shows appropriate icon based on current theme
-
-### 4. `src/pages/landing/LandingPage.jsx` - Dark Mode Classes
-All UI elements use `dark:` prefix for dark theme styles:
-
-```jsx
-// Background + text
-className="bg-primary-white dark:bg-[#0a0a0a] text-primary-black dark:text-primary-white"
+// Backgrounds
+className="bg-primary-white dark:bg-primary-dark-card"
 
 // Borders
 className="border-primary-black/10 dark:border-primary-white/10"
 
-// Cards (dark mode)
-className="bg-primary-white dark:bg-[#1a1a1a]"
-
 // Hover states
-className="hover:bg-primary-black dark:hover:bg-primary-white"
-```
-
-## How It Works
-
-1. **On Page Load:**
-   - Check localStorage for saved theme preference
-   - If dark mode is saved, add `.dark` class to `<html>` before rendering
-   - Prevents white flash on dark mode users
-
-2. **User Clicks Toggle:**
-   - next-themes updates theme in localStorage
-   - Adds/removes `.dark` class on root element
-   - Tailwind switches `dark:` utilities immediately
-
-3. **System Preference:**
-   - If no saved preference, uses `prefers-color-scheme` media query
-   - Respects OS dark mode setting
-
-## Common Patterns
-
-### Text Colors
-```jsx
-className="text-primary-black dark:text-primary-white"
-```
-
-### Background Colors
-```jsx
-className="bg-primary-white dark:bg-[#0a0a0a]"
-```
-
-### Borders
-```jsx
-className="border-primary-black/10 dark:border-primary-white/10"
-```
-
-### Hover States
-```jsx
 className="hover:text-primary-orange dark:hover:text-primary-orange"
-// Orange stays same in both themes
+
+// Muted text
+className="text-primary-black/60 dark:text-primary-white/60"
 ```
 
-### Disabled/Muted States
+### How It Works
+1. `next-themes` adds `.dark` class to `<html>` element
+2. Tailwind's `@variant dark` generates `.dark\:` prefixed selectors
+3. CSS changes apply instantly when theme toggles
+4. User preference saves to `localStorage.theme`
+
+---
+
+## Animations
+
+### Animation Utilities
+
+All animations are defined in `src/index.css` under `@layer utilities`:
+
+| Class | Effect |
+|-------|--------|
+| `animate-fade-in-up` | Fade in + slide up (0.6s) |
+| `animate-fade-in-down` | Fade in + slide down (0.6s) |
+| `animate-fade-in-left` | Fade in + slide left (0.6s) |
+| `animate-fade-in-right` | Fade in + slide right (0.6s) |
+| `animate-scale-in` | Fade in + scale (0.6s) |
+| `animate-float` | Continuous float motion (3s) |
+| `animate-shimmer` | Shimmer effect (2s) |
+| `animate-glow-pulse` | Pulsing glow (2s) |
+
+### Stagger Delays
+
+Use stagger classes to create sequential animations:
 ```jsx
-className="text-primary-black/50 dark:text-primary-white/50"
+className="animate-fade-in-up stagger-1"  // 0.1s delay
+className="animate-fade-in-up stagger-2"  // 0.2s delay
+className="animate-fade-in-up stagger-3"  // 0.3s delay
+// ... stagger-4 through stagger-7
 ```
 
-## Adding Dark Mode to New Components
+### Scroll-Triggered Animations
 
-When creating new components:
+Use the `useScrollAnimation` hook to animate elements as they enter the viewport:
 
-1. Import theme hook if needed:
-   ```jsx
-   import { useTheme } from 'next-themes';
-   ```
+```jsx
+import { useScrollAnimation } from '../../hooks/useScrollAnimation';
 
-2. Add dark mode classes to every element:
-   ```jsx
-   <div className="bg-primary-white dark:bg-[#1a1a1a]">
-     <h1 className="text-primary-black dark:text-primary-white">Title</h1>
-     <p className="text-primary-black/60 dark:text-primary-white/60">Body</p>
-   </div>
-   ```
+export default function MyComponent() {
+  const [ref, isVisible] = useScrollAnimation({
+    threshold: 0.2,        // Trigger at 20% visibility
+    rootMargin: '0px 0px -50px 0px',  // Offset from bottom
+    triggerOnce: true      // Only animate once (default)
+  });
 
-3. Test both light and dark modes in browser:
-   - Click theme toggle in navigation
-   - Verify all text remains readable
-   - Check contrast ratios
-
-## Browser Storage
-
-Theme preference saved as:
-```
-localStorage.key: "theme"
-localStorage.value: "light" | "dark" | "system"
+  return (
+    <div ref={ref} className={isVisible ? 'animate-fade-in-up' : 'opacity-0'}>
+      Content animates in when scrolled into view
+    </div>
+  );
+}
 ```
 
-Users can manually clear this to reset to system preference.
+### Inline Transitions for Dynamic Elements
+
+For elements that need smooth state transitions:
+
+```jsx
+const [isVisible, setIsVisible] = useState(false);
+
+return (
+  <div
+    className="transition-all duration-700"
+    style={{
+      opacity: isVisible ? 1 : 0,
+      transform: isVisible ? 'translateY(0)' : 'translateY(24px)',
+      transitionDelay: isVisible ? '100ms' : '0ms'
+    }}
+  >
+    Content
+  </div>
+);
+```
+
+### Smooth Transitions
+
+Use `transition-smooth` class for consistent transitions:
+```jsx
+className="transition-smooth hover:text-primary-orange"
+// Applies: transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1)
+```
+
+---
+
+## Color System
+
+### Custom Colors
+
+Defined in `src/index.css` under `@theme`:
+```css
+--color-primary-orange: #fe7141
+--color-primary-purple: #cdabfe
+--color-primary-sage: #d1ddd3
+--color-primary-black: #000000
+--color-primary-white: #ffffff
+--color-primary-dark-bg: #0a0a0a
+--color-primary-dark-card: #1a1a1a
+```
+
+### Usage in Classes
+
+```jsx
+className="bg-primary-orange text-primary-white border-primary-sage"
+```
+
+---
+
+## Best Practices
+
+### 1. Dark Mode
+- Always pair light and dark classes
+- Test both modes before shipping
+- Use opacity variants for subtle distinctions (e.g., `/60`)
+
+### 2. Animations
+- Keep animations under 1s for UI interactions
+- Use scroll-triggered animations for section reveals
+- Test on low-end devices for performance
+
+### 3. Reusability
+- Define animations and colors once in CSS
+- Reuse components instead of duplicating styles
+- Use Tailwind utilities before custom CSS
+
+### 4. Performance
+- Avoid dynamic class names (Tailwind won't detect them)
+- Use conditional ternary for class variations
+- Animate only necessary properties (opacity, transform)
+
+---
 
 ## Troubleshooting
 
-### White flash on page load (FOUC)
-→ Ensure FOUC prevention script runs in LandingPage.jsx before main content renders
-
-### Theme not persisting
-→ Check browser localStorage isn't cleared
-→ Verify ThemeProvider wraps entire app in App.jsx
-
-### Hydration mismatch error
-→ Add `useEffect` hook with `setMounted(true)` in toggle component
-
-## Performance Notes
-
-- **next-themes** is lightweight (~5KB)
-- No runtime stylesheet switching — uses CSS class toggle
-- Dark mode CSS already in main bundle via Tailwind
-- System preference detection has zero JavaScript overhead
+| Issue | Solution |
+|-------|----------|
+| Dark mode not working | Verify `@variant dark` in `src/index.css` |
+| Animations running twice | Check for duplicate animation classes on same element |
+| FOUC (white flash) | Ensure FOUC prevention script in LandingPage.jsx |
+| Theme not persisting | Check browser localStorage, verify ThemeProvider in App.jsx |
+| Tailwind classes not applying | Use full class names, avoid dynamic class generation |
