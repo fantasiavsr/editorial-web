@@ -29,9 +29,9 @@ export default function Navbar({ title, links, onNavigate }) {
           ))}
         </div>
         {mobileOpen && (
-          <div className="absolute top-full left-0 right-0 bg-primary-black dark:bg-primary-dark-card border-b border-primary-white/10 px-6 py-6 flex flex-col gap-4 md:hidden z-50 shadow-2xl backdrop-blur-xl animate-fade-in-down" style={{ animation: 'fadeInDown 0.25s ease-out' }}>
-            {links.map((l) => (
-              <button key={l.key} onClick={() => { onNavigate?.(l.key); setMobileOpen(false); }} className="text-lg font-medium text-primary-white hover:text-primary-orange transition-smooth text-left py-1">{l.label}</button>
+          <div className="absolute top-full left-0 right-0 bg-primary-white dark:bg-primary-dark-card border-b border-primary-white/10 px-6 py-6 flex flex-col gap-4 md:hidden z-50 shadow-2xl backdrop-blur-xl" style={{ animation: 'curtainReveal 0.35s ease-out' }}>
+            {links.map((l, i) => (
+              <button key={l.key} onClick={() => { onNavigate?.(l.key); setMobileOpen(false); }} className="text-lg font-medium text-primary-black dark:text-primary-white hover:text-primary-orange transition-smooth text-left py-1" style={{ animation: 'staggerReveal 0.3s ease-out forwards', animationDelay: `${i * 0.05}s`, opacity: 0 }}>{l.label}</button>
             ))}
           </div>
         )}
