@@ -49,6 +49,21 @@ The existing project structure is intentional. Preserve and reuse it.
 16. Do not modify `package.json` unless necessary.
 17. Do not modify configuration files unless necessary.
 
+## Installed Packages
+
+**Core:**
+- `react` — UI framework
+- `vite` — build tool and dev server
+- `tailwindcss` v4 — utility-first CSS framework
+- `@tailwindcss/vite` — Tailwind v4 Vite plugin
+
+**UI & Theming:**
+- `next-themes` — theme management (light/dark mode)
+- `lucide-react` — icon library
+
+**Utilities:**
+- `tailwind-merge` — merging Tailwind classes
+
 ## Tailwind CSS v4 Configuration
 
 This project uses **Tailwind CSS v4** with the `@tailwindcss/vite` plugin. Follow these rules to avoid styling issues:
