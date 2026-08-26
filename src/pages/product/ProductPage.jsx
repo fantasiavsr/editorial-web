@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import ThemeToggle from '../../components/ThemeToggle';
+import Navbar from '../../components/navigation/Navbar';
 import { useScrollAnimation } from '../../hooks/useScrollAnimation';
 import ProductGrid from '../../sections/product/ProductGrid';
 import ProductList from '../../sections/product/ProductList';
@@ -27,18 +27,7 @@ export default function ProductPage({ onNavigate }) {
 
   return (
     <main className="min-h-screen bg-primary-white dark:bg-primary-dark-bg text-primary-black dark:text-primary-white font-sans selection:bg-primary-orange selection:text-primary-white transition-colors">
-      {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-8 md:px-16 py-6 bg-primary-white/95 dark:bg-primary-dark-bg/95 backdrop-blur-sm border-b border-primary-black/10 dark:border-primary-white/10 transition-colors">
-        <button onClick={() => onNavigate?.('products')} className="text-sm font-medium tracking-tight text-primary-black dark:text-primary-white">Product Layouts</button>
-        <div className="flex items-center gap-6">
-          <ThemeToggle />
-          <div className="flex gap-4 text-sm text-primary-black/70 dark:text-primary-white/70">
-            <button onClick={() => onNavigate?.('home')} className="hover:text-primary-orange transition-smooth">Home</button>
-            <button onClick={() => onNavigate?.('pricing')} className="hover:text-primary-orange transition-smooth">Pricing</button>
-            <button onClick={() => onNavigate?.('services')} className="hover:text-primary-orange transition-smooth">Services</button>
-          </div>
-        </div>
-      </nav>
+      <Navbar title="Product Layouts" links={[{key:'home',label:'Home'},{key:'pricing',label:'Pricing'},{key:'services',label:'Services'}]} onNavigate={onNavigate} />
 
       {/* Hero */}
       <section className="pt-36 pb-20 px-8 md:px-16 md:max-w-7xl mx-auto">
