@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run *)",
+      "Bash(dir d:\\\\Work\\\\Code\\\\editorial-web\\\\src /s)"
+    ]
+  }
+}
