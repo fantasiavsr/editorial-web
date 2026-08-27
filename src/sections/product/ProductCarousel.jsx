@@ -1,5 +1,19 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useRef } from "react";
+import { useState } from "react";
+
+function ImageWithFallback({ src, alt, className, fallback }) {
+  const [error, setError] = useState(false);
+  if (error) return fallback;
+  return (
+    <img
+      src={src}
+      alt={alt}
+      className={className}
+      onError={() => setError(true)}
+    />
+  );
+}
 
 export default function ProductCarousel() {
   const scrollContainerRef = useRef(null);
@@ -81,10 +95,17 @@ export default function ProductCarousel() {
               href="#"
               className="group shrink-0 w-72 snap-start block p-5 rounded-2xl border border-primary-black/10 dark:border-primary-white/10 bg-primary-white dark:bg-primary-dark-card hover:border-primary-orange transition-smooth"
             >
-              <div className="aspect-square bg-primary-black/5 dark:bg-primary-white/5 rounded-xl mb-4 flex items-center justify-center">
-                <span className="text-6xl font-black text-primary-black/10 dark:text-primary-white/10 select-none">
-                  {item.name[0]}
-                </span>
+              <div className="aspect-square bg-primary-black/5 dark:bg-primary-white/5 rounded-xl mb-4 flex items-center justify-center overflow-hidden">
+                <ImageWithFallback
+                  src={`/product/images${(item.name.length % 5) + 1}.jpg`}
+                  alt={item.name}
+                  className="w-full h-full object-cover"
+                  fallback={
+                    <span className="text-6xl font-black text-primary-black/10 dark:text-primary-white/10 select-none">
+                      {item.name[0]}
+                    </span>
+                  }
+                />
               </div>
               <h4 className="font-bold text-primary-black dark:text-primary-white mb-1">
                 {item.name}
