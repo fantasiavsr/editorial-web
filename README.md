@@ -1,16 +1,69 @@
-# React + Vite
+# Editorial Web
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+A modern editorial & design experience built with **React**, **Vite**, **Tailwind CSS v4**, and **Three.js**.
 
-Currently, two official plugins are available:
+![React](https://img.shields.io/badge/React-19.2-61dafb?logo=react) ![Vite](https://img.shields.io/badge/Vite-8.2-646cff?logo=vite) ![Tailwind CSS](https://img.shields.io/badge/Tailwind-4.3-06b6d4?logo=tailwindcss) ![Three.js](https://img.shields.io/badge/Three.js-r185-000000?logo=three.js)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Interactive 3D visuals** via React Three Fiber & Drei
+- **Smooth scroll animations** powered by GSAP
+- **Dark / Light mode** with `next-themes` and Tailwind v4
+- **Responsive landing pages** — Hero, Features, Showcase, Pricing, FAQ, and CTA sections
+- **Hash-based routing** for product, pricing, and service pages
 
-## Expanding the Oxlint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+## Quick Start
+
+```bash
+# Install dependencies
+npm install
+
+# Start dev server
+npm run dev
+
+# Build for production
+npm run build
+
+# Preview build
+npm run preview
+```
+
+---
+
+## Project Structure
+
+```
+src/
+  components/     — reusable UI (ThemeToggle, Navbar, etc.)
+  sections/        — landing-page sections (Hero, Features, CTA...)
+  pages/           — full pages (Landing, Product, Pricing, Service...)
+  layouts/         — page layouts (Main, Auth, Dashboard)
+  animations/      — shared animation definitions
+  hooks/           — custom React hooks
+  lib/             — utilities
+  data/            — static / mock data
+```
+
+---
+
+## Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Framework | React 19 |
+| Build Tool | Vite 8 |
+| Styling | Tailwind CSS v4 |
+| 3D / Graphics | Three.js + React Three Fiber |
+| Animation | GSAP + Motion |
+| Icons | Lucide React |
+| Theme | next-themes |
+
+---
+
+## License
+
+Private project — built for editorial and design exploration.
