@@ -10,7 +10,7 @@
 </p>
 
 <p align="center">
-  <img src="public/preview-smooth.gif" alt="Editorial Web Preview" width="720" />
+  <img src="public/preview-smooth2.gif" alt="Editorial Web Preview" width="720" />
 </p>
 
 ---
