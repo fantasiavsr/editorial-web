@@ -1,22 +1,43 @@
-# Editorial Web
+# ✨ Editorial Web
 
-A modern editorial & design experience built with **React**, **Vite**, **Tailwind CSS v4**, and **Three.js**.
+> A modern editorial & design experience built with **React**, **Vite**, **Tailwind CSS v4**, and **Three.js**.
 
-![React](https://img.shields.io/badge/React-19.2-61dafb?logo=react) ![Vite](https://img.shields.io/badge/Vite-8.2-646cff?logo=vite) ![Tailwind CSS](https://img.shields.io/badge/Tailwind-4.3-06b6d4?logo=tailwindcss) ![Three.js](https://img.shields.io/badge/Three.js-r185-000000?logo=three.js)
-
----
-
-## Features
-
-- **Interactive 3D visuals** via React Three Fiber & Drei
-- **Smooth scroll animations** powered by GSAP
-- **Dark / Light mode** with `next-themes` and Tailwind v4
-- **Responsive landing pages** — Hero, Features, Showcase, Pricing, FAQ, and CTA sections
-- **Hash-based routing** for product, pricing, and service pages
+<p align="center">
+  <img src="public/preview-smooth.gif" alt="Editorial Web Preview" width="720" />
+</p>
 
 ---
 
-## Quick Start
+## 🏷 Badges
+
+<p align="center">
+  <a href="#"><img src="https://img.shields.io/badge/React-19.2-61dafb?logo=react&logoColor=white" alt="React" /></a>
+  <a href="#"><img src="https://img.shields.io/badge/Vite-8.2-646cff?logo=vite&logoColor=white" alt="Vite" /></a>
+  <a href="#"><img src="https://img.shields.io/badge/Tailwind-4.3-06b6d4?logo=tailwindcss&logoColor=white" alt="Tailwind CSS" /></a>
+  <a href="#"><img src="https://img.shields.io/badge/Three.js-r185-000000?logo=three.js&logoColor=white" alt="Three.js" /></a>
+</p>
+
+---
+
+## 🎬 Preview
+
+Experience smooth scroll animations, interactive 3D visuals, and a refined dark/light theme system.
+
+---
+
+## 🚀 Features
+
+| Feature | Details |
+|---|---|
+| 🌐 **Interactive 3D** | React Three Fiber & Drei |
+| ✨ **Smooth Animations** | GSAP powered scroll effects |
+| 🌓 **Dark / Light Mode** | `next-themes` + Tailwind v4 |
+| 📱 **Responsive Design** | Hero, Features, Pricing, FAQ, CTA |
+| 🔗 **Hash Routing** | Product, pricing, and service pages |
+
+---
+
+## ⚡ Quick Start
 
 ```bash
 # Install dependencies
@@ -34,7 +55,7 @@ npm run preview
 
 ---
 
-## Project Structure
+## 📁 Project Structure
 
 ```
 src/
@@ -50,7 +71,7 @@ src/
 
 ---
 
-## Tech Stack
+## 🛠 Tech Stack
 
 | Layer | Technology |
 |---|---|
@@ -64,6 +85,6 @@ src/
 
 ---
 
-## License
+## 📄 License
 
 Private project — built for editorial and design exploration.
