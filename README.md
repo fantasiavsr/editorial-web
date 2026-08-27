@@ -3,37 +3,27 @@
 > A modern editorial & design experience built with **React**, **Vite**, **Tailwind CSS v4**, and **Three.js**.
 
 <p align="center">
-  <img src="public/preview-smooth.gif" alt="Editorial Web Preview" width="720" />
-</p>
-
----
-
-## 🏷 Badges
-
-<p align="center">
   <a href="#"><img src="https://img.shields.io/badge/React-19.2-61dafb?logo=react&logoColor=white" alt="React" /></a>
   <a href="#"><img src="https://img.shields.io/badge/Vite-8.2-646cff?logo=vite&logoColor=white" alt="Vite" /></a>
   <a href="#"><img src="https://img.shields.io/badge/Tailwind-4.3-06b6d4?logo=tailwindcss&logoColor=white" alt="Tailwind CSS" /></a>
   <a href="#"><img src="https://img.shields.io/badge/Three.js-r185-000000?logo=three.js&logoColor=white" alt="Three.js" /></a>
 </p>
 
----
-
-## 🎬 Preview
-
-Experience smooth scroll animations, interactive 3D visuals, and a refined dark/light theme system.
+<p align="center">
+  <img src="public/preview-smooth.gif" alt="Editorial Web Preview" width="720" />
+</p>
 
 ---
 
 ## 🚀 Features
 
-| Feature | Details |
-|---|---|
-| 🌐 **Interactive 3D** | React Three Fiber & Drei |
-| ✨ **Smooth Animations** | GSAP powered scroll effects |
-| 🌓 **Dark / Light Mode** | `next-themes` + Tailwind v4 |
-| 📱 **Responsive Design** | Hero, Features, Pricing, FAQ, CTA |
-| 🔗 **Hash Routing** | Product, pricing, and service pages |
+| Feature                  | Details                             |
+| ------------------------ | ----------------------------------- |
+| 🌐 **Interactive 3D**    | React Three Fiber & Drei            |
+| ✨ **Smooth Animations** | GSAP powered scroll effects         |
+| 🌓 **Dark / Light Mode** | `next-themes` + Tailwind v4         |
+| 📱 **Responsive Design** | Hero, Features, Pricing, FAQ, CTA   |
+| 🔗 **Hash Routing**      | Product, pricing, and service pages |
 
 ---
 
@@ -73,15 +63,15 @@ src/
 
 ## 🛠 Tech Stack
 
-| Layer | Technology |
-|---|---|
-| Framework | React 19 |
-| Build Tool | Vite 8 |
-| Styling | Tailwind CSS v4 |
+| Layer         | Technology                   |
+| ------------- | ---------------------------- |
+| Framework     | React 19                     |
+| Build Tool    | Vite 8                       |
+| Styling       | Tailwind CSS v4              |
 | 3D / Graphics | Three.js + React Three Fiber |
-| Animation | GSAP + Motion |
-| Icons | Lucide React |
-| Theme | next-themes |
+| Animation     | GSAP + Motion                |
+| Icons         | Lucide React                 |
+| Theme         | next-themes                  |
 
 ---
 
