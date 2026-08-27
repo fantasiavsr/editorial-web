@@ -1,8 +1,11 @@
 import { useState, useEffect } from "react";
+import { useTheme } from "next-themes";
 import { Menu, X } from "lucide-react";
 import ThemeToggle from "../ThemeToggle";
 
 export default function Navbar({ title, links, onNavigate }) {
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
   const [show, setShow] = useState(true);
   const [lastY, setLastY] = useState(0);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -23,9 +26,14 @@ export default function Navbar({ title, links, onNavigate }) {
     >
       <button
         onClick={() => onNavigate?.("home")}
-        className="text-xs md:text-sm font-medium tracking-tight text-primary-black dark:text-primary-white hover:text-primary-orange transition-smooth truncate max-w-35 md:max-w-none"
+        className="flex items-center gap-2 text-xs md:text-sm font-medium tracking-tight text-primary-black dark:text-primary-white hover:text-primary-orange transition-smooth"
       >
-        {title}
+        <img
+          src={isDark ? "/atelier dark.svg" : "/atelier light.svg"}
+          alt="Atelier logo"
+          className="h-10 md:h-14 w-auto object-contain"
+        />
+        {/* <span className="hidden sm:inline">{title}</span> */}
       </button>
       <div className="flex items-center gap-3 md:gap-6">
         <ThemeToggle />
