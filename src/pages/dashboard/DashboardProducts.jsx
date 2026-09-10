@@ -1,5 +1,5 @@
 import DashboardLayout from "../../layouts/DashboardLayout";
-import DashboardProductsContent from "../../components/dashboard/DashboardProductsContent";
+import DashboardProductsContent from "../../sections/dashboard/DashboardProductsContent";
 
 export default function DashboardProducts() {
   return (

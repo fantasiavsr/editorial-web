@@ -1,5 +1,5 @@
 import DashboardSidebarLayout from "../../layouts/DashboardSidebarLayout";
-import DashboardSettingsContent from "../../components/dashboard/DashboardSettingsContent";
+import DashboardSettingsContent from "../../sections/dashboard/DashboardSettingsContent";
 
 export default function Dashboard2Settings() {
   return (

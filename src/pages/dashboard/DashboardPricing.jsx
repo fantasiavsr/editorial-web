@@ -1,5 +1,5 @@
 import DashboardLayout from "../../layouts/DashboardLayout";
-import DashboardPricingContent from "../../components/dashboard/DashboardPricingContent";
+import DashboardPricingContent from "../../sections/dashboard/DashboardPricingContent";
 
 export default function DashboardPricing() {
   return (

@@ -11,7 +11,10 @@ export default function Navbar({ title, links }) {
   const isDark = theme === "dark";
   const [show, setShow] = useState(true);
   const disableHide =
-    location.pathname === "/dashboard" || location.pathname === "/dashboard2";
+    location.pathname === "/dashboard" ||
+    location.pathname.startsWith("/dashboard/") ||
+    location.pathname === "/dashboard2" ||
+    location.pathname.startsWith("/dashboard2/");
   const [lastY, setLastY] = useState(0);
   const [mobileOpen, setMobileOpen] = useState(false);
 
