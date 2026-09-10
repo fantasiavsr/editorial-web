@@ -12,7 +12,7 @@ import {
   Save,
   X,
 } from "lucide-react";
-import Dashboard3DProfile from "../../components/dashboard/Dashboard3DProfile";
+import { useNavigate } from "react-router-dom";
 
 /* Mock auth helper - connect to Laravel API later */
 const mockAuth = {
@@ -125,6 +125,8 @@ export default function DashboardProfilesContent() {
         : s >= 1
           ? "bg-primary_sage-strong"
           : "bg-primary-black/20";
+
+  const navigate = useNavigate();
 
   return (
     <div>
@@ -419,12 +421,21 @@ export default function DashboardProfilesContent() {
                 </div>
               )}
 
-              <button
-                onClick={handlePasswordChange}
-                className="w-full md:w-auto px-6 py-3 rounded-lg bg-primary-orange text-primary-white font-medium hover:bg-primary-orange-strong transition-all duration-300 hover:scale-[1.02] shadow-lg shadow-primary-orange/20"
-              >
-                Change Password
-              </button>
+              <div className="flex flex-col md:flex-row gap-3">
+                <button
+                  onClick={handlePasswordChange}
+                  className="w-full md:w-auto px-4 py-2 rounded-lg bg-primary-orange text-primary-white font-medium hover:bg-primary-orange-strong transition-all duration-300 shadow-lg shadow-primary-orange/20"
+                >
+                  Change Password
+                </button>
+
+                <button
+                  onClick={() => navigate("/dashboard/easter")}
+                  className="w-full md:w-auto px-4 py-2 rounded-lg border border-primary-black/10 dark:border-primary-white/10 text-primary-black dark:text-primary-white font-medium hover:bg-primary-black/5 dark:hover:bg-primary-white/5 transition-all duration-300"
+                >
+                  Easter Egg
+                </button>
+              </div>
             </div>
           </section>
         </div>

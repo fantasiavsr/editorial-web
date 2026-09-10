@@ -22,7 +22,6 @@ import Unauthorized from "./pages/error/Unauthorized";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
 import ForgotPassword from "./pages/auth/ForgotPassword";
-import ProtectedRoute from "./components/ProtectedRoute";
 
 function ScrollToTop() {
   const location = useLocation();
@@ -65,6 +64,7 @@ function App() {
           <Route path="/dashboard/services" element={<DashboardServices />} />
           <Route path="/dashboard/pricing" element={<DashboardPricing />} />
           <Route path="/dashboard/settings" element={<DashboardSettings />} />
+          <Route path="/dashboard/easter" element={<Unauthorized />} />
 
           {/* Dashboard 2 - Protected */}
           {/* <Route element={<ProtectedRoute />}>
