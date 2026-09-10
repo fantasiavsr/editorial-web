@@ -1,6 +1,7 @@
 import Footer from "../../components/Footer";
 import { useState, useEffect } from "react";
-import Navbar from "../../components/navigation/Navbar";
+import Navbar from "../../components/Navbar";
+import * as data from "../../data/exampleData";
 import { useScrollAnimation } from "../../hooks/useScrollAnimation";
 import ProductGrid from "../../sections/product/ProductGrid";
 import ProductList from "../../sections/product/ProductList";
@@ -30,11 +31,7 @@ export default function ProductPage({ onNavigate }) {
     <main className="min-h-screen bg-primary-white dark:bg-primary-dark-bg text-primary-black dark:text-primary-white font-sans selection:bg-primary-orange selection:text-primary-white transition-colors">
       <Navbar
         title="Product Layouts"
-        links={[
-          { key: "home", label: "Home" },
-          { key: "pricing", label: "Pricing" },
-          { key: "services", label: "Services" },
-        ]}
+        links={data.productNavLinks}
         onNavigate={onNavigate}
       />
 
@@ -74,7 +71,7 @@ export default function ProductPage({ onNavigate }) {
 
       <div
         ref={section2Ref}
-        className={`transition-all duration-700 ${section2Visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
+        className={`bg-primary-black/4 dark:bg-primary-white/6 transition-all duration-700 ${section2Visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
       >
         <ProductList />
       </div>
@@ -88,7 +85,7 @@ export default function ProductPage({ onNavigate }) {
 
       <div
         ref={section4Ref}
-        className={`transition-all duration-700 ${section4Visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
+        className={`bg-primary-black/4 dark:bg-primary-white/6 transition-all duration-700 ${section4Visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
       >
         <FeaturedProductGrid />
       </div>
@@ -102,7 +99,7 @@ export default function ProductPage({ onNavigate }) {
 
       <div
         ref={section6Ref}
-        className={`transition-all duration-700 ${section6Visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
+        className={`bg-primary-black/4 dark:bg-primary-white/6 transition-all duration-700 ${section6Visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
       >
         <ProductCarousel />
       </div>

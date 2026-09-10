@@ -1,6 +1,7 @@
 import Footer from "../../components/Footer";
 import { useState, useEffect } from "react";
-import Navbar from "../../components/navigation/Navbar";
+import Navbar from "../../components/Navbar";
+import * as data from "../../data/exampleData";
 import { useScrollAnimation } from "../../hooks/useScrollAnimation";
 import PricingCards from "../../sections/pricing/PricingCards";
 import FeaturedPricingCard from "../../sections/pricing/FeaturedPricingCard";
@@ -30,11 +31,7 @@ export default function PricingPage({ onNavigate }) {
     <main className="min-h-screen bg-primary-white dark:bg-primary-dark-bg text-primary-black dark:text-primary-white font-sans selection:bg-primary-orange selection:text-primary-white transition-colors">
       <Navbar
         title="Pricing Layouts"
-        links={[
-          { key: "home", label: "Home" },
-          { key: "products", label: "Products" },
-          { key: "services", label: "Services" },
-        ]}
+        links={data.pricingNavLinks}
         onNavigate={onNavigate}
       />
 

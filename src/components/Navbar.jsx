@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useTheme } from "next-themes";
 import { Menu, X } from "lucide-react";
-import ThemeToggle from "../ThemeToggle";
+import ThemeToggle from "./ThemeToggle";
 
 export default function Navbar({ title, links, onNavigate }) {
   const { theme } = useTheme();
@@ -36,7 +36,6 @@ export default function Navbar({ title, links, onNavigate }) {
         {/* <span className="hidden sm:inline">{title}</span> */}
       </button>
       <div className="flex items-center gap-3 md:gap-6">
-        <ThemeToggle />
         <button
           className="md:hidden"
           onClick={() => setMobileOpen(!mobileOpen)}
@@ -55,6 +54,7 @@ export default function Navbar({ title, links, onNavigate }) {
             </button>
           ))}
         </div>
+        <ThemeToggle />
         {mobileOpen && (
           <div
             className="absolute top-full left-0 right-0 bg-primary-white dark:bg-primary-dark-card border-b border-primary-white/10 px-6 py-6 flex flex-col gap-4 md:hidden z-50 shadow-2xl backdrop-blur-xl"
