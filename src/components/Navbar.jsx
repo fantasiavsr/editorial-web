@@ -158,6 +158,20 @@ export default function Navbar({ title, links }) {
                 </button>
               );
             })}
+            <button
+              onClick={() => {
+                navigate("/dashboard");
+                setMobileOpen(false);
+              }}
+              className="text-lg font-medium text-primary-black dark:text-primary-white hover:text-primary-orange transition-smooth text-left py-1"
+              style={{
+                animation: "staggerReveal 0.3s ease-out forwards",
+                animationDelay: `${links.length * 0.05}s`,
+                opacity: 0,
+              }}
+            >
+              Dashboard
+            </button>
             {!isAuthPage && (
               <button
                 onClick={() => {
