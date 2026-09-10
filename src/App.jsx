@@ -22,6 +22,7 @@ import Unauthorized from "./pages/error/Unauthorized";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
 import ForgotPassword from "./pages/auth/ForgotPassword";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function ScrollToTop() {
   const location = useLocation();
@@ -47,27 +48,51 @@ function App() {
   return (
     <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
       <BrowserRouter>
+        {/* Reset/restore scroll position when navigating between routes */}
         <ScrollToTop />
+
         <Routes>
+          {/* Public pages */}
           <Route path="/" element={<LandingPage />} />
           <Route path="/products" element={<ProductPage />} />
           <Route path="/pricing" element={<PricingPage />} />
           <Route path="/services" element={<ServicePage />} />
+
+          {/* Dashboard 1 - Public */}
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/dashboard/profiles" element={<DashboardProfiles />} />
           <Route path="/dashboard/products" element={<DashboardProducts />} />
           <Route path="/dashboard/services" element={<DashboardServices />} />
           <Route path="/dashboard/pricing" element={<DashboardPricing />} />
           <Route path="/dashboard/settings" element={<DashboardSettings />} />
-          <Route path="/dashboard2" element={<Dashboard2 />} />
-          <Route path="/dashboard2/profiles" element={<Dashboard2Profiles />} />
-          <Route path="/dashboard2/products" element={<Dashboard2Products />} />
-          <Route path="/dashboard2/services" element={<Dashboard2Services />} />
-          <Route path="/dashboard2/pricing" element={<Dashboard2Pricing />} />
-          <Route path="/dashboard2/settings" element={<Dashboard2Settings />} />
+
+          {/* Dashboard 2 - Protected */}
+          {/* <Route element={<ProtectedRoute />}>
+            <Route path="/dashboard2">
+              <Route index element={<Dashboard2 />} />
+              <Route path="profiles" element={<Dashboard2Profiles />} />
+              <Route path="products" element={<Dashboard2Products />} />
+              <Route path="services" element={<Dashboard2Services />} />
+              <Route path="pricing" element={<Dashboard2Pricing />} />
+              <Route path="settings" element={<Dashboard2Settings />} />
+            </Route>
+          </Route> */}
+
+          <Route path="/dashboard2">
+            <Route index element={<Dashboard2 />} />
+            <Route path="profiles" element={<Dashboard2Profiles />} />
+            <Route path="products" element={<Dashboard2Products />} />
+            <Route path="services" element={<Dashboard2Services />} />
+            <Route path="pricing" element={<Dashboard2Pricing />} />
+            <Route path="settings" element={<Dashboard2Settings />} />
+          </Route>
+
+          {/* Authentication */}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
+
+          {/* Error pages */}
           <Route path="/unauthorized" element={<Unauthorized />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
