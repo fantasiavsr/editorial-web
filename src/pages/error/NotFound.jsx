@@ -1,14 +1,15 @@
 import { ArrowLeft, Home } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 
-export default function NotFound({ onNavigate }) {
+export default function NotFound() {
+  const navigate = useNavigate();
   return (
     <main className="min-h-screen bg-primary-white dark:bg-primary-dark-bg text-primary-black dark:text-primary-white font-sans selection:bg-primary-orange selection:text-primary-white transition-colors flex flex-col">
       <Navbar
         title="Error"
-        links={[{ key: "home", label: "Home" }]}
-        onNavigate={onNavigate}
+        links={[{ key: "home", label: "Home", path: "/" }]}
       />
 
       <div className="pt-36 flex-1 flex items-center justify-center px-8">
@@ -35,8 +36,8 @@ export default function NotFound({ onNavigate }) {
           {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button
-              onClick={() => onNavigate && onNavigate("home")}
-              className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-primary-orange text-primary-white hover:bg-primary-black dark:hover:bg-primary-white dark:hover:text-primary-black transition-all duration-700 hover:scale-105 font-medium"
+              onClick={() => navigate("/")}
+              className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-primary-orange text-primary-white hover:bg-primary-black dark:hover:bg-primary-white dark:hover:text-primary-black transition-all duration-700 font-medium"
             >
               <Home size={18} />
               Go Home

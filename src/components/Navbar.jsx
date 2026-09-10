@@ -1,10 +1,13 @@
 import { useState, useEffect } from "react";
 import { useTheme } from "next-themes";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import ThemeToggle from "./ThemeToggle";
 
-export default function Navbar({ title, links, onNavigate }) {
+export default function Navbar({ title, links }) {
   const { theme } = useTheme();
+  const navigate = useNavigate();
+  const location = useLocation();
   const isDark = theme === "dark";
   const [show, setShow] = useState(true);
   const [lastY, setLastY] = useState(0);
@@ -25,7 +28,7 @@ export default function Navbar({ title, links, onNavigate }) {
       className={`fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-4 md:px-16 py-4 md:py-6 bg-primary-white/95 dark:bg-primary-dark-bg/95 backdrop-blur-sm border-b border-primary-black/10 dark:border-primary-white/10 transition-all duration-500 ease-out ${show ? "translate-y-0" : "-translate-y-full"}`}
     >
       <button
-        onClick={() => onNavigate?.("home")}
+        onClick={() => navigate("/")}
         className="flex items-center gap-2 text-xs md:text-sm font-medium tracking-tight text-primary-black dark:text-primary-white hover:text-primary-orange transition-smooth"
       >
         <img
@@ -44,15 +47,23 @@ export default function Navbar({ title, links, onNavigate }) {
           {mobileOpen ? <X size={20} /> : <Menu size={20} />}
         </button>
         <div className="hidden md:flex gap-2 md:gap-4 text-xs md:text-sm text-primary-black/70 dark:text-primary-white/70">
-          {links.map((l) => (
-            <button
-              key={l.key}
-              onClick={() => onNavigate?.(l.key)}
-              className="hover:text-primary-orange transition-smooth text-left"
-            >
-              {l.label}
-            </button>
-          ))}
+          {links.map((l) => {
+            const linkPath = l.path || `/${l.key}`;
+            const isActive = location.pathname === linkPath;
+            return (
+              <button
+                key={l.key}
+                onClick={() => navigate(linkPath)}
+                className={`transition-smooth text-left ${
+                  isActive
+                    ? "text-primary-orange font-medium"
+                    : "hover:text-primary-orange"
+                }`}
+              >
+                {l.label}
+              </button>
+            );
+          })}
         </div>
         <ThemeToggle />
         {mobileOpen && (
@@ -60,23 +71,31 @@ export default function Navbar({ title, links, onNavigate }) {
             className="absolute top-full left-0 right-0 bg-primary-white dark:bg-primary-dark-card border-b border-primary-white/10 px-6 py-6 flex flex-col gap-4 md:hidden z-50 shadow-2xl backdrop-blur-xl"
             style={{ animation: "curtainReveal 0.35s ease-out" }}
           >
-            {links.map((l, i) => (
-              <button
-                key={l.key}
-                onClick={() => {
-                  onNavigate?.(l.key);
-                  setMobileOpen(false);
-                }}
-                className="text-lg font-medium text-primary-black dark:text-primary-white hover:text-primary-orange transition-smooth text-left py-1"
-                style={{
-                  animation: "staggerReveal 0.3s ease-out forwards",
-                  animationDelay: `${i * 0.05}s`,
-                  opacity: 0,
-                }}
-              >
-                {l.label}
-              </button>
-            ))}
+            {links.map((l, i) => {
+              const linkPath = l.path || `/${l.key}`;
+              const isActive = location.pathname === linkPath;
+              return (
+                <button
+                  key={l.key}
+                  onClick={() => {
+                    navigate(linkPath);
+                    setMobileOpen(false);
+                  }}
+                  className={`text-lg font-medium transition-smooth text-left py-1 ${
+                    isActive
+                      ? "text-primary-orange font-bold"
+                      : "text-primary-black dark:text-primary-white hover:text-primary-orange"
+                  }`}
+                  style={{
+                    animation: "staggerReveal 0.3s ease-out forwards",
+                    animationDelay: `${i * 0.05}s`,
+                    opacity: 0,
+                  }}
+                >
+                  {l.label}
+                </button>
+              );
+            })}
           </div>
         )}
       </div>

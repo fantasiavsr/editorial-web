@@ -14,14 +14,10 @@ if (typeof window !== "undefined") {
   }
 }
 
-export default function LandingPage({ onNavigate }) {
+export default function LandingPage() {
   return (
     <main className="min-h-screen bg-primary-white dark:bg-primary-dark-bg text-primary-black dark:text-primary-white font-sans selection:bg-primary-orange selection:text-primary-white transition-colors">
-      <Navbar
-        title="State of AI Design"
-        links={data.landingNavLinks}
-        onNavigate={onNavigate}
-      />
+      <Navbar title="State of AI Design" links={data.NavLinks} />
 
       <Hero />
 

@@ -11,7 +11,7 @@ import BentoProductGrid from "../../sections/product/BentoProductGrid";
 import ProductCarousel from "../../sections/product/ProductCarousel";
 import CategoryTabsGrid from "../../sections/product/CategoryTabsGrid";
 
-export default function ProductPage({ onNavigate }) {
+export default function ProductPage() {
   const [heroLoaded, setHeroLoaded] = useState(false);
 
   useEffect(() => {
@@ -29,11 +29,7 @@ export default function ProductPage({ onNavigate }) {
 
   return (
     <main className="min-h-screen bg-primary-white dark:bg-primary-dark-bg text-primary-black dark:text-primary-white font-sans selection:bg-primary-orange selection:text-primary-white transition-colors">
-      <Navbar
-        title="Product Layouts"
-        links={data.productNavLinks}
-        onNavigate={onNavigate}
-      />
+      <Navbar title="Product Layouts" links={data.NavLinks} />
 
       {/* Hero */}
       <section className="pt-36 pb-20 px-8 md:px-16 md:max-w-7xl mx-auto">

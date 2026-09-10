@@ -11,7 +11,7 @@ import ServiceGrid from "../../sections/service/ServiceGrid";
 import ServiceDetailList from "../../sections/service/ServiceDetailList";
 import ServicePackageCards from "../../sections/service/ServicePackageCards";
 
-export default function ServicePage({ onNavigate }) {
+export default function ServicePage() {
   const [heroLoaded, setHeroLoaded] = useState(false);
 
   useEffect(() => {
@@ -29,11 +29,7 @@ export default function ServicePage({ onNavigate }) {
 
   return (
     <main className="min-h-screen bg-primary-white dark:bg-primary-dark-bg text-primary-black dark:text-primary-white font-sans selection:bg-primary-orange selection:text-primary-white transition-colors">
-      <Navbar
-        title="Service Layouts"
-        links={data.serviceNavLinks}
-        onNavigate={onNavigate}
-      />
+      <Navbar title="Service Layouts" links={data.NavLinks} />
 
       {/* Hero */}
       <section className="pt-36 pb-20 px-8 md:px-16 md:max-w-7xl mx-auto">
