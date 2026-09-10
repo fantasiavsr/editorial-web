@@ -10,6 +10,8 @@ export default function Navbar({ title, links }) {
   const location = useLocation();
   const isDark = theme === "dark";
   const [show, setShow] = useState(true);
+  const disableHide =
+    location.pathname === "/dashboard" || location.pathname === "/dashboard2";
   const [lastY, setLastY] = useState(0);
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -20,6 +22,7 @@ export default function Navbar({ title, links }) {
   );
 
   useEffect(() => {
+    if (disableHide) return;
     const onScroll = () => {
       const y = window.scrollY;
       setShow(window.innerWidth >= 768 ? y < lastY || y < 80 : true);
@@ -27,11 +30,11 @@ export default function Navbar({ title, links }) {
     };
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
-  }, [lastY]);
+  }, [lastY, disableHide]);
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-4 md:px-16 py-4 md:py-2 bg-primary-white/95 dark:bg-primary-dark-bg/95 backdrop-blur-sm border-b border-primary-black/10 dark:border-primary-white/10 transition-all duration-500 ease-out ${show ? "translate-y-0" : "-translate-y-full"}`}
+      className={`fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-4 md:px-16 py-4 md:py-2 bg-primary-white/95 dark:bg-primary-dark-bg/95 backdrop-blur-sm border-b border-primary-black/10 dark:border-primary-white/10 transition-all duration-500 ease-out ${disableHide || show ? "translate-y-0" : "-translate-y-full"}`}
     >
       <button
         onClick={() => navigate("/")}
@@ -167,7 +170,6 @@ export default function Navbar({ title, links }) {
           </div>
         )}
       </div>
-
     </nav>
   );
 }

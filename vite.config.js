@@ -8,4 +8,8 @@ export default defineConfig({
   server: {
     historyApiFallback: true,
   },
+  build: {
+    sourcemap: false,
+    minify: true,
+  },
 })

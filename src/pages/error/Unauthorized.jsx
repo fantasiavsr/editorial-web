@@ -12,7 +12,7 @@ export default function Unauthorized() {
         links={[{ key: "home", label: "Home", path: "/" }]}
       />
 
-      <div className="pt-36 flex-1 flex items-center justify-center px-8">
+      <div className="pt-28 flex-1 flex items-center justify-center px-8">
         <div className="text-center md:max-w-2xl">
           {/* Error Icon */}
           <div className="mb-8">
