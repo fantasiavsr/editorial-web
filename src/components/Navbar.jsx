@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useTheme } from "next-themes";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ChevronDown } from "lucide-react";
 import ThemeToggle from "./ThemeToggle";
 
 export default function Navbar({ title, links }) {
@@ -12,6 +12,12 @@ export default function Navbar({ title, links }) {
   const [show, setShow] = useState(true);
   const [lastY, setLastY] = useState(0);
   const [mobileOpen, setMobileOpen] = useState(false);
+
+  const [openDropdown, setOpenDropdown] = useState(null);
+
+  const isAuthPage = ["/login", "/register", "/forgot-password"].includes(
+    location.pathname,
+  );
 
   useEffect(() => {
     const onScroll = () => {
@@ -25,7 +31,7 @@ export default function Navbar({ title, links }) {
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-4 md:px-16 py-4 md:py-6 bg-primary-white/95 dark:bg-primary-dark-bg/95 backdrop-blur-sm border-b border-primary-black/10 dark:border-primary-white/10 transition-all duration-500 ease-out ${show ? "translate-y-0" : "-translate-y-full"}`}
+      className={`fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-4 md:px-16 py-4 md:py-2 bg-primary-white/95 dark:bg-primary-dark-bg/95 backdrop-blur-sm border-b border-primary-black/10 dark:border-primary-white/10 transition-all duration-500 ease-out ${show ? "translate-y-0" : "-translate-y-full"}`}
     >
       <button
         onClick={() => navigate("/")}
@@ -46,25 +52,71 @@ export default function Navbar({ title, links }) {
         >
           {mobileOpen ? <X size={20} /> : <Menu size={20} />}
         </button>
-        <div className="hidden md:flex gap-2 md:gap-4 text-xs md:text-sm text-primary-black/70 dark:text-primary-white/70">
+        <div className="hidden md:flex gap-4 md:gap-6 text-sm md:text-base text-primary-black/70 dark:text-primary-white/70">
           {links.map((l) => {
             const linkPath = l.path || `/${l.key}`;
             const isActive = location.pathname === linkPath;
+            const hasSubLinks = l.subLinks && l.subLinks.length > 0;
+
             return (
-              <button
+              <div
                 key={l.key}
-                onClick={() => navigate(linkPath)}
-                className={`transition-smooth text-left ${
-                  isActive
-                    ? "text-primary-orange font-medium"
-                    : "hover:text-primary-orange"
-                }`}
+                className="relative"
+                onMouseEnter={() => setOpenDropdown(l.key)}
+                onMouseLeave={() => setOpenDropdown(null)}
               >
-                {l.label}
-              </button>
+                <button
+                  onClick={() => navigate(linkPath)}
+                  className={`transition-smooth text-left flex items-center gap-1 ${
+                    isActive
+                      ? "text-primary-orange font-medium"
+                      : "hover:text-primary-orange"
+                  }`}
+                >
+                  {l.label}
+                  {hasSubLinks && (
+                    <ChevronDown
+                      size={12}
+                      className={`transition-transform ${
+                        openDropdown === l.key ? "rotate-180" : ""
+                      }`}
+                    />
+                  )}
+                </button>
+
+                {/* Dropdown below this nav item */}
+                {hasSubLinks && openDropdown === l.key && (
+                  <div
+                    className="absolute left-0 top-full pt-2 bg-primary-white dark:bg-primary-dark-card rounded-lg border border-primary-black/10 dark:border-primary-white/10 shadow-xl z-40 min-w-56"
+                    onMouseEnter={() => setOpenDropdown(l.key)}
+                    onMouseLeave={() => setOpenDropdown(null)}
+                  >
+                    {l.subLinks.map((sub, idx) => (
+                      <button
+                        key={idx}
+                        onClick={() => {
+                          navigate(sub.path);
+                          setOpenDropdown(null);
+                        }}
+                        className="block w-full text-left px-4 py-2.5 text-sm text-primary-black dark:text-primary-white hover:text-primary-orange hover:bg-primary-black/5 dark:hover:bg-primary-white/5 transition-colors first:rounded-t-lg last:rounded-b-lg"
+                      >
+                        {sub.label}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
             );
           })}
         </div>
+        {!isAuthPage && (
+          <button
+            onClick={() => navigate("/login")}
+            className="hidden md:inline-flex px-4 py-2 rounded-lg border border-primary-orange/75 dark:border-primary-white/50 not-last:hover:bg-primary-black/5 dark:hover:bg-primary-white/5 text-sm md:text-base font-medium text-primary-black dark:text-primary-white transition-colors"
+          >
+            Login
+          </button>
+        )}
         <ThemeToggle />
         {mobileOpen && (
           <div
@@ -96,9 +148,26 @@ export default function Navbar({ title, links }) {
                 </button>
               );
             })}
+            {!isAuthPage && (
+              <button
+                onClick={() => {
+                  navigate("/login");
+                  setMobileOpen(false);
+                }}
+                className="text-lg font-medium text-primary-black dark:text-primary-white hover:text-primary-orange transition-smooth text-left py-1"
+                style={{
+                  animation: "staggerReveal 0.3s ease-out forwards",
+                  animationDelay: `${links.length * 0.05}s`,
+                  opacity: 0,
+                }}
+              >
+                Login
+              </button>
+            )}
           </div>
         )}
       </div>
+
     </nav>
   );
 }

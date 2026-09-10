@@ -59,6 +59,7 @@ export default function ProductPage() {
 
       {/* Sections with scroll animations */}
       <div
+        id="product-grid"
         ref={section1Ref}
         className={`transition-all duration-700 ${section1Visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
       >
@@ -66,6 +67,7 @@ export default function ProductPage() {
       </div>
 
       <div
+        id="product-list"
         ref={section2Ref}
         className={`bg-primary-black/4 dark:bg-primary-white/6 transition-all duration-700 ${section2Visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
       >
@@ -73,6 +75,7 @@ export default function ProductPage() {
       </div>
 
       <div
+        id="featured-product"
         ref={section3Ref}
         className={`transition-all duration-700 ${section3Visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
       >
@@ -80,6 +83,7 @@ export default function ProductPage() {
       </div>
 
       <div
+        id="featured-product-grid"
         ref={section4Ref}
         className={`bg-primary-black/4 dark:bg-primary-white/6 transition-all duration-700 ${section4Visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
       >
@@ -87,6 +91,7 @@ export default function ProductPage() {
       </div>
 
       <div
+        id="bento-product-grid"
         ref={section5Ref}
         className={`transition-all duration-700 ${section5Visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
       >
@@ -94,6 +99,7 @@ export default function ProductPage() {
       </div>
 
       <div
+        id="product-carousel"
         ref={section6Ref}
         className={`bg-primary-black/4 dark:bg-primary-white/6 transition-all duration-700 ${section6Visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
       >
@@ -101,6 +107,7 @@ export default function ProductPage() {
       </div>
 
       <div
+        id="category-tabs-grid"
         ref={section7Ref}
         className={`transition-all duration-700 ${section7Visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
       >
