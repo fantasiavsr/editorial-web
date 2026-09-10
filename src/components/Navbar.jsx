@@ -38,14 +38,13 @@ export default function Navbar({ title, links }) {
     >
       <button
         onClick={() => navigate("/")}
-        className="flex items-center gap-2 text-xs md:text-sm font-medium tracking-tight text-primary-black dark:text-primary-white hover:text-primary-orange transition-smooth"
+        className="navbar-logo-button hidden items-center gap-2 text-xs md:text-sm font-medium tracking-tight text-primary-black dark:text-primary-white hover:text-primary-orange transition-smooth"
       >
         <img
           src={isDark ? "/atelier dark.svg" : "/atelier light.svg"}
           alt="Atelier logo"
           className="h-10 md:h-14 w-auto object-contain"
         />
-        {/* <span className="hidden sm:inline">{title}</span> */}
       </button>
       <div className="flex items-center gap-3 md:gap-6">
         <button
@@ -113,12 +112,20 @@ export default function Navbar({ title, links }) {
           })}
         </div>
         {!isAuthPage && (
-          <button
-            onClick={() => navigate("/login")}
-            className="hidden md:inline-flex px-4 py-2 rounded-lg border border-primary-orange/75 dark:border-primary-white/50 not-last:hover:bg-primary-black/5 dark:hover:bg-primary-white/5 text-sm md:text-base font-medium text-primary-black dark:text-primary-white transition-colors"
-          >
-            Login
-          </button>
+          <>
+            <button
+              onClick={() => navigate("/dashboard")}
+              className="hidden md:inline-flex px-4 py-2 rounded-lg border border-primary-black/10 dark:border-primary-white/10 hover:bg-primary-black/5 dark:hover:bg-primary-white/5 text-sm md:text-base font-medium text-primary-black dark:text-primary-white transition-colors"
+            >
+              Dashboard
+            </button>
+            <button
+              onClick={() => navigate("/login")}
+              className="hidden md:inline-flex px-4 py-2 rounded-lg border border-primary-orange/75 dark:border-primary-white/50 hover:bg-primary-black/5 dark:hover:bg-primary-white/5 text-sm md:text-base font-medium text-primary-black dark:text-primary-white transition-colors"
+            >
+              Login
+            </button>
+          </>
         )}
         <ThemeToggle />
         {mobileOpen && (

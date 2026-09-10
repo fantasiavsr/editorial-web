@@ -22,7 +22,7 @@ export default function Login() {
   };
 
   return (
-    <main className="pt-36 min-h-screen bg-primary-white dark:bg-primary-dark-bg text-primary-black dark:text-primary-white font-sans selection:bg-primary-orange selection:text-primary-white transition-colors flex flex-col">
+    <main className="pt-20 min-h-screen bg-primary-white dark:bg-primary-dark-bg text-primary-black dark:text-primary-white font-sans selection:bg-primary-orange selection:text-primary-white transition-colors flex flex-col">
       <Navbar
         title="Login"
         links={[{ key: "home", label: "Home", path: "/" }]}
