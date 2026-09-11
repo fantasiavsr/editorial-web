@@ -132,7 +132,7 @@ export default function DashboardProfilesContent() {
     <div>
       {/* Main Content Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Left: Profile Info + Security */}
+        {/* Left: Profile Info */}
         <div className="lg:col-span-2 space-y-8">
           {/* Profile Section */}
           <section className="bg-primary-white dark:bg-primary-dark-card rounded-xl border border-primary-black/10 dark:border-primary-white/10 p-6 md:p-8">

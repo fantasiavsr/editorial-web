@@ -1,64 +1,11 @@
 import { useState, useMemo } from "react";
 import { Search } from "lucide-react";
-import DashboardProductList from "../../sections/product/DashboardProductList";
+import DashboardProductList from "../../components/product/DashboardProductList";
+import { productEntitySchema } from "../../components/data-management/entitySchemas";
+import { MockProducts } from "../../data/exampleData";
 
 export default function DashboardProductsContent() {
-  const [products] = useState([
-    {
-      name: "Wireless Headphones",
-      type: "Electronics",
-      price: "$349",
-      available: 24,
-      status: "active",
-      sku: "WH-001",
-      description: "Premium wireless headphones with noise cancellation.",
-    },
-    {
-      name: "Leather Backpack",
-      type: "Accessories",
-      price: "$129",
-      available: 0,
-      status: "inactive",
-      sku: "LB-002",
-      description: "Handcrafted leather backpack with laptop sleeve.",
-    },
-    {
-      name: "USB-C Hub",
-      type: "Electronics",
-      price: "$79",
-      available: 156,
-      status: "active",
-      sku: "UC-003",
-      description: "7-in-1 USB-C hub with HDMI and card reader.",
-    },
-    {
-      name: "Coffee Maker",
-      type: "Appliances",
-      price: "$199",
-      available: 8,
-      status: "active",
-      sku: "CM-004",
-      description: "Programmable drip coffee maker with thermal carafe.",
-    },
-    {
-      name: "Desk Lamp",
-      type: "Furniture",
-      price: "$89",
-      available: 42,
-      status: "active",
-      sku: "DL-005",
-      description: "Adjustable LED desk lamp with wireless charging base.",
-    },
-    {
-      name: "Phone Stand",
-      type: "Accessories",
-      price: "$29",
-      available: 203,
-      status: "active",
-      sku: "PS-006",
-      description: "Minimalist aluminum phone stand for desk.",
-    },
-  ]);
+  const [products] = useState(MockProducts);
 
   const [searchTerm, setSearchTerm] = useState("");
   const [productType, setProductType] = useState("");
@@ -190,7 +137,7 @@ export default function DashboardProductsContent() {
 
       {/* Main Content */}
       <main className="px-0 md:px-4 lg:px-4 py-2">
-        <DashboardProductList products={sortedProducts} />
+        <DashboardProductList products={sortedProducts} schema={productEntitySchema} />
       </main>
     </div>
   );

@@ -15,8 +15,75 @@ function ImageWithFallback({ src, alt, className, fallback }) {
 
 export default function BentoProductGrid() {
   return (
-    <section className="p-8 md:p-16 md:max-w-7xl mx-auto">
-      <div className="mb-8">
+    <section className="bento-product-grid p-8 md:p-16 md:max-w-7xl mx-auto">
+      <style>{`
+        @media (max-width: 499px) {
+          .bento-product-grid {
+            padding: 1rem;
+          }
+
+          .bento-product-grid__heading {
+            margin-bottom: 1.5rem;
+          }
+
+          .bento-product-grid__heading p {
+            font-size: 0.8125rem;
+            line-height: 1.35;
+          }
+
+          .bento-product-grid__grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 0.75rem;
+          }
+
+          .bento-product-grid__large,
+          .bento-product-grid__brand,
+          .bento-product-grid__fonts {
+            grid-column: span 2 / span 2;
+          }
+
+          .bento-product-grid__large,
+          .bento-product-grid__tall,
+          .bento-product-grid__templates,
+          .bento-product-grid__brand,
+          .bento-product-grid__fonts {
+            grid-row: span 1 / span 1;
+            min-width: 0;
+          }
+
+          .bento-product-grid__large {
+            padding: 1rem;
+          }
+
+          .bento-product-grid__large h3 {
+            font-size: 1.25rem;
+            line-height: 1.2;
+          }
+
+          .bento-product-grid__large img,
+          .bento-product-grid__large > div > div:last-child {
+            height: auto;
+            max-height: 10rem;
+          }
+
+          .bento-product-grid__tall,
+          .bento-product-grid__templates,
+          .bento-product-grid__brand,
+          .bento-product-grid__fonts {
+            padding: 0.875rem;
+          }
+
+          .bento-product-grid__tall img,
+          .bento-product-grid__tall > div:first-child {
+            aspect-ratio: 1 / 1;
+          }
+
+          .bento-product-grid__brand > div {
+            gap: 0.75rem;
+          }
+        }
+      `}</style>
+      <div className="bento-product-grid__heading mb-8">
         <h3 className="text-xs uppercase tracking-[0.2em] text-primary-black/50 dark:text-primary-white/50 mb-2">
           Bento Product Grid
         </h3>
@@ -24,11 +91,11 @@ export default function BentoProductGrid() {
           Example: Creative portfolio — asymmetric layout with varied sizing.
         </p>
       </div>
-      <div className="grid grid-cols-4 gap-4">
+      <div className="bento-product-grid__grid grid grid-cols-4 gap-4">
         {/* Large item */}
         <a
           href="#"
-          className="col-span-2 row-span-2 group block p-6 rounded-3xl bg-primary-orange hover:bg-primary-black dark:hover:bg-primary-black transition-smooth"
+          className="bento-product-grid__large col-span-2 row-span-2 group block p-6 rounded-3xl bg-primary-orange hover:bg-primary-black dark:hover:bg-primary-black transition-smooth"
         >
           <div className="h-full flex flex-col justify-between">
             <div>
@@ -55,7 +122,7 @@ export default function BentoProductGrid() {
         {/* Tall item */}
         <a
           href="#"
-          className="col-span-1 row-span-2 group block p-5 rounded-2xl border border-primary-black/10 dark:border-primary-white/10 bg-primary-white dark:bg-primary-dark-card hover:border-primary-orange hover:-translate-y-1 transition-smooth"
+          className="bento-product-grid__tall col-span-1 row-span-2 group block p-5 rounded-2xl border border-primary-black/10 dark:border-primary-white/10 bg-primary-white dark:bg-primary-dark-card hover:border-primary-orange hover:-translate-y-1 transition-smooth"
         >
           <ImageWithFallback
             src="/product/images2.jpg"
@@ -74,7 +141,7 @@ export default function BentoProductGrid() {
         {/* Wide item */}
         <a
           href="#"
-          className="col-span-1 row-span-1 group block p-5 rounded-2xl border border-primary-black/10 dark:border-primary-white/10 bg-primary-white dark:bg-primary-dark-card hover:-translate-y-1 transition-smooth"
+          className="bento-product-grid__templates col-span-1 row-span-1 group block p-5 rounded-2xl border border-primary-black/10 dark:border-primary-white/10 bg-primary-white dark:bg-primary-dark-card hover:-translate-y-1 transition-smooth"
         >
           <h4 className="font-bold text-sm text-primary-black dark:text-primary-white mb-2">Templates</h4>
           <p className="text-xs text-primary-orange font-bold">$49</p>
@@ -83,7 +150,7 @@ export default function BentoProductGrid() {
         {/* Standard items */}
         <a
           href="#"
-          className="col-span-2 row-span-1 group block p-5 rounded-2xl border border-primary-black/10 dark:border-primary-white/10 bg-primary-white dark:bg-primary-dark-card hover:-translate-y-1 transition-smooth"
+          className="bento-product-grid__brand col-span-2 row-span-1 group block p-5 rounded-2xl border border-primary-black/10 dark:border-primary-white/10 bg-primary-white dark:bg-primary-dark-card hover:-translate-y-1 transition-smooth"
         >
           <div className="flex items-center gap-4">
             <ImageWithFallback
@@ -105,7 +172,7 @@ export default function BentoProductGrid() {
 
         <a
           href="#"
-          className="col-span-1 row-span-1 group block p-5 rounded-2xl border border-primary-black/10 dark:border-primary-white/10 bg-primary-white dark:bg-primary-dark-card hover:-translate-y-1 transition-smooth"
+          className="bento-product-grid__fonts col-span-1 row-span-1 group block p-5 rounded-2xl border border-primary-black/10 dark:border-primary-white/10 bg-primary-white dark:bg-primary-dark-card hover:-translate-y-1 transition-smooth"
         >
           <h4 className="font-bold text-sm text-primary-black dark:text-primary-white mb-2">Fonts</h4>
           <p className="text-xs text-primary-orange font-bold">$19</p>
