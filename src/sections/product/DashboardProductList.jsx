@@ -55,7 +55,7 @@ export default function DashboardProductList({ products }) {
   };
 
   return (
-    <section className="p-8 md:px-16 md:max-w-7xl mx-auto">
+    <section className="mx-auto md:max-w-7xl">
       <div className="mb-8">
         <h3 className="text-xs uppercase tracking-[0.2em] text-primary-black/50 dark:text-primary-white/50 mb-2">
           Product List

@@ -92,7 +92,7 @@ export default function DashboardProductsContent() {
   return (
     <div className="min-h-screen text-primary-black dark:text-primary-white font-sans transition-colors">
       {/* Header */}
-      <div className="pt-8 pb-4 px-4 md:px-16 lg:px-24">
+      <div className="pt-0 pb-4">
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
           <div>
             <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-primary-black dark:text-primary-white">
@@ -110,7 +110,7 @@ export default function DashboardProductsContent() {
 
       {/* Search & Filter Bar */}
       <div className="sticky top-0 z-30 backdrop-blur-sm border-b border-primary-black/10 dark:border-primary-white/10">
-        <div className="px-4 md:px-16 lg:px-24 py-4 flex flex-col md:flex-row md:items-center gap-3 md:gap-4">
+        <div className="px-0 py-4 flex flex-col md:flex-row md:items-center gap-3 md:gap-4">
           {/* Search */}
           <div className="relative flex-1 max-w-xl">
             <Search
