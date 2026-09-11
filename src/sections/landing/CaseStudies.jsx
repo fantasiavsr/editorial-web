@@ -75,6 +75,12 @@ export default function CaseStudies() {
           </a>
         ))}
       </div>
+      <a
+        href="/services"
+        className="inline-flex mt-10 text-sm font-medium text-primary-orange hover:text-primary-black dark:hover:text-primary-white transition-colors"
+      >
+        Explore services
+      </a>
     </section>
   );
 }

@@ -1,11 +1,21 @@
 import AboutSection from "./AboutSection";
 
 const values = [
-  ["Curiosity", "We stay close to the questions that are changing the work."],
-  ["Clarity", "We turn a noisy, fast-moving field into a story teams can use."],
+  [
+    "Curiosity",
+    "We keep exploring new ideas, technologies, and ways of working.",
+  ],
+  [
+    "Clarity",
+    "We simplify complex problems into experiences people can understand and use.",
+  ],
   [
     "Craft",
-    "We care about the difference between infinite output and meaningful work.",
+    "We care about the details that turn something functional into something genuinely useful.",
+  ],
+  [
+    "Progress",
+    "We build with the future in mind while solving the needs of today.",
   ],
 ];
 
@@ -19,7 +29,8 @@ export default function AboutVision() {
               Vision / mission
             </p>
             <blockquote className="text-3xl md:text-5xl font-medium leading-snug tracking-tight">
-              Make sense of the change while there is still time to shape it.
+              Make digital work clearer, more useful, and easier to move
+              forward.
             </blockquote>
           </div>
           <div className="md:pt-12 space-y-8">

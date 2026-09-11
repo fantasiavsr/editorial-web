@@ -3,21 +3,21 @@ import AboutSection from "./AboutSection";
 const focusAreas = [
   {
     number: "01",
-    title: "Tools",
+    title: "Products",
     description:
-      "We look at the instruments of the rebuild: design systems, AI editors, and generative interfaces reshaping the craft of making.",
+      "We create digital products and tools designed around specific needs, workflows, and use cases.",
   },
   {
     number: "02",
-    title: "Craft",
+    title: "Services",
     description:
-      "We follow how teams define quality at scale, moving from taste to taste-testing in a world of infinite drafts.",
+      "We help teams plan, design, build, and improve digital experiences from early ideas to finished products.",
   },
   {
     number: "03",
-    title: "Teams",
+    title: "Solutions",
     description:
-      "We examine how design organizations are flattening hierarchies, merging disciplines, and redefining what teams do together.",
+      "We combine products, services, and technology into flexible solutions for more complex needs.",
   },
 ];
 

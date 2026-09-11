@@ -17,21 +17,21 @@ export default function Methodology() {
             : "opacity-0 translate-y-4"
         }`}
       >
-        Methodology
+        Pricing
       </h2>
       <div className="grid md:grid-cols-3 gap-12">
         {[
           {
-            stat: "500+",
-            desc: "Designers surveyed across 60+ countries. From startups to Fortune 500s.",
+            stat: "Starter",
+            desc: "For individuals and small projects getting started.",
           },
           {
-            stat: "120",
-            desc: "In-depth interviews with product, engineering, and design leaders.",
+            stat: "Professional",
+            desc: "For growing teams that need more flexibility and capability.",
           },
           {
-            stat: "60+",
-            desc: "Public sources, research papers, and open-source contributions analyzed.",
+            stat: "Enterprise",
+            desc: "For organizations with larger requirements, custom workflows, and dedicated support.",
           },
         ].map((item, idx) => (
           <div

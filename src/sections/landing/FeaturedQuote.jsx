@@ -9,11 +9,11 @@ export default function FeaturedQuote() {
       className={`py-20 px-8 md:px-16 md:max-w-5xl mx-auto border-t border-primary-black/10 dark:border-primary-white/10 ${quotesVisible ? "animate-fade-in-up" : "opacity-0"}`}
     >
       <blockquote className="text-3xl md:text-5xl font-medium leading-snug tracking-tight text-primary-black dark:text-primary-white">
-        "AI is sparking a creative renaissance in design. With new instruments,
-        it's our chance to compose wholly new music."
+        “Good design gives ideas a shape, a rhythm, and a reason to exist. The
+        best work begins when curiosity meets intention.”
       </blockquote>
       <cite className="block mt-8 text-sm text-primary-black/50 dark:text-primary-white/50 not-italic">
-        Katie Dill — Head of Design, Stripe
+        — Design & Creative Practice
       </cite>
     </section>
   );

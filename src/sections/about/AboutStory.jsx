@@ -14,13 +14,15 @@ export default function AboutStory() {
           </p>
           <div>
             <h2 className="text-4xl md:text-6xl font-bold tracking-tight leading-tight mb-8">
-              From experimentation to infrastructure.
+              From ideas to experiences.
             </h2>
             <p className="text-lg md:text-xl leading-relaxed text-primary-black/60 dark:text-primary-white/60 max-w-3xl">
-              AI is changing more than the pace of making. It is changing the
-              instruments, standards, and structures around the work. This
-              report follows that shift: the practical rebuild already taking
-              place inside design teams.
+              Good digital work starts with understanding the problem.
+              <br />
+              <br />
+              We bring together strategy, design, technology, and practical
+              thinking to create experiences that are useful, clear, and built
+              to last.
             </p>
           </div>
         </div>
