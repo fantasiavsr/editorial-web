@@ -1,11 +1,13 @@
 import Footer from "../../components/Footer";
 import Navbar from "../../components/Navbar";
 import * as data from "../../data/exampleData";
-import Hero from "../../sections/landing/Hero";
-import FeaturedQuote from "../../sections/landing/FeaturedQuote";
-import Chapters from "../../sections/landing/Chapters";
 import CaseStudies from "../../sections/landing/CaseStudies";
+import Chapters from "../../sections/landing/Chapters";
+import FeaturedQuote from "../../sections/landing/FeaturedQuote";
+import Hero from "../../sections/landing/Hero";
 import Methodology from "../../sections/landing/Methodology";
+import AboutCta from "../../sections/about/AboutCta";
+import AboutResearch from "../../sections/about/AboutResearch";
 
 if (typeof window !== "undefined") {
   const savedTheme = localStorage.getItem("theme") || "light";
@@ -21,10 +23,7 @@ export default function LandingPage() {
 
       <Hero />
 
-      {/* Sections with scroll animations */}
-      <div className="">
-        <FeaturedQuote />
-      </div>
+      <FeaturedQuote />
 
       <div className="bg-primary-black/4 dark:bg-primary-white/6">
         <Chapters />
@@ -34,9 +33,11 @@ export default function LandingPage() {
         <CaseStudies />
       </div>
 
-      <div className="">
-        <Methodology />
-      </div>
+      {/* <Methodology /> */}
+
+      <AboutResearch />
+
+      <AboutCta />
 
       <Footer page="landing" />
     </main>

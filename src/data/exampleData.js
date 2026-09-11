@@ -18,6 +18,7 @@ export const NavLinks = [
   { key: "pricing", label: "Pricing", path: "/pricing" },
   { key: "services", label: "Services", path: "/services" },
   { key: "about", label: "About", path: "/about" },
+  { key: "404", label: "404", path: "/404" },
 ];
 
 // Mock data for development. Replace with API data later.

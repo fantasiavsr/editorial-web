@@ -2,6 +2,7 @@ import { ThemeProvider } from "next-themes";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import LandingPage from "./pages/landing/LandingPage";
+import About from "./pages/about/About";
 import ProductPage from "./pages/product/ProductPage";
 import PricingPage from "./pages/pricing/PricingPage";
 import ServicePage from "./pages/service/ServicePage";
@@ -53,6 +54,7 @@ function App() {
         <Routes>
           {/* Public pages */}
           <Route path="/" element={<LandingPage />} />
+          <Route path="/about" element={<About />} />
           <Route path="/products" element={<ProductPage />} />
           <Route path="/pricing" element={<PricingPage />} />
           <Route path="/services" element={<ServicePage />} />
