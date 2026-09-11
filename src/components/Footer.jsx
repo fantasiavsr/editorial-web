@@ -6,7 +6,7 @@ export default function Footer({ page }) {
 
   const content = {
     landing: {
-      title: "State of AI Design",
+      title: "Future of Design",
       subtitle: "A research initiative on the future of design and technology.",
     },
     product: {
@@ -48,7 +48,7 @@ export default function Footer({ page }) {
         </div>
       </div>
       <p className="text-xs text-primary-black/30 dark:text-primary-white/30 mt-12 md:max-w-7xl mx-auto">
-        © 2026 Pricing Layouts. All rights reserved.
+        © 2026 Atelier Layouts. All rights reserved.
       </p>
     </footer>
   );
