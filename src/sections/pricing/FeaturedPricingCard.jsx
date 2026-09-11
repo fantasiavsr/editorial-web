@@ -11,7 +11,7 @@ export default function FeaturedPricingCard() {
           Example: Highlight one plan — large hero card with focus.
         </p>
       </div>
-      <div className="rounded-3xl p-12 md:p-16 bg-primary-orange hover:bg-primary-black dark:hover:bg-primary-white transition-smooth max-w-2xl mx-auto">
+      <div className="rounded-3xl p-12 md:p-16 bg-primary-orange hover:bg-primary-black dark:hover:bg-primary-black transition-smooth max-w-2xl mx-auto">
         <span className="inline-block text-xs uppercase tracking-widest bg-primary-black dark:bg-primary-white text-primary-white dark:text-primary-black px-3 py-1 rounded-full mb-4">
           Most Popular
         </span>

@@ -93,7 +93,7 @@ export default function PricingCards() {
             <button
               className={`w-full py-3 px-4 rounded-xl font-bold mb-8 transition-smooth ${
                 plan.featured
-                  ? "bg-primary-orange text-primary-white hover:bg-primary-black dark:hover:bg-primary-white dark:hover:text-primary-black"
+                  ? "bg-primary-orange text-primary-white hover:bg-primary-black dark:bg-primary-black dark:hover:bg-primary-white dark:hover:text-primary-black"
                   : "bg-primary-black/10 dark:bg-primary-white/10 text-primary-black dark:text-primary-white hover:bg-primary-orange hover:text-primary-white"
               }`}
             >
