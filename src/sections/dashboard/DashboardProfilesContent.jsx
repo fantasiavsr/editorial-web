@@ -224,7 +224,7 @@ export default function DashboardProfilesContent() {
                     className={`w-full px-3.5 py-2.5 rounded-lg border text-sm transition-all ${
                       editMode
                         ? "border-primary-black/20 dark:border-primary-white/20 bg-primary-white dark:bg-primary-dark-card text-primary-black dark:text-primary-white focus:outline-none focus:border-primary-orange focus:ring-1 focus:ring-primary-orange/20"
-                        : "border-transparent bg-primary-black/[0.03] dark:bg-primary-white/[0.03] text-primary-black/90 dark:text-primary-white/90"
+                        : "border-transparent bg-primary-black/3 dark:bg-primary-white/3 text-primary-black/90 dark:text-primary-white/90"
                     }`}
                   />
                 </div>
@@ -240,7 +240,7 @@ export default function DashboardProfilesContent() {
           </section>
         </div>
 
-        {/* Right: 3D Visualization */}
+        {/* Right: */}
         <div className="lg:col-span-1">
           {/* Security Section */}
           <section className="bg-primary-white dark:bg-primary-dark-card rounded-xl border border-primary-black/10 dark:border-primary-white/10 p-6 md:p-8">
