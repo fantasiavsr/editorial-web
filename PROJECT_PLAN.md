@@ -87,7 +87,7 @@ These are **independent repositories**. Not a monorepo.
 ## Current Phase
 
 ```
-Phase 8 — Inspect Authentication Architecture
+Phase 9 — Update User Database & Model
 Status: ✅ COMPLETE
 ```
 
@@ -102,10 +102,11 @@ Status: ✅ COMPLETE
 - [x] **Phase 6** — CRUD Operations (completed 2026-09-14)
 - [x] **Phase 7** — Production Laravel + MySQL preparation (completed 2026-09-14)
 - [x] **Phase 8** — Inspect Authentication Architecture (completed 2026-09-14)
+- [x] **Phase 9** — Update User Database & Model (completed 2026-09-14)
 
 ## Next Phase
 
-- [ ] **Phase 9 — Update User Database & Model**
+- [ ] **Phase 10 — Configure Authentication Infrastructure**
 - [ ] **Phase 9 — Update User Database & Model**
 - [ ] **Phase 10 — Configure Authentication Infrastructure**
 - [ ] **Phase 11 — Implement Registration**
@@ -380,7 +381,15 @@ Vercel mock deployment is already working as intended:
 - Recommended Laravel Sanctum personal access tokens for the independent React/API architecture.
 - Verification: read-only code audit completed; no authentication code changed in this phase.
 
-Next: Phase 9 — Update User Database & Model
+### Phase 9 — Update User Database & Model ✅
+
+- Added a non-destructive migration for `phone`, `address`, `city`, `country`, and backend-controlled `role` fields.
+- Updated `User::$fillable`, hidden attributes, and casts without exposing passwords or remember tokens.
+- Updated `UserFactory` with profile fields and a default `user` role.
+- Did not add a default admin account or allow role assignment through frontend data; admin provisioning belongs to a later protected-auth phase.
+- Verified migration status and ran Laravel tests successfully.
+
+Next: Phase 10 — Configure Authentication Infrastructure
 
 The existing UI is currently mock-only. Before deployment work continues, authentication is divided into these small phases:
 
