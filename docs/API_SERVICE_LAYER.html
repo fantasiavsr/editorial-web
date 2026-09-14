@@ -240,7 +240,7 @@ pre {
 <header>
   <h1>Products API Service Layer</h1>
   <p class="subtitle">React fetch-based API client for Editorial Web backend</p>
-  <div class="status">Phase 3 — Complete</div>
+  <div class="status">Phase 3 — Complete · Extended in Phase 6</div>
 </header>
 
 <main>
@@ -249,7 +249,7 @@ pre {
     <p>The API service layer provides a clean interface for the React frontend to communicate with the Laravel backend's REST API. All functions use native <code>fetch()</code> and return promises.</p>
 
     <div class="info-box">
-      <strong>🚀 Quick Start:</strong> The API layer is ready to use. Import functions from <code>src/services/api/products.js</code> and call them from React components. No connection to pages yet — this phase is isolated service layer only.
+      <strong>🚀 Quick Start:</strong> Import API functions directly for products, or use <code>src/services/data.js</code> from dashboard components. The data layer now supports API-first CRUD with automatic mock fallback for products, services, and pricing plans.
     </div>
   </section>
 
@@ -259,6 +259,8 @@ pre {
       <div class="file">src/services/api/config.js</div>
       <div class="file">src/services/api/products.js</div>
       <div class="file">src/services/api/test.js</div>
+      <div class="file">src/services/api/catalog.js</div>
+      <div class="file">src/hooks/useEntityCrud.js</div>
     </div>
   </section>
 
@@ -414,14 +416,15 @@ await runApiTests()</pre>
   </section>
 
   <section>
-    <h2>What's Next</h2>
-    <p><strong>Phase 5 — Connect Pages Gradually</strong> will:</p>
+    <h2>Current Status</h2>
+    <p><strong>Phase 6 — CRUD Operations</strong> is complete:</p>
     <ul class="checklist">
-      <li>Create Services API endpoints in Laravel</li>
-      <li>Create Pricing API endpoints in Laravel</li>
-      <li>Connect remaining dashboard pages</li>
-      <li>Add loading/error/empty states everywhere</li>
+      <li>Products, services, and pricing plans support create, update, and delete</li>
+      <li>Dashboard forms use the shared EntityFormModal and EntityDeleteDialog</li>
+      <li>Laravel validation errors are preserved for UI feedback</li>
+      <li>API failures fall back to mock data automatically</li>
     </ul>
+    <p>Next: Phase 7 — production Laravel and MySQL deployment.</p>
   </section>
 
   <section>

@@ -406,8 +406,8 @@ await productDataSource.delete(id)</pre>
     <p><code>src/services/data.js</code> exports:</p>
     <ul class="feature-list">
       <li><code>productDataSource</code> — Products with getAll(), getById(), create(), update(), delete()</li>
-      <li><code>serviceDataSource</code> — Services (placeholder for Phase 5)</li>
-      <li><code>pricingDataSource</code> — Pricing (placeholder for Phase 5)</li>
+      <li><code>serviceDataSource</code> — Services with getAll(), create(), update(), delete()</li>
+      <li><code>pricingDataSource</code> — Pricing with getAll(), create(), update(), delete()</li>
       <li><code>getDataSourceMode()</code> — Returns 'mock' or 'api'</li>
       <li><code>isUsingMockData()</code> — Boolean helper</li>
     </ul>
@@ -543,14 +543,16 @@ Component renders products</pre>
   </section>
 
   <section>
-    <h2>Next: Phase 5</h2>
-    <p>Now that the abstraction layer is complete, Phase 5 will:</p>
+    <h2>Phase 6 Complete</h2>
+    <p>CRUD operations are now connected for all dashboard entities:</p>
     <ul class="feature-list">
-      <li>Create Services API endpoints in Laravel</li>
-      <li>Create Pricing API endpoints in Laravel</li>
-      <li>Connect dashboard services and pricing pages</li>
-      <li>Add loading/error/empty states everywhere</li>
-      <li>Verify all pages work in both mock and API modes</li>
+      <li>Create, edit, and delete products</li>
+      <li>Create, edit, and delete services</li>
+      <li>Create, edit, and delete pricing plans</li>
+      <li>Shared <code>useEntityCrud</code> hook manages mutation state</li>
+      <li>Laravel validation feedback appears in the dashboard</li>
+      <li>Mock fallback remains available when the backend is unavailable</li>
     </ul>
+    <p>Next: Phase 7 — production Laravel + MySQL deployment.</p>
   </section>
 </main>

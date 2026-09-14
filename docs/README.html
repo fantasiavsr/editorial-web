@@ -163,6 +163,11 @@ pre {
     <div class="card-desc">How the data abstraction layer works. API with fallback to mock. Testing both modes.</div>
   </a>
 
+  <div class="card" style="border-color: var(--success);">
+    <div class="card-title">CRUD Operations <span class="badge phase">Phase 6</span></div>
+    <div class="card-desc">Products, services, and pricing plans now support create, edit, delete, validation feedback, and API-to-mock fallback through the dashboard.</div>
+  </div>
+
   <h2>Quick Reference</h2>
 
   <div class="quick-ref">
@@ -189,8 +194,12 @@ npm run dev</pre>
 ├── data.js              ← Abstraction layer (mock/API switching)
 └── api/
     ├── config.js        ← API URL, timeout, headers
-    ├── products.js      ← Products API functions
-    └── test.js          ← API testing utilities</pre>
+    ├── products.js      ← Product API functions
+    ├── catalog.js       ← Services/pricing API functions
+    └── test.js          ← API testing utilities
+
+src/hooks/
+└── useEntityCrud.js     ← Shared dashboard CRUD state</pre>
   </div>
 
   <h2>Archived Docs</h2>
