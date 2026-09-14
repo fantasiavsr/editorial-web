@@ -48,7 +48,7 @@ These are **independent repositories**. Not a monorepo.
 ## Current Phase
 
 ```
-Phase: 1 — Create Laravel Backend
+Phase: 2 — First API (Products)
 Status: ✅ COMPLETE
 ```
 
@@ -56,10 +56,11 @@ Status: ✅ COMPLETE
 
 - [x] **Phase 0** — Inspect & Plan (completed 2026-09-12)
 - [x] **Phase 1** — Create Laravel Backend (completed 2026-09-12)
+- [x] **Phase 2** — First API (Products) (completed 2026-09-14)
 
 ## Next Phase
 
-- [ ] **Phase 2** — First API (Products)
+- [ ] **Phase 3** — React API Layer
 
 ---
 
@@ -382,4 +383,5 @@ npm run dev
 | Phase | Commit | Description |
 |-------|--------|-------------|
 | Pre-Phase 0 | `7cc7ab3` | Original state before any API work |
-| Phase 0 | (pending commit) | Added PROJECT_PLAN.md |
+| Phase 1 | `262ef25` (backend) | Initial Laravel installation |
+| Phase 2 | `ce2b095` (backend) | Products API with full CRUD endpoints |
