@@ -87,7 +87,7 @@ These are **independent repositories**. Not a monorepo.
 ## Current Phase
 
 ```
-Phase 10 — Configure Authentication Infrastructure
+Phase 11 — Implement Registration
 Status: ✅ COMPLETE
 ```
 
@@ -104,10 +104,11 @@ Status: ✅ COMPLETE
 - [x] **Phase 8** — Inspect Authentication Architecture (completed 2026-09-14)
 - [x] **Phase 9** — Update User Database & Model (completed 2026-09-14)
 - [x] **Phase 10** — Configure Authentication Infrastructure (completed 2026-09-14)
+- [x] **Phase 11** — Implement Registration (completed 2026-09-14)
 
 ## Next Phase
 
-- [ ] **Phase 11 — Implement Registration**
+- [ ] **Phase 12 — Implement Login**
 - [ ] **Phase 12 — Implement Login**
 - [ ] **Phase 13 — Implement Current User & Logout**
 - [ ] **Phase 14 — Integrate Profile Authentication**
@@ -396,7 +397,17 @@ Vercel mock deployment is already working as intended:
 - Confirmed API route registration remains stable; auth endpoints are intentionally deferred to Phase 11.
 - Verified Laravel tests pass.
 
-Next: Phase 11 — Implement Registration
+### Phase 11 — Implement Registration ✅
+
+- Added `AuthController::register` with name, email, password, and confirmation validation.
+- Added `POST /api/register`.
+- Passwords use the User model's Laravel `hashed` cast and are never returned.
+- New users always receive the backend-controlled `user` role.
+- Registration issues a Sanctum personal access token in the response for the next auth phase.
+- Verified successful registration and duplicate-email validation with curl.
+- Verified Laravel tests pass.
+
+Next: Phase 12 — Implement Login
 
 The existing UI is currently mock-only. Before deployment work continues, authentication is divided into these small phases:
 
