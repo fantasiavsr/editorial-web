@@ -279,12 +279,14 @@ const url = getApiEndpoint('/products')  // → http://localhost:8000/api/produc
 const data = await handleApiResponse(response)</pre>
 
     <h3>Environment Variables</h3>
-    <p>Set <code>VITE_API_URL</code> to override the default:</p>
-    <pre># .env.local (local development)
+    <p>Set in your local <code>.env</code> file (gitignored):</p>
+    <pre># .env (local development — create this file, it's gitignored)
+VITE_DATA_SOURCE=api
 VITE_API_URL=http://localhost:8000/api
+VITE_API_TIMEOUT=1000
 
-# .env.production (production)
-VITE_API_URL=https://mydomain.com/api</pre>
+# Production (set in Vercel/hosting dashboard)
+# VITE_API_URL=https://mydomain.com/api</pre>
   </section>
 
   <section>
@@ -413,12 +415,12 @@ await runApiTests()</pre>
 
   <section>
     <h2>What's Next</h2>
-    <p><strong>Phase 4 — Mock/API Switching</strong> will:</p>
+    <p><strong>Phase 5 — Connect Pages Gradually</strong> will:</p>
     <ul class="checklist">
-      <li>Add environment variables for data source selection</li>
-      <li>Create a data abstraction layer that switches between mock and API</li>
-      <li>Connect the dashboard products page to real data</li>
-      <li>Verify both mock mode and API mode work independently</li>
+      <li>Create Services API endpoints in Laravel</li>
+      <li>Create Pricing API endpoints in Laravel</li>
+      <li>Connect remaining dashboard pages</li>
+      <li>Add loading/error/empty states everywhere</li>
     </ul>
   </section>
 
@@ -426,17 +428,17 @@ await runApiTests()</pre>
     <h2>Architecture</h2>
     <pre>React Component
        ↓
-  Data Service
-  (src/services/api/products.js)
+  Data Abstraction (src/services/data.js)
        ↓
-  Config
-  (src/services/api/config.js)
-       ↓
-  fetch()
-       ↓
-  Laravel API
-  (http://localhost:8000/api)</pre>
+  ┌─────────────────────────────────┐
+  │ Try API first (with timeout)    │
+  │         ↓                       │
+  │   fetch() to Laravel API        │
+  │         ↓                       │
+  │  Success? → Return API data     │
+  │  Failed?  → Fallback to mock    │
+  └─────────────────────────────────┘</pre>
 
-    <p style="margin-top: 16px; font-size: 14px; color: var(--text-secondary);">In Phase 4, an abstraction layer will sit above this, allowing components to use the same interface for both mock and API data sources.</p>
+    <p style="margin-top: 16px; font-size: 14px; color: var(--text-secondary);">The data abstraction layer (Phase 4) handles fallback automatically. Components just call <code>productDataSource.getAll()</code> and get data regardless of which source is active.</p>
   </section>
 </main>

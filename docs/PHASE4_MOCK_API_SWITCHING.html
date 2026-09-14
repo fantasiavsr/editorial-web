@@ -304,23 +304,22 @@ pre {
       <div class="mode-card">
         <div class="mode-title">
           <span class="badge mock">MOCK</span>
-          Demo / Vercel
+          Vercel / Demo
         </div>
         <ul class="feature-list">
           <li>Uses local mock data</li>
           <li>No backend required</li>
           <li>Works offline</li>
-          <li>Instant "API" responses</li>
+          <li>Instant responses</li>
           <li>Perfect for demos</li>
-          <li>Configured via <code>.env</code></li>
+          <li><strong>Automatic:</strong> No <code>.env</code> on Vercel = mock mode</li>
         </ul>
-        <pre style="margin-top: 12px; font-size: 12px; padding: 8px;">VITE_DATA_SOURCE=mock</pre>
       </div>
 
       <div class="mode-card">
         <div class="mode-title">
           <span class="badge api">API</span>
-          Production / Real Domain
+          Local Dev / Production
         </div>
         <ul class="feature-list">
           <li>Uses Laravel API</li>
@@ -328,11 +327,18 @@ pre {
           <li>Real CRUD operations</li>
           <li>Network requests</li>
           <li>Persisted data</li>
-          <li>Configured via <code>.env.local</code></li>
+          <li><strong>Automatic:</strong> API first, fallback to mock if backend down</li>
         </ul>
-        <pre style="margin-top: 12px; font-size: 12px; padding: 8px;">VITE_DATA_SOURCE=api
-VITE_API_URL=http://localhost:8000/api</pre>
       </div>
+    </div>
+
+    <div class="info-box" style="margin-top: 16px;">
+      <strong>🎯 Single Configuration:</strong> No need to switch between files. The same codebase automatically handles both modes:
+      <ul style="margin-top: 8px; margin-bottom: 0; padding-left: 20px;">
+        <li><strong>Vercel:</strong> No <code>.env</code> → defaults to mock → works without backend</li>
+        <li><strong>Local dev:</strong> Create <code>.env</code> → tries API → falls back to mock if backend down</li>
+        <li><strong>Production:</strong> Set <code>VITE_API_URL</code> in hosting dashboard → uses real API</li>
+      </ul>
     </div>
   </section>
 
@@ -351,7 +357,7 @@ await productDataSource.update(id, changes)
 await productDataSource.delete(id)</pre>
 
     <h3>How It Works</h3>
-    <p>At runtime, the data service checks the environment variable and routes requests appropriately:</p>
+    <p>At runtime, the data service always tries the API first, then falls back to mock if anything fails:</p>
 
     <div class="flowchart">
       <div style="margin-bottom: 12px;">
@@ -360,23 +366,30 @@ await productDataSource.delete(id)</pre>
         <span class="flow-box">productDataSource.getAll()</span>
       </div>
       <div style="margin-bottom: 12px;">
-        <span class="flow-box">Check VITE_DATA_SOURCE</span>
+        <span class="flow-box">Check: VITE_DATA_SOURCE === 'api'?</span>
+      </div>
+      <div style="margin-bottom: 12px;">
+        <div style="display: inline-block;">
+          <span class="flow-box" style="background: #dcfce7; color: #166534;">✓ YES → Try API</span>
+          <span class="flow-arrow">↓</span>
+          <span class="flow-box">fetch() with timeout</span>
+        </div>
       </div>
       <div>
         <div style="display: inline-block; margin-right: 24px;">
-          <span class="flow-box" style="background: #dbeafe; color: #0369a1;">✓ mock</span>
+          <span class="flow-box" style="background: #dcfce7; color: #166534;">Success</span>
           <span class="flow-arrow">→</span>
-          <span class="flow-box">MockProducts array</span>
+          <span class="flow-box">Return API data</span>
         </div>
         <div style="display: inline-block;">
-          <span class="flow-box" style="background: #dcfce7; color: #166534;">✓ api</span>
+          <span class="flow-box" style="background: #fef3c7; color: #92400e;">Failed/Timeout</span>
           <span class="flow-arrow">→</span>
-          <span class="flow-box">Laravel API fetch()</span>
+          <span class="flow-box">Fallback to mock</span>
         </div>
       </div>
     </div>
 
-    <p style="margin-top: 16px;"><strong>Mock mode</strong> simulates network delays with <code>setTimeout</code> so responses feel realistic. <strong>API mode</strong> uses real fetch() calls to the Laravel backend.</p>
+    <p style="margin-top: 16px;"><strong>API mode</strong> tries real fetch() with a configurable timeout. If it fails or times out, <strong>automatic fallback</strong> kicks in and uses mock data. <strong>No errors shown to the user.</strong></p>
   </section>
 
   <section>
@@ -384,8 +397,9 @@ await productDataSource.delete(id)</pre>
 
     <h3>1. Environment Configuration</h3>
     <ul class="feature-list">
-      <li><code>.env</code> — defaults to mock (Vercel deployment)</li>
-      <li><code>.env.local</code> — configured for API mode (local development)</li>
+      <li><code>.env</code> — gitignored, API mode with timeout (local development)</li>
+      <li><strong>Vercel:</strong> No <code>.env</code> → automatically uses mock mode</li>
+      <li><code>VITE_API_TIMEOUT</code> — configurable timeout (default: 1000ms)</li>
     </ul>
 
     <h3>2. Data Abstraction Layer</h3>
@@ -410,100 +424,103 @@ await productDataSource.delete(id)</pre>
   </section>
 
   <section>
-    <h2>Testing Both Modes</h2>
+    <h2>Testing</h2>
 
     <div class="testing-box">
-      <div class="testing-title">🧪 Test Mock Mode</div>
+      <div class="testing-title">🧪 Test API Mode (Backend Running)</div>
       <div class="test-step">
-        <strong>1. Ensure .env is active:</strong> Default is <code>VITE_DATA_SOURCE=mock</code>
+        <strong>1. Start Laravel:</strong> <code>php artisan serve --port=8000</code> (in editorial-backend)
       </div>
       <div class="test-step">
-        <strong>2. Run dev server:</strong> <code>npm run dev</code>
+        <strong>2. Start frontend:</strong> <code>npm run dev</code>
       </div>
       <div class="test-step">
         <strong>3. Navigate to:</strong> http://localhost:5173/dashboard/products
       </div>
       <div class="test-step">
-        <strong>4. Verify:</strong> Dashboard shows 6 products (from MockProducts)
+        <strong>4. Verify:</strong> Dashboard fetches 6 products from API
       </div>
       <div class="test-step">
-        <strong>5. Console output:</strong> Should show <code>📦 Data source: MOCK</code>
+        <strong>5. Console:</strong> <code>📦 Data source: API</code>
+      </div>
+      <div class="test-step">
+        <strong>6. CRUD:</strong> Create/edit/delete persists in MySQL database
       </div>
     </div>
 
     <div class="testing-box">
-      <div class="testing-title">🧪 Test API Mode</div>
+      <div class="testing-title">🧪 Test Fallback (Backend Off)</div>
       <div class="test-step">
-        <strong>1. Create/update .env.local:</strong>
-        <pre style="margin-top: 8px; margin-bottom: 8px;">VITE_DATA_SOURCE=api
-VITE_API_URL=http://localhost:8000/api</pre>
+        <strong>1. Stop Laravel / Turn off XAMPP</strong>
       </div>
       <div class="test-step">
-        <strong>2. Start Laravel server:</strong> <code>php artisan serve --port=8000</code> (in editorial-backend)
+        <strong>2. Refresh dashboard</strong>
       </div>
       <div class="test-step">
-        <strong>3. Run Vite with .env.local:</strong> npm run dev (automatically picks up .env.local)
+        <strong>3. Verify:</strong> Still shows 6 products (from fallback to mock)
       </div>
       <div class="test-step">
-        <strong>4. Navigate to:</strong> http://localhost:5173/dashboard/products
+        <strong>4. Console:</strong> <code>⚠️ API request failed, falling back to mock data</code>
       </div>
       <div class="test-step">
-        <strong>5. Verify:</strong> Dashboard fetches 6 products from API
+        <strong>5. No errors shown</strong> — graceful fallback
+      </div>
+    </div>
+
+    <div class="testing-box">
+      <div class="testing-title">🧪 Test Vercel (No Backend)</div>
+      <div class="test-step">
+        <strong>1.</strong> <code>.env</code> is in <code>.gitignore</code> → not deployed
       </div>
       <div class="test-step">
-        <strong>6. Console output:</strong> Should show <code>📦 Data source: API</code>
+        <strong>2.</strong> No <code>.env</code> on Vercel → <code>VITE_DATA_SOURCE</code> undefined → defaults to mock
       </div>
       <div class="test-step">
-        <strong>7. Create/edit/delete:</strong> Operations persist in MySQL database
+        <strong>3.</strong> Dashboard shows mock products → works perfectly without backend
       </div>
     </div>
   </section>
 
   <section>
-    <h2>Key Architecture Features</h2>
+    <h2>Key Architecture Features</h3>
 
-    <h3>✓ Seamless Switching</h3>
-    <p>Change one environment variable, no code changes needed. Both modes provide identical data shapes.</p>
+    <h3>✓ Single Configuration</h3>
+    <p>No need to switch between <code>.env</code> files. The same codebase automatically handles both modes.</p>
+
+    <h3>✓ API with Fallback</h3>
+    <p>Tries API first with configurable timeout. Falls back to mock automatically if backend is down.</p>
 
     <h3>✓ Loading States</h3>
     <p>Dashboard shows spinner while loading, error message if something fails, with manual retry option.</p>
 
-    <h3>✓ Error Handling</h3>
-    <p>All functions throw catchable errors. Components can handle failures gracefully.</p>
+    <h3>✓ Configurable Timeout</h3>
+    <p>Set <code>VITE_API_TIMEOUT</code> in <code>.env</code> (default: 1000ms). Controls how long to wait before fallback.</p>
 
-    <h3>✓ Mock Mode Parity</h3>
-    <p>Mock mode simulates network delays so behavior matches API mode. Mutations (create/update/delete) update the mock array.</p>
-
-    <h3>✓ Environment-Aware</h3>
-    <p>Respects Vite's environment system. Different .env files for dev, local, and production.</p>
+    <h3>✓ Vercel Ready</h3>
+    <p><code>.env</code> is gitignored. Vercel automatically uses mock mode without any configuration.</p>
   </section>
 
   <section>
-    <h2>Data Flow Comparison</h2>
+    <h2>Data Flow</h2>
 
-    <h3>Mock Mode</h3>
+    <h3>API Mode (Default)</h3>
     <pre>React Component
     ↓
 productDataSource.getAll()
     ↓
-Check: VITE_DATA_SOURCE === 'mock'? YES
+Tries: fetch('http://localhost:8000/api/products')
     ↓
-Return MockProducts (setTimeout simulates delay)
-    ↓
-Component renders products</pre>
+┌─ Success? → Return API data (real database)
+└─ Failed?  → Fallback to mock data (no error shown)</pre>
 
-    <h3>API Mode</h3>
+    <h3>Mock Mode (Vercel)</h3>
     <pre>React Component
     ↓
 productDataSource.getAll()
     ↓
-Check: VITE_DATA_SOURCE === 'api'? YES
+VITE_DATA_SOURCE is undefined → defaults to 'mock'
     ↓
-productsApi.getProducts()
-    ↓
-fetch('http://localhost:8000/api/products')
-    ↓
-Laravel → Database → JSON Response
+Return MockProducts array (no fetch needed)
     ↓
 Component renders products</pre>
   </section>
@@ -515,19 +532,13 @@ Component renders products</pre>
       <div class="checkpoint-title">✓ Phase 4 Complete</div>
       <p><strong>What This Enables:</strong></p>
       <ul class="feature-list">
-        <li>Same codebase works with mock data or real API</li>
-        <li>Vercel deployment uses mock mode (no backend needed)</li>
-        <li>Local development can toggle between mock and API</li>
-        <li>Production domain uses API mode with real data</li>
-        <li>Dashboard products page demonstrates both modes</li>
+        <li>Single configuration works everywhere</li>
+        <li>Vercel automatically uses mock mode (no <code>.env</code> = mock)</li>
+        <li>Local dev: API first, fallback to mock if backend down</li>
+        <li>Production: Set <code>VITE_API_URL</code> in hosting dashboard</li>
+        <li>Configurable timeout via <code>VITE_API_TIMEOUT</code></li>
         <li>Foundation for connecting remaining pages</li>
       </ul>
-    </div>
-
-    <div class="checkpoint">
-      <div class="checkpoint-title">✓ Git Checkpoint</div>
-      <p><strong>Frontend:</strong> commit <code>42b2837</code> — Mock/API switching implemented</p>
-      <p><strong>Backend:</strong> commit <code>ce2b095</code> — Products API ready to serve</p>
     </div>
   </section>
 
