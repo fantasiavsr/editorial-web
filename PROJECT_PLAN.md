@@ -109,7 +109,6 @@ Status: ✅ COMPLETE (Backend + Frontend)
 ## Next Phase
 
 - [ ] **Phase 12 — Implement Login**
-- [ ] **Phase 12 — Implement Login**
 - [ ] **Phase 13 — Implement Current User & Logout**
 - [ ] **Phase 14 — Integrate Profile Authentication**
 - [ ] **Phase 15 — Integrate React Authentication**
@@ -399,18 +398,54 @@ Vercel mock deployment is already working as intended:
 
 ### Phase 11 — Implement Registration ✅
 
+#### Backend
+
 - Added `AuthController::register` with name, email, password, and confirmation validation.
 - Added `POST /api/register`.
 - Passwords use the User model's Laravel `hashed` cast and are never returned.
 - New users always receive the backend-controlled `user` role.
 - Registration issues a Sanctum personal access token in the response for the next auth phase.
-- Connected the existing React Register form to `POST /api/register`.
-- The frontend maps `fullName` to the backend `name` field and stores the returned token locally for the next auth phase.
-- Registration validation errors are displayed in the existing form.
-- Verified successful registration and duplicate-email validation with curl.
-- Verified frontend production build and Laravel tests pass.
 
-Next: Phase 12 — Implement Login
+#### Frontend
+
+- Added `src/services/api/auth.js` with the registration request helper.
+- Connected the existing `src/pages/auth/Register.jsx` form to `POST /api/register`.
+- Mapped frontend `fullName` to backend `name`.
+- Stored the returned token locally for the next auth phase.
+- Displayed backend validation errors in the existing form.
+- Preserved the existing Register UI and terms checkbox.
+
+#### Verification
+
+- Verified successful registration with curl.
+- Verified duplicate-email validation with curl.
+- Verified frontend production build.
+- Verified Laravel tests pass.
+
+### Phase 12 — Implement Login — NOT STARTED
+
+#### Backend
+
+- Add the login endpoint and issue Sanctum tokens after credential verification.
+- Return safe user data only.
+- Add backend feature verification for valid and invalid credentials.
+
+#### Frontend
+
+- Connect `src/pages/auth/Login.jsx` to the login endpoint.
+- Store authentication state using the auth API/context implementation.
+- Display backend login and validation errors.
+- Preserve the existing Login UI.
+
+#### Verification
+
+- Valid credentials
+- Invalid credentials
+- Missing fields
+- Frontend production build
+- Laravel tests
+
+Next: Phase 13 — Implement Current User & Logout
 
 The existing UI is currently mock-only. Before deployment work continues, authentication is divided into these small phases:
 
@@ -601,9 +636,28 @@ npm run dev
 
 ## Rollback / Checkpoint Information
 
-| Phase       | Commit                                    | Description                                            |
-| ----------- | ----------------------------------------- | ------------------------------------------------------ |
-| Pre-Phase 0 | `7cc7ab3`                                 | Original state before any API work                     |
-| Phase 1     | `262ef25` (backend)                       | Initial Laravel installation                           |
-| Phase 2     | `ce2b095` (backend)                       | Products API with full CRUD endpoints                  |
-| Phase 5     | `b1ebb1e` (backend), `5dafbf8` (frontend) | Services and pricing APIs connected to dashboard pages |
+Each phase may modify both repositories. Restore the frontend and backend to the matching checkpoint when rolling back a phase. Do not reset a repository with uncommitted work without reviewing it first.
+
+| Phase | Frontend checkpoint | Backend checkpoint | Description |
+| ----- | ------------------- | ------------------ | ----------- |
+| Pre-Phase 0 | `7cc7ab3` | — | Original frontend state before API work |
+| Phase 1 — Create Laravel Backend | — | `262ef25` | Initial Laravel installation |
+| Phase 2 — First API (Products) | — | `ce2b095` | Products API with full CRUD endpoints |
+| Phase 3 — React API Layer | `cd1ccc3` | `ce2b095` | Fetch-based React API service layer |
+| Phase 4 — Mock/API Switching | `42b2837` | `ce2b095` | Unified API/mock data abstraction |
+| Phase 5 — Connect Pages Gradually | `5dafbf8` | `b1ebb1e` | Services and pricing APIs connected to dashboard pages |
+| Phase 6 — CRUD Operations | `b5028da` | `d2acd0e` | Dashboard CRUD integration and catalog CRUD controllers |
+| Phase 7 — Production Preparation | `49f16c0` | `0c5d1ff` | CORS, production templates, and deployment documentation |
+| Phase 8 — Inspect Authentication Architecture | `8387b62` | `8387b62` | Auth/profile requirements audit and Sanctum recommendation |
+| Phase 9 — Update User Database & Model | `60582ec` | `44fe3e0` | User profile fields and backend role field |
+| Phase 10 — Configure Auth Infrastructure | `0e23526` | `ca55595`, `77a95e9` | Sanctum package, token migration, and User trait |
+| Phase 11 — Implement Registration | `93b535b`, `f40326e` | `4ef2ae9` | Registration API and React Register integration |
+
+### Rollback guidance
+
+- Frontend commits are on `editorial-web` branch `main`.
+- Backend commits are on `editorial-backend` branch `master`.
+- Phase 11 requires both the frontend and backend checkpoints to work together.
+- The backend `personal_access_tokens` and user-profile migrations are database changes; do not roll them back on a production database without a reviewed migration plan.
+- For local rollback, use the repository-specific checkpoint commit and then run the relevant dependency/migration checks.
+- The frontend must never receive Composer or Laravel files; Sanctum dependencies belong only to `editorial-backend`.
