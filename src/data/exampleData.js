@@ -24,6 +24,7 @@ export const NavLinks = [
 // Mock data for development. Replace with API data later.
 export const MockServices = [
   {
+    id: 1,
     name: "Brand Strategy",
     description: "A focused strategy engagement to clarify your positioning and direction.",
     included: ["Discovery workshop", "Brand positioning", "Strategic roadmap"],
@@ -33,6 +34,7 @@ export const MockServices = [
     members: 2,
   },
   {
+    id: 2,
     name: "Web Design",
     description: "Thoughtful digital experiences designed around your audience and goals.",
     included: ["UX direction", "Visual design system", "Responsive prototypes"],
@@ -42,6 +44,7 @@ export const MockServices = [
     members: 3,
   },
   {
+    id: 3,
     name: "Ongoing Support",
     description: "Flexible design support for teams that need an experienced partner on call.",
     included: ["Monthly design hours", "Priority requests", "Design reviews"],
@@ -54,6 +57,7 @@ export const MockServices = [
 
 export const MockPricing = [
   {
+    id: 1,
     name: "Starter",
     description: "A focused plan for individuals and small teams getting started.",
     price: "$29",
@@ -62,6 +66,7 @@ export const MockPricing = [
     duration: "Monthly",
   },
   {
+    id: 2,
     name: "Professional",
     description: "Advanced tools for growing teams that need more flexibility.",
     price: "$79",
@@ -70,6 +75,7 @@ export const MockPricing = [
     duration: "Monthly",
   },
   {
+    id: 3,
     name: "Enterprise",
     description: "A tailored plan with dedicated support for larger organizations.",
     price: "$199",
@@ -81,6 +87,7 @@ export const MockPricing = [
 
 export const MockProducts = [
   {
+    id: 1,
     name: "Wireless Headphones",
     type: "Electronics",
     price: "$349",
@@ -90,6 +97,7 @@ export const MockProducts = [
     description: "Premium wireless headphones with noise cancellation.",
   },
   {
+    id: 2,
     name: "Leather Backpack",
     type: "Accessories",
     price: "$129",
@@ -99,6 +107,7 @@ export const MockProducts = [
     description: "Handcrafted leather backpack with laptop sleeve.",
   },
   {
+    id: 3,
     name: "USB-C Hub",
     type: "Electronics",
     price: "$79",
@@ -108,6 +117,7 @@ export const MockProducts = [
     description: "7-in-1 USB-C hub with HDMI and card reader.",
   },
   {
+    id: 4,
     name: "Coffee Maker",
     type: "Appliances",
     price: "$199",
@@ -117,6 +127,7 @@ export const MockProducts = [
     description: "Programmable drip coffee maker with thermal carafe.",
   },
   {
+    id: 5,
     name: "Desk Lamp",
     type: "Furniture",
     price: "$89",
@@ -126,6 +137,7 @@ export const MockProducts = [
     description: "Adjustable LED desk lamp with wireless charging base.",
   },
   {
+    id: 6,
     name: "Phone Stand",
     type: "Accessories",
     price: "$29",

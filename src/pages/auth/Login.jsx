@@ -3,6 +3,7 @@ import { Mail, Lock, ArrowRight, Eye, EyeOff } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
+import { login } from "../../services/api/auth";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -10,15 +11,23 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
     setIsLoading(true);
-    // Simulate API call
-    setTimeout(() => {
+    try {
+      const response = await login({ email, password });
+      localStorage.setItem("authToken", response.token);
+      localStorage.setItem("isAuthenticated", "true");
+      navigate("/dashboard");
+    } catch (err) {
+      const validation = Object.values(err.errors || {}).flat().join(" ");
+      setError(validation || err.message || "Login failed");
+    } finally {
       setIsLoading(false);
-      navigate("/");
-    }, 1000);
+    }
   };
 
   return (
@@ -39,6 +48,19 @@ export default function Login() {
               Sign in to your account to continue.
             </p>
           </div>
+
+          {/* Error Alert */}
+          {error && (
+            <div className="mb-6 p-3 rounded-lg bg-red-100 dark:bg-red-900/20 text-red-700 dark:text-red-300">
+              {error}
+              <button
+                onClick={() => setError("")}
+                className="ml-3 underline"
+              >
+                Dismiss
+              </button>
+            </div>
+          )}
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-5">

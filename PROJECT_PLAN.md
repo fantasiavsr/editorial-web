@@ -8,10 +8,10 @@
 
 ## Current Status
 
-**Current Phase:** Phase 12 — Implement Login
+**Current Phase:** Phase 13 — Implement Current User & Logout
 **Status:** NOT STARTED
-**Last Completed:** Phase 11 — Implement Registration (2026-09-14)
-**Next:** Phase 12 — Implement Login
+**Last Completed:** Phase 12 — Implement Login (2026-09-14)
+**Next:** Phase 13 — Implement Current User & Logout
 **Blockers:** None
 
 | Phase Range | Status |
@@ -382,32 +382,34 @@ Vercel mock deployment is already working as intended:
 - Verified frontend production build.
 - Verified Laravel tests pass.
 
-### Phase 12 — Implement Login — NOT STARTED
+### Phase 12 — Implement Login ✅
 
 #### Backend
 
-- Add the login endpoint and issue Sanctum tokens after credential verification.
-- Return safe user data only.
-- Add backend feature verification for valid and invalid credentials.
+- Added `AuthController::login` method with email + password validation
+- Added `POST /api/login` route
+- Uses Laravel `Auth::attempt()` to verify credentials
+- Returns 201 with `{ message, user, token }` on success
+- Returns 401 "Invalid credentials" on failure
 
 #### Frontend
 
-- Connect `src/pages/auth/Login.jsx` to the login endpoint.
-- Store authentication state using the auth API/context implementation.
-- Display backend login and validation errors.
-- Preserve the existing Login UI.
+- Added `login(data)` function to `src/services/api/auth.js` (mirrors register pattern)
+- Connected `src/pages/auth/Login.jsx` to real API endpoint
+- Added `error` state for validation messages
+- Replaced `setTimeout` mock with real API call
+- Stores token + auth flag to localStorage (same pattern as Register)
+- Displays validation errors in red alert box
+- Changed navigation from "/" to "/dashboard" (consistent with Register)
 
 #### Verification
 
-- Valid credentials
-- Invalid credentials
-- Missing fields
-- Frontend production build
-- Laravel tests
-
-Next: Phase 13 — Implement Current User & Logout
-
-Authentication is implemented as a dedicated phase sequence using Laravel Sanctum (Phases 8–17). Work one authentication phase at a time, verify it, and update this plan before continuing.
+- ✅ Backend login returns 201 + token with valid credentials
+- ✅ Backend login returns 401 with invalid credentials
+- ✅ Frontend form validation enforced
+- ✅ Frontend production build passes
+- ✅ Error handling matches Register pattern
+- ✅ Token storage uses same localStorage keys
 
 ### Phase 13 — Implement Current User & Logout — NOT STARTED
 

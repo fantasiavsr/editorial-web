@@ -12,3 +12,7 @@ async function request(path, method, payload) {
 export async function register(data) {
   return request('/register', 'POST', data);
 }
+
+export async function login(data) {
+  return request('/login', 'POST', data);
+}

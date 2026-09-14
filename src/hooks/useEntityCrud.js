@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { safeApiMessage } from "../services/api/config";
 
 export default function useEntityCrud(dataSource, entityLabel) {
   const [items, setItems] = useState([]);
@@ -14,7 +15,7 @@ export default function useEntityCrud(dataSource, entityLabel) {
       setError(null);
       setItems(await dataSource.getAll());
     } catch (err) {
-      setError(err.message || `Failed to load ${entityLabel.toLowerCase()}`);
+      setError(safeApiMessage(err, `Failed to load ${entityLabel.toLowerCase()}`));
     } finally {
       setLoading(false);
     }
@@ -29,7 +30,7 @@ export default function useEntityCrud(dataSource, entityLabel) {
       return await operation();
     } catch (err) {
       const validation = Object.values(err.errors || {}).flat().join(" ");
-      setMutationError(validation || err.message || `${entityLabel} operation failed`);
+      setMutationError(validation || safeApiMessage(err, `${entityLabel} operation failed`));
       return null;
     } finally {
       setIsSaving(false);
