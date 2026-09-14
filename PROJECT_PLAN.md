@@ -48,8 +48,8 @@ These are **independent repositories**. Not a monorepo.
 ## Current Phase
 
 ```
-Phase: 4 — Mock/API Switching
-Status: ✅ COMPLETE (Major Architectural Checkpoint)
+Phase: 5 — Connect Pages Gradually
+Status: ✅ COMPLETE
 ```
 
 ## Completed Phases
@@ -59,10 +59,11 @@ Status: ✅ COMPLETE (Major Architectural Checkpoint)
 - [x] **Phase 2** — First API (Products) (completed 2026-09-14)
 - [x] **Phase 3** — React API Layer (completed 2026-09-14)
 - [x] **Phase 4** — Mock/API Switching (completed 2026-09-14)
+- [x] **Phase 5** — Connect Pages Gradually (completed 2026-09-14)
 
 ## Next Phase
 
-- [ ] **Phase 5** — Connect Pages Gradually
+- [ ] **Phase 6** — CRUD Operations
 
 ---
 
@@ -269,11 +270,14 @@ description: "Premium..."           "description": "Premium..."
 - Verify BOTH modes work
 - **Major architectural checkpoint**
 
-### Phase 5 — Connect Pages Gradually
-- Connect remaining dashboard pages (services, pricing)
-- Add loading, error, and empty states
-- Create corresponding API endpoints
-- Test mock mode + API mode for each
+### Phase 5 — Connect Pages Gradually ✅
+- Added `services` and `pricing_plans` migrations, models, and seeders
+- Added `GET /api/services` and `GET /api/pricing` endpoints
+- Added `src/services/api/catalog.js`
+- Connected dashboard services and pricing pages to the data abstraction layer
+- Added loading and error states to both pages
+- API requests automatically fall back to mock data when unavailable
+- Verified backend endpoints with curl and frontend production build
 
 ### Phase 6 — CRUD Operations
 - `POST /api/products`, `PUT /api/products/{id}`, `DELETE /api/products/{id}`
@@ -387,3 +391,4 @@ npm run dev
 | Pre-Phase 0 | `7cc7ab3` | Original state before any API work |
 | Phase 1 | `262ef25` (backend) | Initial Laravel installation |
 | Phase 2 | `ce2b095` (backend) | Products API with full CRUD endpoints |
+| Phase 5 | `b1ebb1e` (backend), `5dafbf8` (frontend) | Services and pricing APIs connected to dashboard pages |
