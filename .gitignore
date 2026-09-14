@@ -31,3 +31,4 @@ dist-ssr
 .claude/
 CLAUDE.md
 prompt.md
+/vendor
