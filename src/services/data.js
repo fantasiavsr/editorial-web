@@ -36,21 +36,30 @@ console.log(`⏱️  API Timeout: ${API_TIMEOUT}ms`);
 
 /**
  * Helper to fetch from API with timeout and fallback to mock on error
+ * @param {Function} apiCall - (signal) => Promise
+ * @param {Function} fallbackData - () => fallback value
+ * @param {AbortSignal} [externalSignal] - Optional external abort signal (e.g. from useEntityCrud)
  */
-async function fetchFromApiWithFallback(apiCall, fallbackData) {
+async function fetchFromApiWithFallback(apiCall, fallbackData, externalSignal) {
   if (DATA_SOURCE !== 'api') {
     return fallbackData();
   }
 
-  const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), API_TIMEOUT);
+  // Use external signal when provided; otherwise create our own for timeout
+  const controller = externalSignal ? null : new AbortController();
+  const signal = externalSignal || controller.signal;
+  const timeoutId = setTimeout(() => controller?.abort(), API_TIMEOUT);
 
   try {
-    const result = await apiCall(controller.signal);
+    const result = await apiCall(signal);
     return result;
   } catch (error) {
     if (error.name === 'AbortError') {
-      console.warn(`⏱️  API request timed out after ${API_TIMEOUT}ms, falling back to mock data`);
+      // Only log timeout warning when the abort came from our internal timeout,
+      // not from an external signal (component unmount / tab switch)
+      if (!externalSignal || !externalSignal.aborted) {
+        console.warn(`⏱️  API request timed out after ${API_TIMEOUT}ms, falling back to mock data`);
+      }
     } else {
       console.warn(`⚠️  API request failed, falling back to mock data:`, error.message);
     }
@@ -108,28 +117,32 @@ function mockDelete(records, id, label) {
  * All functions return promises that resolve to the same shape.
  */
 export const productDataSource = {
-  async getAll() {
+  async getAll(signal) {
     return fetchFromApiWithFallback(
-      (signal) => productsApi.getProducts(signal),
-      () => Promise.resolve(mockRecordList(MockProducts))
+      (sig) => productsApi.getProducts(sig),
+      () => Promise.resolve(mockRecordList(MockProducts)),
+      signal
     );
   },
-  async create(data) {
+  async create(data, signal) {
     return fetchFromApiWithFallback(
-      (signal) => productsApi.createProduct(data, signal),
-      () => Promise.resolve(mockCreate(MockProducts, data))
+      (sig) => productsApi.createProduct(data, sig),
+      () => Promise.resolve(mockCreate(MockProducts, data)),
+      signal
     );
   },
-  async update(id, data) {
+  async update(id, data, signal) {
     return fetchFromApiWithFallback(
-      (signal) => productsApi.updateProduct(id, data, signal),
-      () => Promise.resolve(mockUpdate(MockProducts, id, data, 'Product'))
+      (sig) => productsApi.updateProduct(id, data, sig),
+      () => Promise.resolve(mockUpdate(MockProducts, id, data, 'Product')),
+      signal
     );
   },
-  async delete(id) {
+  async delete(id, signal) {
     return fetchFromApiWithFallback(
-      (signal) => productsApi.deleteProduct(id, signal),
-      () => Promise.resolve(mockDelete(MockProducts, id, 'Product'))
+      (sig) => productsApi.deleteProduct(id, sig),
+      () => Promise.resolve(mockDelete(MockProducts, id, 'Product')),
+      signal
     );
   },
 };
@@ -141,28 +154,32 @@ export const productDataSource = {
  * All functions return promises that resolve to the same shape.
  */
 export const serviceDataSource = {
-  async getAll() {
+  async getAll(signal) {
     return fetchFromApiWithFallback(
-      (signal) => servicesApi.getServices(signal),
-      () => Promise.resolve(mockRecordList(MockServices))
+      (sig) => servicesApi.getServices(sig),
+      () => Promise.resolve(mockRecordList(MockServices)),
+      signal
     );
   },
-  async create(data) {
+  async create(data, signal) {
     return fetchFromApiWithFallback(
-      (signal) => servicesApi.createService(data, signal),
-      () => Promise.resolve(mockCreate(MockServices, data))
+      (sig) => servicesApi.createService(data, sig),
+      () => Promise.resolve(mockCreate(MockServices, data)),
+      signal
     );
   },
-  async update(id, data) {
+  async update(id, data, signal) {
     return fetchFromApiWithFallback(
-      (signal) => servicesApi.updateService(id, data, signal),
-      () => Promise.resolve(mockUpdate(MockServices, id, data, 'Service'))
+      (sig) => servicesApi.updateService(id, data, sig),
+      () => Promise.resolve(mockUpdate(MockServices, id, data, 'Service')),
+      signal
     );
   },
-  async delete(id) {
+  async delete(id, signal) {
     return fetchFromApiWithFallback(
-      (signal) => servicesApi.deleteService(id, signal),
-      () => Promise.resolve(mockDelete(MockServices, id, 'Service'))
+      (sig) => servicesApi.deleteService(id, sig),
+      () => Promise.resolve(mockDelete(MockServices, id, 'Service')),
+      signal
     );
   },
 };
@@ -171,28 +188,32 @@ export const serviceDataSource = {
  * Pricing plans data source.
  */
 export const pricingDataSource = {
-  async getAll() {
+  async getAll(signal) {
     return fetchFromApiWithFallback(
-      (signal) => pricingApi.getPricingPlans(signal),
-      () => Promise.resolve(mockRecordList(MockPricing))
+      (sig) => pricingApi.getPricingPlans(sig),
+      () => Promise.resolve(mockRecordList(MockPricing)),
+      signal
     );
   },
-  async create(data) {
+  async create(data, signal) {
     return fetchFromApiWithFallback(
-      (signal) => pricingApi.createPricingPlan(data, signal),
-      () => Promise.resolve(mockCreate(MockPricing, data))
+      (sig) => pricingApi.createPricingPlan(data, sig),
+      () => Promise.resolve(mockCreate(MockPricing, data)),
+      signal
     );
   },
-  async update(id, data) {
+  async update(id, data, signal) {
     return fetchFromApiWithFallback(
-      (signal) => pricingApi.updatePricingPlan(id, data, signal),
-      () => Promise.resolve(mockUpdate(MockPricing, id, data, 'Pricing plan'))
+      (sig) => pricingApi.updatePricingPlan(id, data, sig),
+      () => Promise.resolve(mockUpdate(MockPricing, id, data, 'Pricing plan')),
+      signal
     );
   },
-  async delete(id) {
+  async delete(id, signal) {
     return fetchFromApiWithFallback(
-      (signal) => pricingApi.deletePricingPlan(id, signal),
-      () => Promise.resolve(mockDelete(MockPricing, id, 'Pricing plan'))
+      (sig) => pricingApi.deletePricingPlan(id, sig),
+      () => Promise.resolve(mockDelete(MockPricing, id, 'Pricing plan')),
+      signal
     );
   },
 };
