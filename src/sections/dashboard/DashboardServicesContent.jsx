@@ -1,21 +1,16 @@
-import { useEffect, useMemo, useState } from "react";
-import { Search } from "lucide-react";
+import { useMemo, useState } from "react";
+import { Plus, Search } from "lucide-react";
 import DashboardProductList from "../../components/product/DashboardProductList";
+import EntityFormModal from "../../components/data-management/EntityFormModal";
 import { serviceEntitySchema } from "../../components/data-management/entitySchemas";
 import { serviceDataSource } from "../../services/data";
+import useEntityCrud from "../../hooks/useEntityCrud";
 
 export default function DashboardServicesContent() {
-  const [services, setServices] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    serviceDataSource
-      .getAll()
-      .then(setServices)
-      .catch((err) => setError(err.message || "Failed to load services"))
-      .finally(() => setLoading(false));
-  }, []);
+  const {
+    items: services, loading, error, mutationError, isSaving, isCreateOpen,
+    setIsCreateOpen, setMutationError, create, save, remove, reload,
+  } = useEntityCrud(serviceDataSource, "Service");
   const [searchTerm, setSearchTerm] = useState("");
   const [billingPeriod, setBillingPeriod] = useState("");
   const [sortBy, setSortBy] = useState("name");
@@ -67,12 +62,7 @@ export default function DashboardServicesContent() {
       <div className="min-h-screen text-primary-black dark:text-primary-white font-sans transition-colors flex items-center justify-center">
         <div className="text-center">
           <p className="text-red-600 dark:text-red-400 mb-4">Error: {error}</p>
-          <button
-            onClick={() => window.location.reload()}
-            className="px-4 py-2 bg-primary-orange text-white rounded-lg hover:bg-primary-orange-strong transition-colors"
-          >
-            Retry
-          </button>
+          <button onClick={reload} className="px-4 py-2 bg-primary-orange text-white rounded-lg hover:bg-primary-orange-strong transition-colors">Retry</button>
         </div>
       </div>
     );
@@ -90,9 +80,7 @@ export default function DashboardServicesContent() {
               Manage services, delivery details, and offerings
             </p>
           </div>
-          <span className="inline-flex items-center px-3 py-1 rounded-full bg-primary-orange/10 dark:bg-primary-orange/20 text-primary-orange-strong text-xs font-medium tracking-wide w-fit">
-            {sortedServices.length} items
-          </span>
+          <div className="flex items-center gap-3"><span className="inline-flex items-center px-3 py-1 rounded-full bg-primary-orange/10 dark:bg-primary-orange/20 text-primary-orange-strong text-xs font-medium tracking-wide w-fit">{sortedServices.length} items</span><button onClick={() => setIsCreateOpen(true)} disabled={isSaving} className="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-primary-orange text-white text-sm disabled:opacity-50"><Plus size={16} /> Add Service</button></div>
         </div>
       </div>
 
@@ -149,12 +137,9 @@ export default function DashboardServicesContent() {
         </div>
       </div>
 
-      <main className="px-0 md:px-4 lg:px-4 py-2">
-        <DashboardProductList
-          products={sortedServices}
-          schema={serviceEntitySchema}
-        />
-      </main>
+      {mutationError && <div className="mb-4 p-3 rounded-lg bg-red-100 dark:bg-red-900/20 text-red-700 dark:text-red-300">{mutationError}<button onClick={() => setMutationError(null)} className="ml-3 underline">Dismiss</button></div>}
+      <main className="px-0 md:px-4 lg:px-4 py-2"><DashboardProductList products={sortedServices} schema={serviceEntitySchema} onSave={save} onDelete={remove} /></main>
+      {isCreateOpen && <EntityFormModal schema={serviceEntitySchema} onClose={() => setIsCreateOpen(false)} onSubmit={create} />}
     </div>
   );
 }

@@ -32,7 +32,10 @@ export async function handleApiResponse(response) {
     const error = await response.json().catch(() => ({
       message: `HTTP ${response.status}: ${response.statusText}`,
     }));
-    throw new Error(error.message || 'API request failed');
+    const requestError = new Error(error.message || 'API request failed');
+    requestError.status = response.status;
+    requestError.errors = error.errors || {};
+    throw requestError;
   }
   return response.json();
 }

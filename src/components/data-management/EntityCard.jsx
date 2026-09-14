@@ -36,14 +36,8 @@ export default function EntityCard({
   const mobileKeys = schema.card?.mobileKeys || columns;
   const title = schema.card?.titleKey || schema.fields[0]?.key;
   const fieldFor = (key) => getField(schema, key);
-  const edit = () =>
-    onEdit
-      ? onEdit(entity, { entityType: schema.type, schema })
-      : setIsFormOpen(true);
-  const remove = () =>
-    onDelete
-      ? onDelete(entity, { entityType: schema.type, schema })
-      : setIsDeleteOpen(true);
+  const edit = () => setIsFormOpen(true);
+  const remove = () => setIsDeleteOpen(true);
   const actions = (
     <div className="flex items-center gap-1">
       <button

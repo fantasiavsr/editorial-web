@@ -1,32 +1,16 @@
-import { useState, useMemo, useEffect } from "react";
-import { Search } from "lucide-react";
+import { useMemo, useState } from "react";
+import { Plus, Search } from "lucide-react";
 import DashboardProductList from "../../components/product/DashboardProductList";
+import EntityFormModal from "../../components/data-management/EntityFormModal";
 import { productEntitySchema } from "../../components/data-management/entitySchemas";
 import { productDataSource } from "../../services/data";
+import useEntityCrud from "../../hooks/useEntityCrud";
 
 export default function DashboardProductsContent() {
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  // Load products on component mount
-  useEffect(() => {
-    const loadProducts = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        const data = await productDataSource.getAll();
-        setProducts(data);
-      } catch (err) {
-        setError(err.message || 'Failed to load products');
-        console.error('Error loading products:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadProducts();
-  }, []);
+  const {
+    items: products, loading, error, mutationError, isSaving, isCreateOpen,
+    setIsCreateOpen, setMutationError, create, save, remove, reload,
+  } = useEntityCrud(productDataSource, "Product");
 
   const [searchTerm, setSearchTerm] = useState("");
   const [productType, setProductType] = useState("");
@@ -75,12 +59,7 @@ export default function DashboardProductsContent() {
       <div className="min-h-screen text-primary-black dark:text-primary-white font-sans transition-colors flex items-center justify-center">
         <div className="text-center">
           <p className="text-red-600 dark:text-red-400 mb-4">Error: {error}</p>
-          <button
-            onClick={() => window.location.reload()}
-            className="px-4 py-2 bg-primary-orange text-white rounded-lg hover:bg-primary-orange-strong transition-colors"
-          >
-            Retry
-          </button>
+          <button onClick={reload} className="px-4 py-2 bg-primary-orange text-white rounded-lg hover:bg-primary-orange-strong transition-colors">Retry</button>
         </div>
       </div>
     );
@@ -99,9 +78,10 @@ export default function DashboardProductsContent() {
               Manage inventory, pricing, and product details
             </p>
           </div>
-          <span className="inline-flex items-center px-3 py-1 rounded-full bg-primary-orange/10 dark:bg-primary-orange/20 text-primary-orange-strong text-xs font-medium tracking-wide w-fit">
-            {sortedProducts.length} items
-          </span>
+          <div className="flex items-center gap-3">
+            <span className="inline-flex items-center px-3 py-1 rounded-full bg-primary-orange/10 dark:bg-primary-orange/20 text-primary-orange-strong text-xs font-medium tracking-wide w-fit">{sortedProducts.length} items</span>
+            <button onClick={() => setIsCreateOpen(true)} disabled={isSaving} className="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-primary-orange text-white text-sm hover:bg-primary-orange-strong disabled:opacity-50"><Plus size={16} /> Add Product</button>
+          </div>
         </div>
       </div>
 
@@ -185,10 +165,12 @@ export default function DashboardProductsContent() {
         </div>
       </div>
 
+      {mutationError && <div className="mb-4 p-3 rounded-lg bg-red-100 dark:bg-red-900/20 text-red-700 dark:text-red-300">{mutationError}<button onClick={() => setMutationError(null)} className="ml-3 underline">Dismiss</button></div>}
       {/* Main Content */}
       <main className="px-0 md:px-4 lg:px-4 py-2">
-        <DashboardProductList products={sortedProducts} schema={productEntitySchema} />
+        <DashboardProductList products={sortedProducts} schema={productEntitySchema} onSave={save} onDelete={remove} />
       </main>
+      {isCreateOpen && <EntityFormModal schema={productEntitySchema} onClose={() => setIsCreateOpen(false)} onSubmit={create} />}
     </div>
   );
 }

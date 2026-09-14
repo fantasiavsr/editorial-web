@@ -7,7 +7,7 @@ export const productEntitySchema = {
   fields: [
     { key: "name", label: "Name", type: "text", required: true },
     { key: "type", label: "Type", type: "text" },
-    { key: "sku", label: "SKU", type: "text" },
+    { key: "sku", label: "SKU", type: "text", required: true },
     { key: "price", label: "Price", type: "text", format: (value) => value || "—" },
     { key: "status", label: "Status", type: "select", defaultValue: "active", options: [{ value: "active", label: "Active" }, { value: "inactive", label: "Inactive" }], variant: "status" },
     { key: "available", label: "Available", type: "number", min: 0, defaultValue: 0, format: (value) => `${Number(value) || 0}` },

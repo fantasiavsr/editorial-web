@@ -29,17 +29,17 @@
 
 ### Two Deployment Modes
 
-| Mode | Env Var | Data Source | Requires Backend? |
-|------|---------|-------------|-------------------|
-| **A — Mock/Demo** | `VITE_DATA_SOURCE=mock` | Local JS mock data | No |
-| **B — Production** | `VITE_DATA_SOURCE=api` | Laravel REST API + MySQL | Yes |
+| Mode               | Env Var                 | Data Source              | Requires Backend? |
+| ------------------ | ----------------------- | ------------------------ | ----------------- |
+| **A — Mock/Demo**  | `VITE_DATA_SOURCE=mock` | Local JS mock data       | No                |
+| **B — Production** | `VITE_DATA_SOURCE=api`  | Laravel REST API + MySQL | Yes               |
 
 ### Repositories
 
-| Repository | Purpose | Status |
-|------------|---------|--------|
-| `editorial-web` | React + Vite frontend | ✅ Exists |
-| `editorial-backend` | Laravel REST API | ✅ Created |
+| Repository          | Purpose               | Status     |
+| ------------------- | --------------------- | ---------- |
+| `editorial-web`     | React + Vite frontend | ✅ Exists  |
+| `editorial-backend` | Laravel REST API      | ✅ Created |
 
 These are **independent repositories**. Not a monorepo.
 
@@ -48,7 +48,7 @@ These are **independent repositories**. Not a monorepo.
 ## Current Phase
 
 ```
-Phase: 5 — Connect Pages Gradually
+Phase: 6 — CRUD Operations
 Status: ✅ COMPLETE
 ```
 
@@ -60,10 +60,11 @@ Status: ✅ COMPLETE
 - [x] **Phase 3** — React API Layer (completed 2026-09-14)
 - [x] **Phase 4** — Mock/API Switching (completed 2026-09-14)
 - [x] **Phase 5** — Connect Pages Gradually (completed 2026-09-14)
+- [x] **Phase 6** — CRUD Operations (completed 2026-09-14)
 
 ## Next Phase
 
-- [ ] **Phase 6** — CRUD Operations
+- [ ] **Phase 7** — Production Laravel + MySQL
 
 ---
 
@@ -80,25 +81,25 @@ Status: ✅ COMPLETE
 
 ### Pages & Routes
 
-| Route | Page | Data Source | Layout |
-|-------|------|-------------|--------|
-| `/` | LandingPage | Inline + NavLinks | Self-contained |
-| `/about` | About | Inline + NavLinks | Self-contained |
-| `/products` | ProductPage | Inline + NavLinks | Self-contained |
-| `/pricing` | PricingPage | Inline + NavLinks | Self-contained |
-| `/services` | ServicePage | Inline + NavLinks | Self-contained |
-| `/dashboard` | Dashboard | Inline (stats/charts) | DashboardLayout (top-bar) |
-| `/dashboard/profiles` | DashboardProfiles | Inline mock | DashboardLayout |
-| `/dashboard/products` | DashboardProducts | **MockProducts** | DashboardLayout |
-| `/dashboard/services` | DashboardServices | **MockServices** | DashboardLayout |
-| `/dashboard/pricing` | DashboardPricing | **MockPricing** | DashboardLayout |
-| `/dashboard/settings` | DashboardSettings | Inline | DashboardLayout |
-| `/dashboard2/*` | Dashboard2 variants | Same as above | DashboardSidebarLayout |
-| `/login` | Login | Local form state | Self-contained |
-| `/register` | Register | Local form state | Self-contained |
-| `/forgot-password` | ForgotPassword | Local form state | Self-contained |
-| `/unauthorized` | Unauthorized | None | Self-contained |
-| `*` | NotFound | None | Self-contained |
+| Route                 | Page                | Data Source           | Layout                    |
+| --------------------- | ------------------- | --------------------- | ------------------------- |
+| `/`                   | LandingPage         | Inline + NavLinks     | Self-contained            |
+| `/about`              | About               | Inline + NavLinks     | Self-contained            |
+| `/products`           | ProductPage         | Inline + NavLinks     | Self-contained            |
+| `/pricing`            | PricingPage         | Inline + NavLinks     | Self-contained            |
+| `/services`           | ServicePage         | Inline + NavLinks     | Self-contained            |
+| `/dashboard`          | Dashboard           | Inline (stats/charts) | DashboardLayout (top-bar) |
+| `/dashboard/profiles` | DashboardProfiles   | Inline mock           | DashboardLayout           |
+| `/dashboard/products` | DashboardProducts   | **MockProducts**      | DashboardLayout           |
+| `/dashboard/services` | DashboardServices   | **MockServices**      | DashboardLayout           |
+| `/dashboard/pricing`  | DashboardPricing    | **MockPricing**       | DashboardLayout           |
+| `/dashboard/settings` | DashboardSettings   | Inline                | DashboardLayout           |
+| `/dashboard2/*`       | Dashboard2 variants | Same as above         | DashboardSidebarLayout    |
+| `/login`              | Login               | Local form state      | Self-contained            |
+| `/register`           | Register            | Local form state      | Self-contained            |
+| `/forgot-password`    | ForgotPassword      | Local form state      | Self-contained            |
+| `/unauthorized`       | Unauthorized        | None                  | Self-contained            |
+| `*`                   | NotFound            | None                  | Self-contained            |
 
 ### Current Data Architecture
 
@@ -127,12 +128,12 @@ Status: ✅ COMPLETE
 
 ### Mock Data Summary (`src/data/exampleData.js`)
 
-| Export | Count | Shape | Used By |
-|--------|-------|-------|---------|
-| `NavLinks` | 6 items | `{key, label, path, subLinks?}` | Navbar on all pages |
-| `MockProducts` | 6 items | `{name, type, price, available, status, sku, description}` | Dashboard Products |
-| `MockServices` | 3 items | `{name, description, included[], price, billingPeriod, duration, members}` | Dashboard Services |
-| `MockPricing` | 3 items | `{name, description, price, billingPeriod, benefits[], duration}` | Dashboard Pricing |
+| Export         | Count   | Shape                                                                      | Used By             |
+| -------------- | ------- | -------------------------------------------------------------------------- | ------------------- |
+| `NavLinks`     | 6 items | `{key, label, path, subLinks?}`                                            | Navbar on all pages |
+| `MockProducts` | 6 items | `{name, type, price, available, status, sku, description}`                 | Dashboard Products  |
+| `MockServices` | 3 items | `{name, description, included[], price, billingPeriod, duration, members}` | Dashboard Services  |
+| `MockPricing`  | 3 items | `{name, description, price, billingPeriod, benefits[], duration}`          | Dashboard Pricing   |
 
 ### Entity Schemas (`src/components/data-management/entitySchemas.js`)
 
@@ -140,17 +141,17 @@ Well-defined schemas for `product`, `service`, and `pricing` entities with field
 
 ### Key Dependencies
 
-| Package | Version | Purpose |
-|---------|---------|---------|
-| react | ^19.2.8 | UI framework |
-| react-router-dom | ^7.18.3 | Client-side routing |
-| vite | ^8.2.2 | Build tool + dev server |
-| tailwindcss | ^4.3.3 | CSS framework |
-| next-themes | ^0.4.6 | Dark/light mode |
-| lucide-react | ^1.34.0 | Icons |
-| motion | ^13.1.1 | Animations |
-| gsap | ^3.15.0 | Advanced animations |
-| three + @react-three/* | — | 3D visualization (dashboard) |
+| Package                 | Version | Purpose                      |
+| ----------------------- | ------- | ---------------------------- |
+| react                   | ^19.2.8 | UI framework                 |
+| react-router-dom        | ^7.18.3 | Client-side routing          |
+| vite                    | ^8.2.2  | Build tool + dev server      |
+| tailwindcss             | ^4.3.3  | CSS framework                |
+| next-themes             | ^0.4.6  | Dark/light mode              |
+| lucide-react            | ^1.34.0 | Icons                        |
+| motion                  | ^13.1.1 | Animations                   |
+| gsap                    | ^3.15.0 | Advanced animations          |
+| three + @react-three/\* | —       | 3D visualization (dashboard) |
 
 ### Existing Project Files (No Services Layer)
 
@@ -237,19 +238,22 @@ description: "Premium..."           "description": "Premium..."
 ## Implementation Phases
 
 ### Phase 0 — Inspect & Plan ✅
+
 - Inspect editorial-web project
 - Understand pages, routes, data, components
 - Create PROJECT_PLAN.md
 - Identify first API resource (Products)
 
-### Phase 1 — Create Laravel Backend
+### Phase 1 — Create Laravel Backend ✅
+
 - Create `editorial-backend` as independent Laravel project
 - Git initialization (separate repository)
 - `.env` + MySQL connection
 - Basic `GET /api/health` route to verify
 - Verify Laravel runs on `http://localhost:8000`
 
-### Phase 2 — First API (Products)
+### Phase 2 — First API (Products) ✅
+
 - Migration: `products` table
 - Model: `Product`
 - Controller: `ProductController@index`
@@ -257,13 +261,15 @@ description: "Premium..."           "description": "Premium..."
 - Seeder with sample data matching MockProducts
 - Test endpoint independently (browser/curl/Postman)
 
-### Phase 3 — React API Layer
+### Phase 3 — React API Layer ✅
+
 - Create `src/services/api/` directory
 - Create `src/services/api/products.js` (fetch-based)
 - Create `src/services/api/config.js` (API URL from env)
 - Do NOT connect to pages yet
 
-### Phase 4 — Mock/API Switching
+### Phase 4 — Mock/API Switching ✅
+
 - Add `.env` files with `VITE_DATA_SOURCE` and `VITE_API_URL`
 - Create data source abstraction (same interface, mock vs API)
 - Connect to dashboard products page
@@ -271,6 +277,7 @@ description: "Premium..."           "description": "Premium..."
 - **Major architectural checkpoint**
 
 ### Phase 5 — Connect Pages Gradually ✅
+
 - Added `services` and `pricing_plans` migrations, models, and seeders
 - Added `GET /api/services` and `GET /api/pricing` endpoints
 - Added `src/services/api/catalog.js`
@@ -279,24 +286,32 @@ description: "Premium..."           "description": "Premium..."
 - API requests automatically fall back to mock data when unavailable
 - Verified backend endpoints with curl and frontend production build
 
-### Phase 6 — CRUD Operations
-- `POST /api/products`, `PUT /api/products/{id}`, `DELETE /api/products/{id}`
-- Connect React forms (EntityFormModal, EntityDeleteDialog)
-- Repeat for services, pricing
+### Phase 6 — CRUD Operations ✅
+
+- Added service and pricing create/update/delete API clients
+- Extended all data sources with CRUD and mock fallback behavior
+- Added shared `useEntityCrud` hook for dashboard mutation state
+- Connected Products, Services, and Pricing forms to API/mocks
+- Added create buttons, edit/delete callbacks, validation feedback, and loading/error states
+- Marked product SKU as required to match backend validation
+- Verified frontend production build and backend tests
 
 ### Phase 7 — Production Laravel + MySQL
+
 - Production deployment guide
 - `.env.production` configuration
 - Migration strategy
 - HTTPS, CORS, security
 
 ### Phase 8 — Real Domain Frontend
+
 - Configure React for API mode on real domain
 - Hosting architecture (same-domain vs subdomain)
 - Reverse proxy / routing configuration
 - SPA fallback
 
 ### Phase 9 — Vercel Mock Deployment
+
 - Configure Vercel env: `VITE_DATA_SOURCE=mock`
 - Verify Vercel deployment works independently
 - No Laravel dependency for Vercel
@@ -328,17 +343,20 @@ Data Service (src/services/)
 ## Environment Variables (Planned)
 
 ### `.env` (defaults / Vercel mock)
+
 ```
 VITE_DATA_SOURCE=mock
 ```
 
 ### `.env.local` (local API development)
+
 ```
 VITE_DATA_SOURCE=api
 VITE_API_URL=http://localhost:8000/api
 ```
 
 ### `.env.production` (real domain)
+
 ```
 VITE_DATA_SOURCE=api
 VITE_API_URL=https://mydomain.com/api
@@ -375,6 +393,7 @@ VITE_API_URL=https://mydomain.com/api
 ## Testing Instructions
 
 ### Verify current state
+
 ```bash
 cd editorial-web
 npm run dev
@@ -386,9 +405,9 @@ npm run dev
 
 ## Rollback / Checkpoint Information
 
-| Phase | Commit | Description |
-|-------|--------|-------------|
-| Pre-Phase 0 | `7cc7ab3` | Original state before any API work |
-| Phase 1 | `262ef25` (backend) | Initial Laravel installation |
-| Phase 2 | `ce2b095` (backend) | Products API with full CRUD endpoints |
-| Phase 5 | `b1ebb1e` (backend), `5dafbf8` (frontend) | Services and pricing APIs connected to dashboard pages |
+| Phase       | Commit                                    | Description                                            |
+| ----------- | ----------------------------------------- | ------------------------------------------------------ |
+| Pre-Phase 0 | `7cc7ab3`                                 | Original state before any API work                     |
+| Phase 1     | `262ef25` (backend)                       | Initial Laravel installation                           |
+| Phase 2     | `ce2b095` (backend)                       | Products API with full CRUD endpoints                  |
+| Phase 5     | `b1ebb1e` (backend), `5dafbf8` (frontend) | Services and pricing APIs connected to dashboard pages |

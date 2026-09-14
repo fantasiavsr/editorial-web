@@ -209,16 +209,63 @@ export const productDataSource = {
 /**
  * Services Data Source (placeholder for future phases)
  */
+function mockRecordList(records) {
+  return records.map((record, index) => ({
+    id: record.id || index + 1,
+    ...record,
+    created_at: record.created_at || new Date().toISOString(),
+    updated_at: record.updated_at || new Date().toISOString(),
+  }));
+}
+
+function mockCreate(records, data) {
+  const record = {
+    id: records.length ? Math.max(...records.map((item) => item.id || 0)) + 1 : 1,
+    ...data,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+  };
+  records.push(record);
+  return record;
+}
+
+function mockUpdate(records, id, data, label) {
+  const index = records.findIndex((item) => item.id === id);
+  if (index < 0) throw new Error(`${label} ${id} not found`);
+  records[index] = { ...records[index], ...data, updated_at: new Date().toISOString() };
+  return records[index];
+}
+
+function mockDelete(records, id, label) {
+  const index = records.findIndex((item) => item.id === id);
+  if (index < 0) throw new Error(`${label} ${id} not found`);
+  records.splice(index, 1);
+  return { message: `${label} deleted successfully` };
+}
+
 export const serviceDataSource = {
   async getAll() {
     return fetchFromApiWithFallback(
       () => catalogApi.getServices(),
-      () => Promise.resolve(MockServices.map((service, index) => ({
-        id: index + 1,
-        ...service,
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-      })))
+      () => Promise.resolve(mockRecordList(MockServices))
+    );
+  },
+  async create(data) {
+    return fetchFromApiWithFallback(
+      () => catalogApi.createService(data),
+      () => Promise.resolve(mockCreate(MockServices, data))
+    );
+  },
+  async update(id, data) {
+    return fetchFromApiWithFallback(
+      () => catalogApi.updateService(id, data),
+      () => Promise.resolve(mockUpdate(MockServices, id, data, 'Service'))
+    );
+  },
+  async delete(id) {
+    return fetchFromApiWithFallback(
+      () => catalogApi.deleteService(id),
+      () => Promise.resolve(mockDelete(MockServices, id, 'Service'))
     );
   },
 };
@@ -230,12 +277,25 @@ export const pricingDataSource = {
   async getAll() {
     return fetchFromApiWithFallback(
       () => catalogApi.getPricingPlans(),
-      () => Promise.resolve(MockPricing.map((pricing, index) => ({
-        id: index + 1,
-        ...pricing,
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-      })))
+      () => Promise.resolve(mockRecordList(MockPricing))
+    );
+  },
+  async create(data) {
+    return fetchFromApiWithFallback(
+      () => catalogApi.createPricingPlan(data),
+      () => Promise.resolve(mockCreate(MockPricing, data))
+    );
+  },
+  async update(id, data) {
+    return fetchFromApiWithFallback(
+      () => catalogApi.updatePricingPlan(id, data),
+      () => Promise.resolve(mockUpdate(MockPricing, id, data, 'Pricing plan'))
+    );
+  },
+  async delete(id) {
+    return fetchFromApiWithFallback(
+      () => catalogApi.deletePricingPlan(id),
+      () => Promise.resolve(mockDelete(MockPricing, id, 'Pricing plan'))
     );
   },
 };
