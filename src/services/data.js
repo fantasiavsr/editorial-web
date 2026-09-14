@@ -26,27 +26,44 @@ import * as productsApi from './api/products.js';
 // Determine which data source to use
 const DATA_SOURCE = import.meta.env.VITE_DATA_SOURCE || 'mock';
 const ENABLE_API_FALLBACK = true; // If API fails, fallback to mock data
+const API_TIMEOUT = parseInt(import.meta.env.VITE_API_TIMEOUT, 10) || 5000; // Default: 5 seconds
 
 console.log(`📦 Data source: ${DATA_SOURCE.toUpperCase()}`);
 console.log(`⚠️  API Fallback: ${ENABLE_API_FALLBACK ? 'ENABLED' : 'DISABLED'}`);
+console.log(`⏱️  API Timeout: ${API_TIMEOUT}ms`);
 
 /**
- * Helper to fetch from API with fallback to mock on error
+ * Wraps a promise with a timeout.
+ * If the promise doesn't resolve within the timeout, it rejects.
  */
-async function fetchFromApiWithFallback(apiCall, fallbackData, fallbackError = null) {
+function withTimeout(promise, ms) {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), ms);
+
+  return Promise.race([
+    promise(controller.signal),
+    new Promise((_, reject) =>
+      setTimeout(() => reject(new Error(`Request timed out after ${ms}ms`)), ms)
+    ),
+  ]).finally(() => clearTimeout(timeoutId));
+}
+
+/**
+ * Helper to fetch from API with timeout and fallback to mock on error
+ */
+async function fetchFromApiWithFallback(apiCall, fallbackData) {
   if (DATA_SOURCE !== 'api') {
     // Not in API mode, use mock immediately
     return fallbackData();
   }
 
   try {
-    return await apiCall();
+    return await withTimeout(apiCall, API_TIMEOUT);
   } catch (error) {
     if (ENABLE_API_FALLBACK) {
-      console.warn('⚠️  API request failed, falling back to mock data:', error.message);
+      console.warn(`⚠️  API request failed, falling back to mock data:`, error.message);
       return fallbackData();
     } else {
-      // No fallback, re-throw the error
       throw error;
     }
   }

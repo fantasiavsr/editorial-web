@@ -9,6 +9,7 @@ const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
 
 export const apiConfig = {
   baseUrl: API_URL,
+  timeout: parseInt(import.meta.env.VITE_API_TIMEOUT, 10) || 5000,
   headers: {
     'Content-Type': 'application/json',
     'Accept': 'application/json',
