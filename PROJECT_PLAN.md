@@ -108,9 +108,6 @@ Status: ✅ COMPLETE
 ## Next Phase
 
 - [ ] **Phase 11 — Implement Registration**
-- [ ] **Phase 9 — Update User Database & Model**
-- [ ] **Phase 10 — Configure Authentication Infrastructure**
-- [ ] **Phase 11 — Implement Registration**
 - [ ] **Phase 12 — Implement Login**
 - [ ] **Phase 13 — Implement Current User & Logout**
 - [ ] **Phase 14 — Integrate Profile Authentication**
