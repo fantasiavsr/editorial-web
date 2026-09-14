@@ -7,9 +7,16 @@ export default defineConfig({
   plugins: [react(), tailwindcss()],
   server: {
     historyApiFallback: true,
+    proxy: {
+      '/api': {
+        target: 'http://localhost:8000',
+        changeOrigin: true,
+      },
+    },
   },
   build: {
     sourcemap: false,
     minify: true,
+    chunkSizeWarningLimit: 1000,
   },
 })
