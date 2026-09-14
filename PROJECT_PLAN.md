@@ -65,7 +65,7 @@ Status: ✅ COMPLETE (Preparation only; not deployed)
 
 ## Next Phase
 
-- [ ] **Phase 8** — Real Domain Frontend
+- [ ] **Real Host Deployment** — Separate future deployment task (not part of the completed frontend phases)
 
 ---
 
@@ -307,18 +307,88 @@ description: "Premium..."           "description": "Premium..."
 - No production deployment or production database migration performed
 - Operator still must provide the real domain, API URL, MySQL credentials, HTTPS, document root, and proxy rules
 
-### Phase 8 — Real Domain Frontend
+### Vercel Mock Deployment ✅
 
-- Configure React for API mode on real domain
-- Hosting architecture (same-domain vs subdomain)
-- Reverse proxy / routing configuration
-- SPA fallback
+Vercel mock deployment is already working as intended:
 
-### Phase 9 — Vercel Mock Deployment
+- Vercel uses the single React repository
+- No Laravel backend is required
+- No committed `.env` file is required
+- Missing `VITE_DATA_SOURCE` defaults to mock mode
+- Dashboard data falls back to local mock data when the API is unavailable
+- SPA routes are handled by the existing Vercel rewrite configuration
 
-- Configure Vercel env: `VITE_DATA_SOURCE=mock`
-- Verify Vercel deployment works independently
-- No Laravel dependency for Vercel
+### Real Host Deployment — Future Separate Task
+
+This is intentionally not an implementation phase yet. When a real host is selected, follow the deployment guide in `docs/PHASE7_PRODUCTION_DEPLOYMENT.html` and this sequence:
+
+#### Backend deployment
+
+1. Provision PHP 8.2+, Composer, MySQL, HTTPS, and a web server.
+2. Create a production database and a dedicated database user. Do not use MySQL `root`.
+3. Clone the `editorial-backend` repository to the server.
+4. Point the web-server document root to Laravel's `public/` directory.
+5. Create the private backend `.env` from `.env.example`.
+6. Set `APP_ENV=production`, `APP_DEBUG=false`, `APP_URL`, `FRONTEND_URL`, and production MySQL credentials.
+7. Generate the application key on the server:
+
+   ```bash
+   php artisan key:generate
+   ```
+
+8. Install production dependencies and run safe migrations:
+
+   ```bash
+   composer install --no-dev --optimize-autoloader
+   php artisan migrate --force
+   php artisan config:cache
+   php artisan route:cache
+   php artisan view:cache
+   php artisan storage:link
+   ```
+
+9. Verify the backend:
+
+   ```bash
+   curl https://api.example.com/api/health
+   ```
+
+#### Frontend deployment
+
+1. Keep `.env` files out of Git; they are already ignored.
+2. In the real host or Vercel project settings, set:
+
+   ```env
+   VITE_DATA_SOURCE=api
+   VITE_API_URL=https://api.example.com/api
+   VITE_API_TIMEOUT=5000
+   ```
+
+3. Build the existing `editorial-web` repository:
+
+   ```bash
+   npm ci
+   npm run build
+   ```
+
+4. Configure SPA fallback so `/dashboard`, `/products`, and other React routes load `index.html`.
+5. If using same-domain routing, configure the reverse proxy so `/api/*` reaches Laravel and all other frontend routes reach React.
+6. Confirm CORS allows the exact frontend origin through Laravel's `FRONTEND_URL` value.
+7. Test health, GET, POST, PUT, and DELETE requests from the deployed frontend.
+
+#### Required production decisions
+
+Before starting this separate task, provide or decide:
+
+- Real frontend domain
+- Real API domain or same-domain proxy arrangement
+- Hosting provider and web-server type
+- PHP version and document root
+- MySQL host, database, username, and password
+- HTTPS certificate setup
+- Backup and rollback procedure
+
+Never run `migrate:fresh`, destructive seeders, or force pushes against a production system.
 
 ---
 
@@ -346,24 +416,28 @@ Data Service (src/services/)
 
 ## Environment Variables (Planned)
 
-### `.env` (defaults / Vercel mock)
+### Local `.env` (gitignored, API-first development)
 
-```
-VITE_DATA_SOURCE=mock
-```
-
-### `.env.local` (local API development)
-
-```
+```env
 VITE_DATA_SOURCE=api
-VITE_API_URL=http://localhost:8000/api
+VITE_API_URL=/api
+VITE_API_TIMEOUT=3000
 ```
 
-### `.env.production` (real domain)
+Local Vite proxies `/api` to `http://localhost:8000`, so local development does not require CORS.
 
-```
+### Vercel environment
+
+Leave `VITE_DATA_SOURCE` unset for the public mock/demo deployment. The application defaults to mock data and does not require Laravel.
+
+### Real host or production API environment
+
+Configure these in the host's environment settings, never in Git:
+
+```env
 VITE_DATA_SOURCE=api
-VITE_API_URL=https://mydomain.com/api
+VITE_API_URL=https://api.example.com/api
+VITE_API_TIMEOUT=5000
 ```
 
 **Remember:** `VITE_` prefix = public. Never put secrets here.
@@ -389,10 +463,13 @@ VITE_API_URL=https://mydomain.com/api
 
 ## Last Known-Good State
 
-- **Git**: clean, branch `main`, commit `7cc7ab3`
-- **Build**: not verified this session (existing Vercel deployment works)
-- **All mock data intact**: `src/data/exampleData.js` unchanged
-- **No API layer exists**: to be created in Phase 3
+- **Frontend Git**: branch `main`; Vercel mock workflow remains supported
+- **Backend Git**: branch `master`; Laravel API and production preparation are committed separately
+- **Build**: frontend production build passes
+- **Tests**: backend Laravel tests pass
+- **All mock data intact**: `src/data/exampleData.js` remains available
+- **Local API development**: Vite `/api` proxy routes to Laravel on port 8000
+- **Production deployment**: intentionally not performed; follow the future real-host guide above
 
 ## Testing Instructions
 
