@@ -22,7 +22,8 @@
 
 import { MockProducts, MockServices, MockPricing } from '../data/exampleData.js';
 import * as productsApi from './api/products.js';
-import * as catalogApi from './api/catalog.js';
+import * as servicesApi from './api/services.js';
+import * as pricingApi from './api/pricing.js';
 
 // Determine which data source to use
 const DATA_SOURCE = import.meta.env.VITE_DATA_SOURCE || 'mock';
@@ -34,177 +35,34 @@ console.log(`⚠️  API Fallback: ${ENABLE_API_FALLBACK ? 'ENABLED' : 'DISABLED
 console.log(`⏱️  API Timeout: ${API_TIMEOUT}ms`);
 
 /**
- * Wraps a promise with a timeout.
- * If the promise doesn't resolve within the timeout, it rejects.
- */
-function withTimeout(promise, ms) {
-  const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), ms);
-
-  return Promise.race([
-    promise(controller.signal),
-    new Promise((_, reject) =>
-      setTimeout(() => reject(new Error(`Request timed out after ${ms}ms`)), ms)
-    ),
-  ]).finally(() => clearTimeout(timeoutId));
-}
-
-/**
  * Helper to fetch from API with timeout and fallback to mock on error
  */
 async function fetchFromApiWithFallback(apiCall, fallbackData) {
   if (DATA_SOURCE !== 'api') {
-    // Not in API mode, use mock immediately
     return fallbackData();
   }
 
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), API_TIMEOUT);
+
   try {
-    return await withTimeout(apiCall, API_TIMEOUT);
+    const result = await apiCall(controller.signal);
+    return result;
   } catch (error) {
-    if (ENABLE_API_FALLBACK) {
+    if (error.name === 'AbortError') {
+      console.warn(`⏱️  API request timed out after ${API_TIMEOUT}ms, falling back to mock data`);
+    } else {
       console.warn(`⚠️  API request failed, falling back to mock data:`, error.message);
+    }
+    if (ENABLE_API_FALLBACK) {
       return fallbackData();
     } else {
       throw error;
     }
+  } finally {
+    clearTimeout(timeoutId);
   }
 }
-
-/**
- * Products Data Source
- *
- * Provides a consistent interface regardless of the underlying source.
- * All functions return promises that resolve to the same shape.
- */
-export const productDataSource = {
-  /**
-   * Get all products
-   * @returns {Promise<Array>} Array of product objects
-   */
-  async getAll() {
-    return fetchFromApiWithFallback(
-      () => productsApi.getProducts(),
-      () =>
-        new Promise((resolve) => {
-          setTimeout(() => {
-            resolve(
-              MockProducts.map((product, index) => ({
-                id: index + 1,
-                ...product,
-                created_at: new Date().toISOString(),
-                updated_at: new Date().toISOString(),
-              }))
-            );
-          }, 0);
-        })
-    );
-  },
-
-  /**
-   * Get a single product by ID
-   * @param {number} id - Product ID
-   * @returns {Promise<Object>} Product object
-   */
-  async getById(id) {
-    return fetchFromApiWithFallback(
-      () => productsApi.getProduct(id),
-      () =>
-        new Promise((resolve, reject) => {
-          setTimeout(() => {
-            const mockIndex = id - 1;
-            if (mockIndex >= 0 && mockIndex < MockProducts.length) {
-              resolve({
-                id,
-                ...MockProducts[mockIndex],
-                created_at: new Date().toISOString(),
-                updated_at: new Date().toISOString(),
-              });
-            } else {
-              reject(new Error(`Product ${id} not found`));
-            }
-          }, 0);
-        })
-    );
-  },
-
-  /**
-   * Create a new product
-   * @param {Object} productData - Product data
-   * @returns {Promise<Object>} Created product object
-   */
-  async create(productData) {
-    return fetchFromApiWithFallback(
-      () => productsApi.createProduct(productData),
-      () =>
-        new Promise((resolve) => {
-          setTimeout(() => {
-            const newProduct = {
-              id: MockProducts.length + 1,
-              ...productData,
-              created_at: new Date().toISOString(),
-              updated_at: new Date().toISOString(),
-            };
-            MockProducts.push(newProduct);
-            resolve(newProduct);
-          }, 500);
-        })
-    );
-  },
-
-  /**
-   * Update an existing product
-   * @param {number} id - Product ID
-   * @param {Object} productData - Partial product data to update
-   * @returns {Promise<Object>} Updated product object
-   */
-  async update(id, productData) {
-    return fetchFromApiWithFallback(
-      () => productsApi.updateProduct(id, productData),
-      () =>
-        new Promise((resolve, reject) => {
-          setTimeout(() => {
-            const mockIndex = id - 1;
-            if (mockIndex >= 0 && mockIndex < MockProducts.length) {
-              const updated = {
-                id,
-                ...MockProducts[mockIndex],
-                ...productData,
-                created_at: new Date().toISOString(),
-                updated_at: new Date().toISOString(),
-              };
-              MockProducts[mockIndex] = { ...updated };
-              resolve(updated);
-            } else {
-              reject(new Error(`Product ${id} not found`));
-            }
-          }, 500);
-        })
-    );
-  },
-
-  /**
-   * Delete a product
-   * @param {number} id - Product ID
-   * @returns {Promise<Object>} Response message
-   */
-  async delete(id) {
-    return fetchFromApiWithFallback(
-      () => productsApi.deleteProduct(id),
-      () =>
-        new Promise((resolve, reject) => {
-          setTimeout(() => {
-            const mockIndex = id - 1;
-            if (mockIndex >= 0 && mockIndex < MockProducts.length) {
-              MockProducts.splice(mockIndex, 1);
-              resolve({ message: 'Product deleted successfully' });
-            } else {
-              reject(new Error(`Product ${id} not found`));
-            }
-          }, 500);
-        })
-    );
-  },
-};
 
 /**
  * Services Data Source (placeholder for future phases)
@@ -243,28 +101,67 @@ function mockDelete(records, id, label) {
   return { message: `${label} deleted successfully` };
 }
 
+/**
+ * Products Data Source
+ *
+ * Provides a consistent interface regardless of the underlying source.
+ * All functions return promises that resolve to the same shape.
+ */
+export const productDataSource = {
+  async getAll() {
+    return fetchFromApiWithFallback(
+      (signal) => productsApi.getProducts(signal),
+      () => Promise.resolve(mockRecordList(MockProducts))
+    );
+  },
+  async create(data) {
+    return fetchFromApiWithFallback(
+      (signal) => productsApi.createProduct(data, signal),
+      () => Promise.resolve(mockCreate(MockProducts, data))
+    );
+  },
+  async update(id, data) {
+    return fetchFromApiWithFallback(
+      (signal) => productsApi.updateProduct(id, data, signal),
+      () => Promise.resolve(mockUpdate(MockProducts, id, data, 'Product'))
+    );
+  },
+  async delete(id) {
+    return fetchFromApiWithFallback(
+      (signal) => productsApi.deleteProduct(id, signal),
+      () => Promise.resolve(mockDelete(MockProducts, id, 'Product'))
+    );
+  },
+};
+
+/**
+ * Services Data Source
+ *
+ * Provides a consistent interface regardless of the underlying source.
+ * All functions return promises that resolve to the same shape.
+ */
 export const serviceDataSource = {
   async getAll() {
     return fetchFromApiWithFallback(
-      () => catalogApi.getServices(),
+      (signal) => servicesApi.getServices(signal),
       () => Promise.resolve(mockRecordList(MockServices))
     );
   },
   async create(data) {
     return fetchFromApiWithFallback(
-      () => catalogApi.createService(data),
+      (signal) => servicesApi.createService(data, signal),
       () => Promise.resolve(mockCreate(MockServices, data))
     );
   },
   async update(id, data) {
     return fetchFromApiWithFallback(
-      () => catalogApi.updateService(id, data),
+      (signal) => servicesApi.updateService(id, data, signal),
       () => Promise.resolve(mockUpdate(MockServices, id, data, 'Service'))
     );
   },
   async delete(id) {
     return fetchFromApiWithFallback(
-      () => catalogApi.deleteService(id),
+      (signal) => servicesApi.deleteService(id, signal),
       () => Promise.resolve(mockDelete(MockServices, id, 'Service'))
     );
   },
@@ -276,25 +173,25 @@ export const serviceDataSource = {
 export const pricingDataSource = {
   async getAll() {
     return fetchFromApiWithFallback(
-      () => catalogApi.getPricingPlans(),
+      (signal) => pricingApi.getPricingPlans(signal),
       () => Promise.resolve(mockRecordList(MockPricing))
     );
   },
   async create(data) {
     return fetchFromApiWithFallback(
-      () => catalogApi.createPricingPlan(data),
+      (signal) => pricingApi.createPricingPlan(data, signal),
       () => Promise.resolve(mockCreate(MockPricing, data))
     );
   },
   async update(id, data) {
     return fetchFromApiWithFallback(
-      () => catalogApi.updatePricingPlan(id, data),
+      (signal) => pricingApi.updatePricingPlan(id, data, signal),
       () => Promise.resolve(mockUpdate(MockPricing, id, data, 'Pricing plan'))
     );
   },
   async delete(id) {
     return fetchFromApiWithFallback(
-      () => catalogApi.deletePricingPlan(id),
+      (signal) => pricingApi.deletePricingPlan(id, signal),
       () => Promise.resolve(mockDelete(MockPricing, id, 'Pricing plan'))
     );
   },

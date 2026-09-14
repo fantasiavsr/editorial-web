@@ -9,12 +9,14 @@ import { getApiEndpoint, handleApiResponse, apiConfig } from './config.js';
 
 /**
  * Fetch all products from the API
+ * @param {AbortSignal} [signal] - Optional AbortSignal for timeout/cancellation
  * @returns {Promise<Array>} Array of product objects
  */
-export async function getProducts() {
+export async function getProducts(signal) {
   const response = await fetch(getApiEndpoint('/products'), {
     method: 'GET',
     headers: apiConfig.headers,
+    signal,
   });
   const data = await handleApiResponse(response);
   return data.data || [];
@@ -23,12 +25,14 @@ export async function getProducts() {
 /**
  * Fetch a single product by ID
  * @param {number} id - Product ID
+ * @param {AbortSignal} [signal] - Optional AbortSignal for timeout/cancellation
  * @returns {Promise<Object>} Product object
  */
-export async function getProduct(id) {
+export async function getProduct(id, signal) {
   const response = await fetch(getApiEndpoint(`/products/${id}`), {
     method: 'GET',
     headers: apiConfig.headers,
+    signal,
   });
   const data = await handleApiResponse(response);
   return data.data;
@@ -37,13 +41,15 @@ export async function getProduct(id) {
 /**
  * Create a new product
  * @param {Object} productData - Product data (name, type, sku, price, available, status, description)
+ * @param {AbortSignal} [signal] - Optional AbortSignal for timeout/cancellation
  * @returns {Promise<Object>} Created product object
  */
-export async function createProduct(productData) {
+export async function createProduct(productData, signal) {
   const response = await fetch(getApiEndpoint('/products'), {
     method: 'POST',
     headers: apiConfig.headers,
     body: JSON.stringify(productData),
+    signal,
   });
   const data = await handleApiResponse(response);
   return data.data;
@@ -53,13 +59,15 @@ export async function createProduct(productData) {
  * Update an existing product
  * @param {number} id - Product ID
  * @param {Object} productData - Partial product data to update
+ * @param {AbortSignal} [signal] - Optional AbortSignal for timeout/cancellation
  * @returns {Promise<Object>} Updated product object
  */
-export async function updateProduct(id, productData) {
+export async function updateProduct(id, productData, signal) {
   const response = await fetch(getApiEndpoint(`/products/${id}`), {
     method: 'PUT',
     headers: apiConfig.headers,
     body: JSON.stringify(productData),
+    signal,
   });
   const data = await handleApiResponse(response);
   return data.data;
@@ -68,12 +76,14 @@ export async function updateProduct(id, productData) {
 /**
  * Delete a product
  * @param {number} id - Product ID
+ * @param {AbortSignal} [signal] - Optional AbortSignal for timeout/cancellation
  * @returns {Promise<Object>} Response message
  */
-export async function deleteProduct(id) {
+export async function deleteProduct(id, signal) {
   const response = await fetch(getApiEndpoint(`/products/${id}`), {
     method: 'DELETE',
     headers: apiConfig.headers,
+    signal,
   });
   return handleApiResponse(response);
 }
