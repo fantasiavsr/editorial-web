@@ -88,7 +88,7 @@ These are **independent repositories**. Not a monorepo.
 
 ```
 Phase 11 — Implement Registration
-Status: ✅ COMPLETE
+Status: ✅ COMPLETE (Backend + Frontend)
 ```
 
 ## Completed Phases
@@ -404,8 +404,11 @@ Vercel mock deployment is already working as intended:
 - Passwords use the User model's Laravel `hashed` cast and are never returned.
 - New users always receive the backend-controlled `user` role.
 - Registration issues a Sanctum personal access token in the response for the next auth phase.
+- Connected the existing React Register form to `POST /api/register`.
+- The frontend maps `fullName` to the backend `name` field and stores the returned token locally for the next auth phase.
+- Registration validation errors are displayed in the existing form.
 - Verified successful registration and duplicate-email validation with curl.
-- Verified Laravel tests pass.
+- Verified frontend production build and Laravel tests pass.
 
 Next: Phase 12 — Implement Login
 
