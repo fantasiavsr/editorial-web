@@ -48,7 +48,7 @@ These are **independent repositories**. Not a monorepo.
 ## Current Phase
 
 ```
-Phase: 2 — First API (Products)
+Phase: 3 — React API Layer
 Status: ✅ COMPLETE
 ```
 
@@ -57,10 +57,11 @@ Status: ✅ COMPLETE
 - [x] **Phase 0** — Inspect & Plan (completed 2026-09-12)
 - [x] **Phase 1** — Create Laravel Backend (completed 2026-09-12)
 - [x] **Phase 2** — First API (Products) (completed 2026-09-14)
+- [x] **Phase 3** — React API Layer (completed 2026-09-14)
 
 ## Next Phase
 
-- [ ] **Phase 3** — React API Layer
+- [ ] **Phase 4** — Mock/API Switching
 
 ---
 
