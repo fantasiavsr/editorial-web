@@ -11,6 +11,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
+import { register } from "../../services/api/auth";
 
 export default function Register() {
   const navigate = useNavigate();
@@ -24,24 +25,37 @@ export default function Register() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [agreeToTerms, setAgreeToTerms] = useState(false);
+  const [error, setError] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
     if (formData.password !== formData.confirmPassword) {
-      alert("Passwords do not match");
+      setError("Passwords do not match");
       return;
     }
     setIsLoading(true);
-    // Simulate API call
-    setTimeout(() => {
+    try {
+      const response = await register({
+        name: formData.fullName,
+        email: formData.email,
+        password: formData.password,
+        password_confirmation: formData.confirmPassword,
+      });
+      localStorage.setItem("authToken", response.token);
+      localStorage.setItem("isAuthenticated", "true");
+      navigate("/dashboard");
+    } catch (err) {
+      const validation = Object.values(err.errors || {}).flat().join(" ");
+      setError(validation || err.message || "Registration failed");
+    } finally {
       setIsLoading(false);
-      navigate("/");
-    }, 1000);
+    }
   };
 
   return (
@@ -64,6 +78,7 @@ export default function Register() {
           </div>
 
           {/* Form */}
+          {error && <div className="mb-4 p-3 rounded-lg bg-red-100 text-red-700 dark:bg-red-900/20 dark:text-red-300 text-sm">{error}</div>}
           <form onSubmit={handleSubmit} className="space-y-5">
             {/* Full Name Input */}
             <div>
