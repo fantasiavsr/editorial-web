@@ -5,6 +5,45 @@
 
 ---
 
+## Current Authentication Assessment
+
+Authentication architecture has been inspected but is not implemented yet.
+
+### Frontend findings
+
+- `src/pages/auth/Login.jsx` and `Register.jsx` use simulated `setTimeout` handlers.
+- `src/pages/auth/ForgotPassword.jsx` is a static confirmation flow with no backend reset endpoint.
+- `src/components/ProtectedRoute.jsx` trusts a localStorage boolean and is currently not active in routing.
+- Dashboard routes are currently public.
+- `DashboardProfilesContent.jsx` uses mock profile data with fields: `fullName`, `email`, `phone`, `address`, `city`, and `country`.
+- Profile password changes use a mock password check and must be replaced with an authenticated API request.
+- No frontend auth context, auth API client, user data source, or token handling exists.
+
+### Backend findings
+
+- Laravel 12.69.2, PHP `^8.2`.
+- Standard `users` table and `User` model exist with `id`, `name`, `email`, `password`, `email_verified_at`, timestamps, and remember token.
+- Sanctum, Passport, Fortify, and Breeze are not installed.
+- No auth controllers, auth API routes, auth middleware, role field, or admin authorization currently exist.
+- Existing product, service, and pricing routes are public and must be protected after auth infrastructure is verified.
+
+### Authentication implementation order
+
+1. **Phase 8 — Inspect Authentication Architecture**
+2. **Phase 9 — Update User Database & Model**
+3. **Phase 10 — Configure Authentication Infrastructure**
+4. **Phase 11 — Implement Registration**
+5. **Phase 12 — Implement Login**
+6. **Phase 13 — Implement Current User & Logout**
+7. **Phase 14 — Integrate Profile Authentication**
+8. **Phase 15 — Integrate React Authentication**
+9. **Phase 16 — Protect Routes & Authorize Admins**
+10. **Phase 17 — Test Authentication**
+
+Authentication will use Laravel Sanctum unless implementation inspection identifies a compatible existing system. Work one authentication phase at a time, verify it, and update this plan before continuing.
+
+---
+
 ## Overall Architecture
 
 ```
@@ -48,8 +87,8 @@ These are **independent repositories**. Not a monorepo.
 ## Current Phase
 
 ```
-Phase: 7 — Production Laravel + MySQL
-Status: ✅ COMPLETE (Preparation only; not deployed)
+Phase 8 — Inspect Authentication Architecture
+Status: NOT STARTED
 ```
 
 ## Completed Phases
@@ -65,7 +104,17 @@ Status: ✅ COMPLETE (Preparation only; not deployed)
 
 ## Next Phase
 
-- [ ] **Real Host Deployment** — Separate future deployment task (not part of the completed frontend phases)
+- [ ] **Phase 8 — Inspect Authentication Architecture**
+- [ ] **Phase 9 — Update User Database & Model**
+- [ ] **Phase 10 — Configure Authentication Infrastructure**
+- [ ] **Phase 11 — Implement Registration**
+- [ ] **Phase 12 — Implement Login**
+- [ ] **Phase 13 — Implement Current User & Logout**
+- [ ] **Phase 14 — Integrate Profile Authentication**
+- [ ] **Phase 15 — Integrate React Authentication**
+- [ ] **Phase 16 — Protect Routes & Authorize Admins**
+- [ ] **Phase 17 — Test Authentication**
+- [ ] **Future Task — Deploy to Real Host**
 
 ---
 
@@ -318,9 +367,32 @@ Vercel mock deployment is already working as intended:
 - Dashboard data falls back to local mock data when the API is unavailable
 - SPA routes are handled by the existing Vercel rewrite configuration
 
-### Real Host Deployment — Future Separate Task
+### Phase 8 — Inspect Authentication Architecture — NOT STARTED
 
-This is intentionally not an implementation phase yet. When a real host is selected, follow the deployment guide in `docs/PHASE7_PRODUCTION_DEPLOYMENT.html` and this sequence:
+The existing UI is currently mock-only. Before deployment work continues, authentication is divided into these small phases:
+
+- Inspect existing auth/profile/dashboard requirements
+- Add required user model fields and role support
+- Add Sanctum authentication infrastructure
+- Implement registration
+- Implement login
+- Implement current-user and logout endpoints
+- Connect profile and password changes
+- Integrate React auth state and existing forms
+- Protect dashboard routes and backend resources
+- Test authentication and admin authorization
+
+Current findings:
+
+- Login and registration use simulated timers.
+- Profile fields currently used are `fullName`, `email`, `phone`, `address`, `city`, and `country`.
+- Password changes are mocked.
+- `ProtectedRoute` trusts localStorage and is not currently active.
+- Laravel has a standard users table but no Sanctum, auth routes, role field, or auth middleware.
+
+### Future Task — Deploy to Real Host
+
+This is intentionally not an implementation phase yet. Complete the authentication phases first. When a real host is selected, follow the deployment guide in `docs/PHASE7_PRODUCTION_DEPLOYMENT.html` and this sequence:
 
 #### Backend deployment
 
