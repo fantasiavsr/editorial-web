@@ -87,7 +87,7 @@ These are **independent repositories**. Not a monorepo.
 ## Current Phase
 
 ```
-Phase 9 — Update User Database & Model
+Phase 10 — Configure Authentication Infrastructure
 Status: ✅ COMPLETE
 ```
 
@@ -103,10 +103,11 @@ Status: ✅ COMPLETE
 - [x] **Phase 7** — Production Laravel + MySQL preparation (completed 2026-09-14)
 - [x] **Phase 8** — Inspect Authentication Architecture (completed 2026-09-14)
 - [x] **Phase 9** — Update User Database & Model (completed 2026-09-14)
+- [x] **Phase 10** — Configure Authentication Infrastructure (completed 2026-09-14)
 
 ## Next Phase
 
-- [ ] **Phase 10 — Configure Authentication Infrastructure**
+- [ ] **Phase 11 — Implement Registration**
 - [ ] **Phase 9 — Update User Database & Model**
 - [ ] **Phase 10 — Configure Authentication Infrastructure**
 - [ ] **Phase 11 — Implement Registration**
@@ -389,7 +390,16 @@ Vercel mock deployment is already working as intended:
 - Did not add a default admin account or allow role assignment through frontend data; admin provisioning belongs to a later protected-auth phase.
 - Verified migration status and ran Laravel tests successfully.
 
-Next: Phase 10 — Configure Authentication Infrastructure
+### Phase 10 — Configure Authentication Infrastructure ✅
+
+- Installed Laravel Sanctum `^4.3` for API personal access tokens.
+- Ran Laravel API scaffolding and created the `personal_access_tokens` migration.
+- Ran the migration successfully against the local XAMPP MySQL database.
+- Added `HasApiTokens` to the `User` model.
+- Confirmed API route registration remains stable; auth endpoints are intentionally deferred to Phase 11.
+- Verified Laravel tests pass.
+
+Next: Phase 11 — Implement Registration
 
 The existing UI is currently mock-only. Before deployment work continues, authentication is divided into these small phases:
 
