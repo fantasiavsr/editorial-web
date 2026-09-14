@@ -1,11 +1,20 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Search } from "lucide-react";
 import DashboardProductList from "../../components/product/DashboardProductList";
 import { pricingEntitySchema } from "../../components/data-management/entitySchemas";
-import { MockPricing } from "../../data/exampleData";
+import { pricingDataSource } from "../../services/data";
 
 export default function DashboardPricingContent() {
-  const [pricingPlans] = useState(MockPricing);
+  const [pricingPlans, setPricingPlans] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    pricingDataSource.getAll()
+      .then(setPricingPlans)
+      .catch((err) => setError(err.message || "Failed to load pricing plans"))
+      .finally(() => setLoading(false));
+  }, []);
   const [searchTerm, setSearchTerm] = useState("");
   const [billingPeriod, setBillingPeriod] = useState("");
   const [sortBy, setSortBy] = useState("name");
@@ -25,6 +34,14 @@ export default function DashboardPricingContent() {
     }
     return [...filteredPlans].sort((a, b) => a.name.localeCompare(b.name));
   }, [filteredPlans, sortBy]);
+
+  if (loading) {
+    return <div className="min-h-screen flex items-center justify-center text-primary-black dark:text-primary-white">Loading pricing plans...</div>;
+  }
+
+  if (error) {
+    return <div className="min-h-screen flex items-center justify-center text-red-600 dark:text-red-400">Error: {error}</div>;
+  }
 
   return (
     <div className="min-h-screen text-primary-black dark:text-primary-white font-sans transition-colors">

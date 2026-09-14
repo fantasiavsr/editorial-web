@@ -1,11 +1,20 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Search } from "lucide-react";
 import DashboardProductList from "../../components/product/DashboardProductList";
 import { serviceEntitySchema } from "../../components/data-management/entitySchemas";
-import { MockServices } from "../../data/exampleData";
+import { serviceDataSource } from "../../services/data";
 
 export default function DashboardServicesContent() {
-  const [services] = useState(MockServices);
+  const [services, setServices] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    serviceDataSource.getAll()
+      .then(setServices)
+      .catch((err) => setError(err.message || "Failed to load services"))
+      .finally(() => setLoading(false));
+  }, []);
   const [searchTerm, setSearchTerm] = useState("");
   const [billingPeriod, setBillingPeriod] = useState("");
   const [sortBy, setSortBy] = useState("name");
@@ -30,6 +39,14 @@ export default function DashboardServicesContent() {
     setSearchTerm(value);
     setBillingPeriod("");
   };
+
+  if (loading) {
+    return <div className="min-h-screen flex items-center justify-center text-primary-black dark:text-primary-white">Loading services...</div>;
+  }
+
+  if (error) {
+    return <div className="min-h-screen flex items-center justify-center text-red-600 dark:text-red-400">Error: {error}</div>;
+  }
 
   return (
     <div className="min-h-screen text-primary-black dark:text-primary-white font-sans transition-colors">

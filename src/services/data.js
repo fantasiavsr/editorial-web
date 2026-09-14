@@ -22,6 +22,7 @@
 
 import { MockProducts, MockServices, MockPricing } from '../data/exampleData.js';
 import * as productsApi from './api/products.js';
+import * as catalogApi from './api/catalog.js';
 
 // Determine which data source to use
 const DATA_SOURCE = import.meta.env.VITE_DATA_SOURCE || 'mock';
@@ -210,46 +211,32 @@ export const productDataSource = {
  */
 export const serviceDataSource = {
   async getAll() {
-    if (DATA_SOURCE === 'api') {
-      // To be implemented in Phase 5
-      throw new Error('Services API not yet implemented');
-    }
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(
-          MockServices.map((service, index) => ({
-            id: index + 1,
-            ...service,
-            created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString(),
-          }))
-        );
-      }, 0);
-    });
+    return fetchFromApiWithFallback(
+      () => catalogApi.getServices(),
+      () => Promise.resolve(MockServices.map((service, index) => ({
+        id: index + 1,
+        ...service,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      })))
+    );
   },
 };
 
 /**
- * Pricing Data Source (placeholder for future phases)
+ * Pricing plans data source.
  */
 export const pricingDataSource = {
   async getAll() {
-    if (DATA_SOURCE === 'api') {
-      // To be implemented in Phase 5
-      throw new Error('Pricing API not yet implemented');
-    }
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(
-          MockPricing.map((pricing, index) => ({
-            id: index + 1,
-            ...pricing,
-            created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString(),
-          }))
-        );
-      }, 0);
-    });
+    return fetchFromApiWithFallback(
+      () => catalogApi.getPricingPlans(),
+      () => Promise.resolve(MockPricing.map((pricing, index) => ({
+        id: index + 1,
+        ...pricing,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      })))
+    );
   },
 };
 
