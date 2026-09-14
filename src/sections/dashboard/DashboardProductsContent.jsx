@@ -1,11 +1,32 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Search } from "lucide-react";
 import DashboardProductList from "../../components/product/DashboardProductList";
 import { productEntitySchema } from "../../components/data-management/entitySchemas";
-import { MockProducts } from "../../data/exampleData";
+import { productDataSource } from "../../services/data";
 
 export default function DashboardProductsContent() {
-  const [products] = useState(MockProducts);
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Load products on component mount
+  useEffect(() => {
+    const loadProducts = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const data = await productDataSource.getAll();
+        setProducts(data);
+      } catch (err) {
+        setError(err.message || 'Failed to load products');
+        console.error('Error loading products:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadProducts();
+  }, []);
 
   const [searchTerm, setSearchTerm] = useState("");
   const [productType, setProductType] = useState("");
@@ -35,6 +56,35 @@ export default function DashboardProductsContent() {
     }
     return filteredProducts;
   }, [filteredProducts, sortBy]);
+
+  // Show loading state
+  if (loading) {
+    return (
+      <div className="min-h-screen text-primary-black dark:text-primary-white font-sans transition-colors flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-orange mx-auto mb-4"></div>
+          <p className="text-primary-black/60 dark:text-primary-white/60">Loading products...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Show error state
+  if (error) {
+    return (
+      <div className="min-h-screen text-primary-black dark:text-primary-white font-sans transition-colors flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-red-600 dark:text-red-400 mb-4">Error: {error}</p>
+          <button
+            onClick={() => window.location.reload()}
+            className="px-4 py-2 bg-primary-orange text-white rounded-lg hover:bg-primary-orange-strong transition-colors"
+          >
+            Retry
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen text-primary-black dark:text-primary-white font-sans transition-colors">
