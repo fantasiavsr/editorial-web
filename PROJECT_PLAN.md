@@ -8,17 +8,17 @@
 
 ## Current Status
 
-**Current Phase:** Phase 14 — Integrate Profile Authentication
+**Current Phase:** Phase 15 — Integrate React Authentication
 **Status:** NOT STARTED
-**Last Completed:** Phase 13 — Implement Current User & Logout (2026-09-15)
-**Next:** Phase 14 — Integrate Profile Authentication
+**Last Completed:** Phase 14 — Integrate Profile Authentication (2026-09-15)
+**Next:** Phase 15 — Integrate React Authentication
 **Blockers:** None
 
 | Phase Range | Status |
 | ----------- | ------ |
-| 0–12        | ✅ Complete |
-| 13          | ✅ Complete |
-| 14–17       | ⬜ Pending |
+| 0–13        | ✅ Complete |
+| 14          | ✅ Complete |
+| 15–17       | ⬜ Pending |
 | Deployment  | ⬜ Future |
 
 ---
@@ -121,6 +121,8 @@ All API functions accept optional `signal: AbortSignal` for timeout/cancellation
 | POST | `/api/login` | `AuthController@login` | No |
 | GET | `/api/user` | `AuthController@user` | Yes (sanctum) |
 | POST | `/api/logout` | `AuthController@logout` | Yes (sanctum) |
+| PUT | `/api/user/profile` | `AuthController@updateProfile` | Yes (sanctum) |
+| PUT | `/api/user/password` | `AuthController@changePassword` | Yes (sanctum) |
 | GET/POST/PUT/DELETE | `/api/products` | `ProductController` | No (Phase 16) |
 | GET/POST/PUT/DELETE | `/api/services` | `ServiceController` | No (Phase 16) |
 | GET/POST/PUT/DELETE | `/api/pricing` | `PricingPlanController` | No (Phase 16) |
@@ -234,6 +236,7 @@ Status: ✅ COMPLETE (Backend + Frontend)
 - [x] **Phase 11** — Implement Registration (completed 2026-09-14)
 - [x] **Phase 12** — Implement Login (completed 2026-09-14)
 - [x] **Phase 13** — Implement Current User & Logout (completed 2026-09-15)
+- [x] **Phase 14** — Integrate Profile Authentication (completed 2026-09-15)
 
 ## Next Phase
 
@@ -453,29 +456,49 @@ Vercel mock deployment is already working as intended:
 
 Next: Phase 14 — Integrate Profile Authentication
 
-### Phase 14 — Integrate Profile Authentication — NOT STARTED
+### Phase 14 — Integrate Profile Authentication ✅
 
 #### Backend
 
-- Add `PUT /api/user/profile` endpoint for updating profile fields.
-- Add `PUT /api/user/password` endpoint for changing password.
-- Both endpoints require Sanctum authentication.
-- Validate current password before allowing password change.
+- Added `AuthController::updateProfile()` method with validation for name, phone, address, city, and country
+- Added `AuthController::changePassword()` method with current password verification using `Hash::check()`
+- Added validation for new password: minimum 8 characters with confirmation
+- Protected both endpoints with `auth:sanctum` middleware
+- `PUT /api/user/profile` returns updated user data on success
+- `PUT /api/user/password` returns 422 with error message if current password is incorrect
 
 #### Frontend
 
-- Connect `DashboardProfilesContent.jsx` to authenticated profile endpoints.
-- Replace mock profile data with real user data from `GET /api/user`.
-- Replace mock password change with `PUT /api/user/password`.
-- Display backend validation errors for profile and password forms.
+- Added `updateProfile()` and `changePassword()` functions to `src/services/api/auth.js`
+- Connected `DashboardProfilesContent.jsx` to real API endpoints
+- Added `useEffect` hook to fetch current user data via `getUser()` on component mount
+- Replaced mock profile data with real authenticated user data
+- Maps backend `name` field to frontend `fullName` display
+- Replaced mock password change with real API call
+- Added loading state while fetching user profile
+- Displays backend validation errors in both profile and password forms
+- Cancel button now resets to initially fetched user data instead of hardcoded values
+- Redirects to `/login` if user fetch fails (unauthenticated)
 
 #### Verification
 
-- Update profile fields
-- Change password with correct current password
-- Reject password change with wrong current password
-- Frontend production build
-- Laravel tests
+- ✅ Backend routes registered: `PUT /api/user/profile` and `PUT /api/user/password` with `auth:sanctum`
+- ✅ Laravel tests pass (2 passed, 2 assertions)
+- ✅ Frontend production build succeeds
+- ✅ Profile form fetches and displays real user data
+- ✅ Profile updates persist to database
+- ✅ Password change validates current password on backend
+- ✅ Validation errors displayed from API responses
+
+#### Files Changed
+
+**Backend:**
+- `app/Http/Controllers/AuthController.php` — added `updateProfile()` and `changePassword()` methods
+- `routes/api.php` — added profile and password routes to `auth:sanctum` middleware group
+
+**Frontend:**
+- `src/services/api/auth.js` — added `updateProfile()` and `changePassword()` functions
+- `src/sections/dashboard/DashboardProfilesContent.jsx` — connected to API, removed mock auth helper, added user data fetching on mount
 
 Next: Phase 15 — Integrate React Authentication
 

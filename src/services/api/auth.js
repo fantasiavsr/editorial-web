@@ -33,3 +33,11 @@ export async function getUser() {
 export async function logout() {
   return request('/logout', 'POST', null, true);
 }
+
+export async function updateProfile(data) {
+  return request('/user/profile', 'PUT', data, true);
+}
+
+export async function changePassword(data) {
+  return request('/user/password', 'PUT', data, true);
+}

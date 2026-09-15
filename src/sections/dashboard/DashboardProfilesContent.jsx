@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   User,
   Shield,
@@ -13,29 +13,23 @@ import {
   X,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-
-/* Mock auth helper - connect to Laravel API later */
-const mockAuth = {
-  isAuthenticated: () => true,
-  verifyCurrentPassword: (pwd) => pwd === "current123",
-  updateProfile: (data) =>
-    new Promise((r) => setTimeout(() => r({ success: true }), 800)),
-  changePassword: (data) =>
-    new Promise((r) => setTimeout(() => r({ success: true }), 800)),
-};
+import { getUser, updateProfile, changePassword } from "../../services/api/auth";
 
 export default function DashboardProfilesContent() {
   const [profile, setProfile] = useState({
-    fullName: "Sarah Johnson",
-    email: "sarah@atelier.com",
-    phone: "+1 (555) 234-5678",
-    address: "142 Design District",
-    city: "San Francisco",
-    country: "United States",
+    fullName: "",
+    email: "",
+    phone: "",
+    address: "",
+    city: "",
+    country: "",
   });
+
+  const [isLoading, setIsLoading] = useState(true);
 
   const [editMode, setEditMode] = useState(false);
   const [saveStatus, setSaveStatus] = useState({ msg: "", type: "" });
+  const [initialProfile, setInitialProfile] = useState(null);
 
   const [security, setSecurity] = useState({
     currentPass: "",
@@ -48,16 +42,61 @@ export default function DashboardProfilesContent() {
   });
 
   const [securityStatus, setSecurityStatus] = useState({ msg: "", type: "" });
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        const response = await getUser();
+        const userData = response.user;
+        const profileData = {
+          fullName: userData.name || "",
+          email: userData.email || "",
+          phone: userData.phone || "",
+          address: userData.address || "",
+          city: userData.city || "",
+          country: userData.country || "",
+        };
+        setProfile(profileData);
+        setInitialProfile(profileData);
+        setIsLoading(false);
+      } catch (err) {
+        console.error("Failed to fetch user profile:", err);
+        setIsLoading(false);
+        navigate("/login");
+      }
+    };
+
+    fetchUserProfile();
+  }, [navigate]);
 
   const handleProfileSave = async () => {
     setSaveStatus({ msg: "Saving...", type: "info" });
     try {
-      await mockAuth.updateProfile(profile);
+      const response = await updateProfile({
+        name: profile.fullName,
+        phone: profile.phone,
+        address: profile.address,
+        city: profile.city,
+        country: profile.country,
+      });
+      const updatedUser = response.user;
+      const updatedProfile = {
+        fullName: updatedUser.name || "",
+        email: updatedUser.email || "",
+        phone: updatedUser.phone || "",
+        address: updatedUser.address || "",
+        city: updatedUser.city || "",
+        country: updatedUser.country || "",
+      };
+      setProfile(updatedProfile);
+      setInitialProfile(updatedProfile);
       setSaveStatus({ msg: "Profile updated successfully", type: "success" });
       setEditMode(false);
       setTimeout(() => setSaveStatus({ msg: "", type: "" }), 3000);
-    } catch {
-      setSaveStatus({ msg: "Failed to save profile", type: "error" });
+    } catch (err) {
+      const validation = Object.values(err.errors || {}).flat().join(" ");
+      setSaveStatus({ msg: validation || err.message || "Failed to save profile", type: "error" });
     }
   };
 
@@ -66,13 +105,6 @@ export default function DashboardProfilesContent() {
 
     if (!security.currentPass) {
       setSecurityStatus({ msg: "Current password is required", type: "error" });
-      return;
-    }
-    if (!mockAuth.verifyCurrentPassword(security.currentPass)) {
-      setSecurityStatus({
-        msg: "Current password is incorrect",
-        type: "error",
-      });
       return;
     }
     if (security.newPass.length < 8) {
@@ -88,9 +120,10 @@ export default function DashboardProfilesContent() {
     }
 
     try {
-      await mockAuth.changePassword({
-        current: security.currentPass,
-        new: security.newPass,
+      await changePassword({
+        current_password: security.currentPass,
+        new_password: security.newPass,
+        new_password_confirmation: security.confirmPass,
       });
       setSecurityStatus({
         msg: "Password changed successfully",
@@ -101,10 +134,12 @@ export default function DashboardProfilesContent() {
         currentPass: "",
         newPass: "",
         confirmPass: "",
+        strength: 0,
       });
       setTimeout(() => setSecurityStatus({ msg: "", type: "" }), 3000);
-    } catch {
-      setSecurityStatus({ msg: "Failed to change password", type: "error" });
+    } catch (err) {
+      const validation = Object.values(err.errors || {}).flat().join(" ");
+      setSecurityStatus({ msg: validation || err.message || "Failed to change password", type: "error" });
     }
   };
 
@@ -126,7 +161,15 @@ export default function DashboardProfilesContent() {
           ? "bg-primary_sage-strong"
           : "bg-primary-black/20";
 
-  const navigate = useNavigate();
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="text-primary-black/60 dark:text-primary-white/60">
+          Loading profile...
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -161,15 +204,7 @@ export default function DashboardProfilesContent() {
                   <button
                     onClick={() => {
                       setEditMode(false);
-                      setProfile({
-                        ...profile,
-                        fullName: "Sarah Johnson",
-                        email: "sarah@atelier.com",
-                        phone: "+1 (555) 234-5678",
-                        address: "142 Design District",
-                        city: "San Francisco",
-                        country: "United States",
-                      });
+                      setProfile(initialProfile);
                     }}
                     className="text-xs px-3 py-1.5 rounded-full border border-primary-black/10 dark:border-primary-white/10 text-primary-black/60 dark:text-primary-white/60 hover:text-primary-black dark:hover:text-primary-white transition-colors"
                   >
