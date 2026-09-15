@@ -3,7 +3,7 @@ import { useTheme } from "next-themes";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Menu, X, ChevronDown } from "lucide-react";
 import ThemeToggle from "./ThemeToggle";
-import { logout } from "../services/api/auth";
+import { useAuth } from "../context/AuthContext";
 
 export default function Navbar({ title, links }) {
   const { theme } = useTheme();
@@ -25,26 +25,11 @@ export default function Navbar({ title, links }) {
     location.pathname,
   );
 
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  useEffect(() => {
-    setIsAuthenticated(localStorage.getItem("isAuthenticated") === "true");
-  }, [location.pathname]);
+  const { isAuthenticated, logout: logoutUser } = useAuth();
 
   const handleLogout = async () => {
-    try {
-      await logout();
-      localStorage.removeItem("authToken");
-      localStorage.removeItem("isAuthenticated");
-      setIsAuthenticated(false);
-      navigate("/login");
-    } catch (err) {
-      console.error("Logout failed:", err);
-      localStorage.removeItem("authToken");
-      localStorage.removeItem("isAuthenticated");
-      setIsAuthenticated(false);
-      navigate("/login");
-    }
+    await logoutUser();
+    navigate("/login");
   };
 
   useEffect(() => {

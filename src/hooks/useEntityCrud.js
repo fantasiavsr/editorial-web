@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { safeApiMessage } from "../services/api/config";
+import { lastCallUsedMockFallback } from "../services/data";
 
 export default function useEntityCrud(dataSource, entityLabel) {
   const [items, setItems] = useState([]);
@@ -8,12 +9,14 @@ export default function useEntityCrud(dataSource, entityLabel) {
   const [mutationError, setMutationError] = useState(null);
   const [isSaving, setIsSaving] = useState(false);
   const [isCreateOpen, setIsCreateOpen] = useState(false);
+  const [usingMockData, setUsingMockData] = useState(false);
 
   const load = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
       setItems(await dataSource.getAll());
+      setUsingMockData(lastCallUsedMockFallback());
     } catch (err) {
       setError(safeApiMessage(err, `Failed to load ${entityLabel.toLowerCase()}`));
     } finally {
@@ -56,7 +59,7 @@ export default function useEntityCrud(dataSource, entityLabel) {
   });
 
   return {
-    items, loading, error, mutationError, isSaving, isCreateOpen,
+    items, loading, error, mutationError, isSaving, isCreateOpen, usingMockData,
     setIsCreateOpen, setMutationError, create, save, remove, reload: load,
   };
 }

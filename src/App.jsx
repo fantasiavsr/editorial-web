@@ -1,6 +1,7 @@
 import { ThemeProvider } from "next-themes";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { useEffect } from "react";
+import { AuthProvider } from "./context/AuthContext";
 import LandingPage from "./pages/landing/LandingPage";
 import About from "./pages/about/About";
 import ProductPage from "./pages/product/ProductPage";
@@ -47,9 +48,10 @@ function ScrollToTop() {
 function App() {
   return (
     <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
-      <BrowserRouter>
-        {/* Reset/restore scroll position when navigating between routes */}
-        <ScrollToTop />
+      <AuthProvider>
+        <BrowserRouter>
+          {/* Reset/restore scroll position when navigating between routes */}
+          <ScrollToTop />
 
         <Routes>
           {/* Public pages */}
@@ -102,6 +104,7 @@ function App() {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
+      </AuthProvider>
     </ThemeProvider>
   );
 }

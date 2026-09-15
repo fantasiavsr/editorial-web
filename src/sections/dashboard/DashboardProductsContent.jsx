@@ -5,10 +5,11 @@ import EntityFormModal from "../../components/data-management/EntityFormModal";
 import { productEntitySchema } from "../../components/data-management/entitySchemas";
 import { productDataSource } from "../../services/data";
 import useEntityCrud from "../../hooks/useEntityCrud";
+import MockDataWarning from "../../components/feedback/MockDataWarning";
 
 export default function DashboardProductsContent() {
   const {
-    items: products, loading, error, mutationError, isSaving, isCreateOpen,
+    items: products, loading, error, mutationError, isSaving, isCreateOpen, usingMockData,
     setIsCreateOpen, setMutationError, create, save, remove, reload,
   } = useEntityCrud(productDataSource, "Product");
 
@@ -67,6 +68,8 @@ export default function DashboardProductsContent() {
 
   return (
     <div className="min-h-screen text-primary-black dark:text-primary-white font-sans transition-colors">
+      {usingMockData && <MockDataWarning />}
+
       {/* Header */}
       <div className="pt-0 pb-4">
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">

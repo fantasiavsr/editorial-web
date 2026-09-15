@@ -11,10 +11,12 @@ import {
 import { useNavigate } from "react-router-dom";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
-import { register } from "../../services/api/auth";
+import { register as registerApi } from "../../services/api/auth";
+import { useAuth } from "../../context/AuthContext";
 
 export default function Register() {
   const navigate = useNavigate();
+  const { login } = useAuth();
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -41,14 +43,13 @@ export default function Register() {
     }
     setIsLoading(true);
     try {
-      const response = await register({
+      const response = await registerApi({
         name: formData.fullName,
         email: formData.email,
         password: formData.password,
         password_confirmation: formData.confirmPassword,
       });
-      localStorage.setItem("authToken", response.token);
-      localStorage.setItem("isAuthenticated", "true");
+      login(response.token, response.user);
       navigate("/dashboard");
     } catch (err) {
       const validation = Object.values(err.errors || {})

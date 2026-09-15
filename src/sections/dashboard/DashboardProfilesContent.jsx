@@ -19,8 +19,12 @@ import {
   changePassword,
 } from "../../services/api/auth";
 import { MockProfile } from "../../data/exampleData";
+import { useAuth } from "../../context/AuthContext";
+import MockDataWarning from "../../components/feedback/MockDataWarning";
 
 export default function DashboardProfilesContent() {
+  const { user: authUser, updateUser } = useAuth();
+
   const [profile, setProfile] = useState({
     fullName: MockProfile.name,
     email: MockProfile.email,
@@ -65,6 +69,7 @@ export default function DashboardProfilesContent() {
         };
         setProfile(profileData);
         setInitialProfile(profileData);
+        setUsingMockData(false);
         setIsLoading(false);
       } catch (err) {
         console.log("Using mock data - not authenticated or API unavailable");
@@ -79,6 +84,7 @@ export default function DashboardProfilesContent() {
         };
         setProfile(mockProfileData);
         setInitialProfile(mockProfileData);
+        setUsingMockData(true);
         setIsLoading(false);
       }
     };
@@ -107,6 +113,7 @@ export default function DashboardProfilesContent() {
       };
       setProfile(updatedProfile);
       setInitialProfile(updatedProfile);
+      updateUser(updatedUser);
       setSaveStatus({ msg: "Profile updated successfully", type: "success" });
       setEditMode(false);
       setTimeout(() => setSaveStatus({ msg: "", type: "" }), 3000);
@@ -208,6 +215,8 @@ export default function DashboardProfilesContent() {
 
   return (
     <div>
+      {usingMockData && <MockDataWarning />}
+
       {/* Main Content Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Left: Profile Info */}

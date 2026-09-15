@@ -149,10 +149,10 @@ export const MockProducts = [
 ];
 
 export const MockProfile = {
-  name: "Sarah Johnson",
-  email: "sarah@atelier.com",
+  name: "Reisalin Stout",
+  email: "ryza@atelier.com",
   phone: "+1 (555) 234-5678",
-  address: "142 Design District",
-  city: "San Francisco",
-  country: "United States",
+  address: "67 village of Rasenboden",
+  city: "Kurken Island",
+  country: "Sardonica",
 };

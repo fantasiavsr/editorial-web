@@ -34,11 +34,15 @@ console.log(`📦 Data source: ${DATA_SOURCE.toUpperCase()}`);
 console.log(`⚠️  API Fallback: ${ENABLE_API_FALLBACK ? 'ENABLED' : 'DISABLED'}`);
 console.log(`⏱️  API Timeout: ${API_TIMEOUT}ms`);
 
+// Track whether the last API call fell back to mock data
+let lastCallUsedFallback = false;
+
 /**
  * Helper to fetch from API with timeout and fallback to mock on error
  */
 async function fetchFromApiWithFallback(apiCall, fallbackData) {
   if (DATA_SOURCE !== 'api') {
+    lastCallUsedFallback = true;
     return fallbackData();
   }
 
@@ -47,8 +51,10 @@ async function fetchFromApiWithFallback(apiCall, fallbackData) {
 
   try {
     const result = await apiCall(controller.signal);
+    lastCallUsedFallback = false;
     return result;
   } catch (error) {
+    lastCallUsedFallback = true;
     if (error.name === 'AbortError') {
       console.warn(`⏱️  API request timed out after ${API_TIMEOUT}ms, falling back to mock data`);
     } else {
@@ -209,4 +215,11 @@ export function getDataSourceMode() {
  */
 export function isUsingMockData() {
   return DATA_SOURCE === 'mock';
+}
+
+/**
+ * Check if the last API call fell back to mock data
+ */
+export function lastCallUsedMockFallback() {
+  return lastCallUsedFallback;
 }

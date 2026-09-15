@@ -8,17 +8,17 @@
 
 ## Current Status
 
-**Current Phase:** Phase 15 — Integrate React Authentication
+**Current Phase:** Phase 16 — Protect Routes & Authorize Admins
 **Status:** NOT STARTED
-**Last Completed:** Phase 14 — Integrate Profile Authentication (2026-09-15)
-**Next:** Phase 15 — Integrate React Authentication
+**Last Completed:** Phase 15 — Integrate React Authentication (2026-09-15)
+**Next:** Phase 16 — Protect Routes & Authorize Admins
 **Blockers:** None
 
 | Phase Range | Status |
 | ----------- | ------ |
-| 0–13        | ✅ Complete |
-| 14          | ✅ Complete |
-| 15–17       | ⬜ Pending |
+| 0–14        | ✅ Complete |
+| 15          | ✅ Complete |
+| 16–17       | ⬜ Pending |
 | Deployment  | ⬜ Future |
 
 ---
@@ -237,13 +237,10 @@ Status: ✅ COMPLETE (Backend + Frontend)
 - [x] **Phase 12** — Implement Login (completed 2026-09-14)
 - [x] **Phase 13** — Implement Current User & Logout (completed 2026-09-15)
 - [x] **Phase 14** — Integrate Profile Authentication (completed 2026-09-15)
+- [x] **Phase 15** — Integrate React Authentication (completed 2026-09-15)
 
 ## Next Phase
 
-- [ ] **Phase 12 — Implement Login**
-- [ ] **Phase 13 — Implement Current User & Logout**
-- [ ] **Phase 14 — Integrate Profile Authentication**
-- [ ] **Phase 15 — Integrate React Authentication**
 - [ ] **Phase 16 — Protect Routes & Authorize Admins**
 - [ ] **Phase 17 — Test Authentication**
 - [ ] **Future Task — Deploy to Real Host**
@@ -502,22 +499,42 @@ Next: Phase 14 — Integrate Profile Authentication
 
 Next: Phase 15 — Integrate React Authentication
 
-### Phase 15 — Integrate React Authentication — NOT STARTED
+### Phase 15 — Integrate React Authentication ✅
 
 #### Frontend
 
-- Create an auth context/provider that manages token and user state.
-- Persist token in localStorage (already done in Register; extend to Login).
-- On app initialization, validate stored token with `GET /api/user`.
-- Provide `user`, `token`, `login()`, `logout()`, `isAuthenticated` to the component tree.
-- Wrap the app with the auth provider in `App.jsx`.
+- Created `src/context/AuthContext.jsx` with centralized auth state management
+- Provides `user`, `token`, `isAuthenticated`, `loading`, `login()`, `logout()`, `updateUser()` to component tree
+- Token validation on app initialization via `GET /api/user` in `useEffect`
+- Invalid/expired tokens are automatically cleared
+- Wrapped app with `<AuthProvider>` in `App.jsx` (inside `ThemeProvider`, wrapping `BrowserRouter`)
+- Updated `Login.jsx` to use `useAuth()` hook and context `login()` method
+- Updated `Register.jsx` to use `useAuth()` hook and context `login()` method
+- Updated `Navbar.jsx` to use `useAuth()` hook for `isAuthenticated` state and `logout()` method
+- Updated `DashboardProfilesContent.jsx` to use `updateUser()` from context when profile is saved
+- Removed manual `localStorage` management from components (now handled by context)
 
 #### Verification
 
-- Token persists across page reloads
-- Invalid token is cleared on app load
-- Auth state is available throughout the app
-- Frontend production build
+- ✅ Token validation runs automatically on app load
+- ✅ Invalid tokens are cleared and auth state reset
+- ✅ Auth state accessible throughout the app via `useAuth()` hook
+- ✅ Login updates context state and stores token
+- ✅ Register updates context state and stores token
+- ✅ Logout clears context state and removes token
+- ✅ Navbar dynamically shows Login/Logout based on context state
+- ✅ Profile updates sync to context user state
+- ✅ Frontend production build passes
+
+#### Files Changed
+
+**Frontend:**
+- `src/context/AuthContext.jsx` — new file, centralized auth state provider
+- `src/App.jsx` — wrapped with `AuthProvider`
+- `src/pages/auth/Login.jsx` — uses `useAuth()` hook, calls context `login()`
+- `src/pages/auth/Register.jsx` — uses `useAuth()` hook, calls context `login()`
+- `src/components/Navbar.jsx` — uses `useAuth()` for state and logout
+- `src/sections/dashboard/DashboardProfilesContent.jsx` — uses `updateUser()` from context
 
 Next: Phase 16 — Protect Routes & Authorize Admins
 
@@ -647,11 +664,34 @@ Never run `migrate:fresh`, destructive seeders, or force pushes against a produc
 ## Known Issues
 
 - **API fallback on mutations**: `fetchFromApiWithFallback` silently falls back to mock data on create/update/delete failures. A failed backend mutation appears successful to the user (mock array is modified, database is not).
-- **Authorization header only on auth endpoints**: Auth token is sent with `getUser()` and `logout()` requests, but not yet with CRUD API requests (products/services/pricing). Will be resolved in Phase 15.
+- **Authorization header only on auth endpoints**: Auth token is sent with `getUser()` and `logout()` requests, but not yet with CRUD API requests (products/services/pricing). Will be resolved in Phase 16.
 - **Dashboard routes unprotected**: All dashboard routes are public until Phase 16.
 - **ProtectedRoute inactive**: Component exists but is commented out in `App.jsx` routing.
 - **Console logging in production**: `data.js` logs data source info to console on every page load.
 - **`apiConfig.timeout` unused**: Defined in `config.js` but timeout logic lives separately in `data.js`.
+
+## Recent Improvements (Post Phase 15)
+
+### Mock Data Warning Headers
+
+Added visual warning banners to dashboard pages when mock data fallback is active:
+
+**Files Added:**
+- `src/components/feedback/MockDataWarning.jsx` — reusable amber warning banner component
+
+**Files Modified:**
+- `src/services/data.js` — added `lastCallUsedFallback` tracker and `lastCallUsedMockFallback()` export
+- `src/hooks/useEntityCrud.js` — added `usingMockData` state tracking and export
+- `src/sections/dashboard/DashboardProductsContent.jsx` — displays warning when mock data loaded
+- `src/sections/dashboard/DashboardServicesContent.jsx` — displays warning when mock data loaded
+- `src/sections/dashboard/DashboardPricingContent.jsx` — displays warning when mock data loaded
+- `src/sections/dashboard/DashboardProfilesContent.jsx` — displays warning when mock data loaded
+
+**Behavior:**
+- Warning appears when `VITE_DATA_SOURCE=mock` or when API requests fail/timeout
+- Clear amber banner with alert icon explaining mock data usage
+- Informs users that changes will not be saved to the database
+- Applied consistently across all dashboard CRUD pages
 
 ---
 

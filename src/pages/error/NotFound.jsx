@@ -52,7 +52,7 @@ export default function NotFound() {
           </div>
 
           {/* Decorative element */}
-          <div className="mt-20 pt-12 border-t border-primary-black/10 dark:border-primary-white/10">
+          <div className="mt-20 py-12 border-t border-primary-black/10 dark:border-primary-white/10">
             <p className="text-sm text-primary-black/40 dark:text-primary-white/40">
               Error Code: 404 | Not Found
             </p>

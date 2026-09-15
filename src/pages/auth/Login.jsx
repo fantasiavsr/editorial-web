@@ -3,10 +3,12 @@ import { Mail, Lock, ArrowRight, Eye, EyeOff } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
-import { login } from "../../services/api/auth";
+import { login as loginApi } from "../../services/api/auth";
+import { useAuth } from "../../context/AuthContext";
 
 export default function Login() {
   const navigate = useNavigate();
+  const { login } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -18,9 +20,8 @@ export default function Login() {
     setError("");
     setIsLoading(true);
     try {
-      const response = await login({ email, password });
-      localStorage.setItem("authToken", response.token);
-      localStorage.setItem("isAuthenticated", "true");
+      const response = await loginApi({ email, password });
+      login(response.token, response.user);
       navigate("/dashboard");
     } catch (err) {
       const validation = Object.values(err.errors || {})

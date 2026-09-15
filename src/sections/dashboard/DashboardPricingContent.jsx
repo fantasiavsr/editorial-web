@@ -5,10 +5,11 @@ import EntityFormModal from "../../components/data-management/EntityFormModal";
 import { pricingEntitySchema } from "../../components/data-management/entitySchemas";
 import { pricingDataSource } from "../../services/data";
 import useEntityCrud from "../../hooks/useEntityCrud";
+import MockDataWarning from "../../components/feedback/MockDataWarning";
 
 export default function DashboardPricingContent() {
   const {
-    items: pricingPlans, loading, error, mutationError, isSaving, isCreateOpen,
+    items: pricingPlans, loading, error, mutationError, isSaving, isCreateOpen, usingMockData,
     setIsCreateOpen, setMutationError, create, save, remove, reload,
   } = useEntityCrud(pricingDataSource, "Pricing plan");
   const [searchTerm, setSearchTerm] = useState("");
@@ -72,6 +73,8 @@ export default function DashboardPricingContent() {
 
   return (
     <div className="min-h-screen text-primary-black dark:text-primary-white font-sans transition-colors">
+      {usingMockData && <MockDataWarning />}
+
       <div className="pt-0 pb-4">
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
           <div>

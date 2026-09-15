@@ -22,17 +22,17 @@
 
 ## 🚀 Features
 
-| Feature                       | Details                                                     |
-| ----------------------------- | ----------------------------------------------------------- |
-| 🌐 **Interactive 3D**         | React Three Fiber & Drei                                    |
-| ✨ **Smooth Animations**      | GSAP powered scroll effects                                 |
-| 🌓 **Dark / Light Mode**      | `next-themes` + Tailwind v4                                 |
-| 📱 **Responsive Design**      | Landing, products, pricing, services, about pages           |
-| 🔗 **Hash Routing**           | Product, pricing, and service showcase pages                |
-| 🔐 **Authentication**         | Laravel Sanctum personal access tokens                      |
-| 📊 **Admin Dashboard**        | CRUD management for products, services, pricing plans       |
-| 🔄 **Mock/API Data Switching**| Dual deployment modes with automatic fallback               |
-| 👤 **User Profile Management**| Update profile fields and change password                   |
+| Feature                        | Details                                               |
+| ------------------------------ | ----------------------------------------------------- |
+| 🌐 **Interactive 3D**          | React Three Fiber & Drei                              |
+| ✨ **Smooth Animations**       | GSAP powered scroll effects                           |
+| 🌓 **Dark / Light Mode**       | `next-themes` + Tailwind v4                           |
+| 📱 **Responsive Design**       | Landing, products, pricing, services, about pages     |
+| 🔗 **Hash Routing**            | Product, pricing, and service showcase pages          |
+| 🔐 **Authentication**          | Laravel Sanctum personal access tokens                |
+| 📊 **Admin Dashboard**         | CRUD management for products, services, pricing plans |
+| 🔄 **Mock/API Data Switching** | Dual deployment modes with automatic fallback         |
+| 👤 **User Profile Management** | Update profile fields and change password             |
 
 ---
 
@@ -40,10 +40,10 @@
 
 This project consists of **two independent repositories**:
 
-| Repository          | Purpose                | Tech Stack                     |
-| ------------------- | ---------------------- | ------------------------------ |
-| `editorial-web`     | React + Vite frontend  | React 19, Vite 8, Tailwind v4  |
-| `editorial-backend` | Laravel REST API       | Laravel 12, PHP 8.2+, MySQL    |
+| Repository          | Purpose               | Tech Stack                    |
+| ------------------- | --------------------- | ----------------------------- |
+| `editorial-web`     | React + Vite frontend | React 19, Vite 8, Tailwind v4 |
+| `editorial-backend` | Laravel REST API      | Laravel 12, PHP 8.2+, MySQL   |
 
 ### Deployment Modes
 
@@ -94,6 +94,7 @@ npm run preview
 ### Full Stack (API Mode)
 
 **Prerequisites:**
+
 - PHP 8.2+, Composer, MySQL
 - Laravel backend repository: `editorial-backend`
 
@@ -203,54 +204,54 @@ src/
 
 ### Frontend
 
-| Layer           | Technology                   |
-| --------------- | ---------------------------- |
-| Framework       | React 19                     |
-| Build Tool      | Vite 8                       |
-| Styling         | Tailwind CSS v4              |
-| Routing         | react-router-dom v7          |
-| 3D / Graphics   | Three.js + React Three Fiber |
-| Animation       | GSAP + Motion                |
-| Icons           | Lucide React                 |
-| Theme           | next-themes                  |
+| Layer         | Technology                   |
+| ------------- | ---------------------------- |
+| Framework     | React 19                     |
+| Build Tool    | Vite 8                       |
+| Styling       | Tailwind CSS v4              |
+| Routing       | react-router-dom v7          |
+| 3D / Graphics | Three.js + React Three Fiber |
+| Animation     | GSAP + Motion                |
+| Icons         | Lucide React                 |
+| Theme         | next-themes                  |
 
 ### Backend
 
-| Layer           | Technology                   |
-| --------------- | ---------------------------- |
-| Framework       | Laravel 12                   |
-| Language        | PHP 8.2+                     |
-| Database        | MySQL                        |
-| Authentication  | Laravel Sanctum ^4.3         |
-| API             | RESTful JSON API             |
+| Layer          | Technology           |
+| -------------- | -------------------- |
+| Framework      | Laravel 12           |
+| Language       | PHP 8.2+             |
+| Database       | MySQL                |
+| Authentication | Laravel Sanctum ^4.3 |
+| API            | RESTful JSON API     |
 
 ---
 
 ## 📡 API Endpoints
 
-| Method | Endpoint                  | Description                    | Auth Required |
-| ------ | ------------------------- | ------------------------------ | ------------- |
-| GET    | `/api/health`             | Health check                   | No            |
-| POST   | `/api/register`           | Register new user              | No            |
-| POST   | `/api/login`              | Login user                     | No            |
-| GET    | `/api/user`               | Get current user               | Yes           |
-| POST   | `/api/logout`             | Logout user                    | Yes           |
-| PUT    | `/api/user/profile`       | Update profile                 | Yes           |
-| PUT    | `/api/user/password`      | Change password                | Yes           |
-| GET    | `/api/products`           | List products                  | No            |
-| POST   | `/api/products`           | Create product                 | No*           |
-| PUT    | `/api/products/{id}`      | Update product                 | No*           |
-| DELETE | `/api/products/{id}`      | Delete product                 | No*           |
-| GET    | `/api/services`           | List services                  | No            |
-| POST   | `/api/services`           | Create service                 | No*           |
-| PUT    | `/api/services/{id}`      | Update service                 | No*           |
-| DELETE | `/api/services/{id}`      | Delete service                 | No*           |
-| GET    | `/api/pricing`            | List pricing plans             | No            |
-| POST   | `/api/pricing`            | Create pricing plan            | No*           |
-| PUT    | `/api/pricing/{id}`       | Update pricing plan            | No*           |
-| DELETE | `/api/pricing/{id}`       | Delete pricing plan            | No*           |
+| Method | Endpoint             | Description         | Auth Required |
+| ------ | -------------------- | ------------------- | ------------- |
+| GET    | `/api/health`        | Health check        | No            |
+| POST   | `/api/register`      | Register new user   | No            |
+| POST   | `/api/login`         | Login user          | No            |
+| GET    | `/api/user`          | Get current user    | Yes           |
+| POST   | `/api/logout`        | Logout user         | Yes           |
+| PUT    | `/api/user/profile`  | Update profile      | Yes           |
+| PUT    | `/api/user/password` | Change password     | Yes           |
+| GET    | `/api/products`      | List products       | No            |
+| POST   | `/api/products`      | Create product      | No\*          |
+| PUT    | `/api/products/{id}` | Update product      | No\*          |
+| DELETE | `/api/products/{id}` | Delete product      | No\*          |
+| GET    | `/api/services`      | List services       | No            |
+| POST   | `/api/services`      | Create service      | No\*          |
+| PUT    | `/api/services/{id}` | Update service      | No\*          |
+| DELETE | `/api/services/{id}` | Delete service      | No\*          |
+| GET    | `/api/pricing`       | List pricing plans  | No            |
+| POST   | `/api/pricing`       | Create pricing plan | No\*          |
+| PUT    | `/api/pricing/{id}`  | Update pricing plan | No\*          |
+| DELETE | `/api/pricing/{id}`  | Delete pricing plan | No\*          |
 
-\* *Will be protected in Phase 16*
+\* _Will be protected in Phase 16_
 
 ---
 
@@ -304,7 +305,6 @@ See `PROJECT_PLAN.md` → "Future Task — Deploy to Real Host" for detailed dep
 ## 🔗 Related Documentation
 
 - **PROJECT_PLAN.md** — Detailed project roadmap, phase-by-phase implementation notes, and architectural decisions
-- **CLAUDE.md** — Project workflow rules and development guidelines
 - **editorial-backend** — Separate repository for Laravel REST API
 
 ---
