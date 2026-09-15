@@ -1,49 +1,8 @@
 import { ArrowUpRight, ArrowDownRight, TrendingUp } from "lucide-react";
-
-const products = [
-  {
-    name: "Premium Analytics Dashboard",
-    category: "Software",
-    revenue: "$24,892",
-    orders: 156,
-    growth: "+15.3%",
-    trend: "up",
-  },
-  {
-    name: "Business Consulting Package",
-    category: "Services",
-    revenue: "$18,420",
-    orders: 42,
-    growth: "+8.7%",
-    trend: "up",
-  },
-  {
-    name: "Enterprise Solution",
-    category: "Software",
-    revenue: "$31,256",
-    orders: 28,
-    growth: "-2.4%",
-    trend: "down",
-  },
-  {
-    name: "Marketing Strategy Kit",
-    category: "Services",
-    revenue: "$12,890",
-    orders: 87,
-    growth: "+22.1%",
-    trend: "up",
-  },
-  {
-    name: "Development Tools Suite",
-    category: "Software",
-    revenue: "$9,345",
-    orders: 134,
-    growth: "+5.2%",
-    trend: "up",
-  },
-];
+import { MockTopProducts } from "../../data/exampleData";
 
 export default function PerformanceTable() {
+  const products = MockTopProducts;
   return (
     <div className="bg-primary-white dark:bg-primary-dark-card rounded-lg border border-primary-black/10 dark:border-primary-white/10 overflow-hidden mb-8">
       <div className="p-6 border-b border-primary-black/10 dark:border-primary-white/10">

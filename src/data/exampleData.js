@@ -156,3 +156,150 @@ export const MockProfile = {
   city: "Kurken Island",
   country: "Sardonica",
 };
+
+// Dashboard Overview Mock Data
+export const MockDashboardStats = [
+  {
+    label: "Total Revenue",
+    value: "$124,592",
+    change: "+12.5%",
+    trend: "up",
+    color: "bg-primary-orange-strong",
+  },
+  {
+    label: "Active Users",
+    value: "8,234",
+    change: "+8.2%",
+    trend: "up",
+    color: "bg-primary-purple-strong",
+  },
+  {
+    label: "Total Orders",
+    value: "1,429",
+    change: "-2.4%",
+    trend: "down",
+    color: "bg-primary-sage-strong",
+  },
+  {
+    label: "Conversion Rate",
+    value: "3.24%",
+    change: "0.0%",
+    trend: "neutral",
+    color: "bg-primary-black-strong dark:bg-primary-grey-strong",
+  },
+];
+
+export const MockDashboardActivities = [
+  {
+    user: "Sarah Johnson",
+    action: "Completed checkout",
+    time: "2 minutes ago",
+    icon: "CreditCard",
+    color: "bg-primary-orange-strong"
+  },
+  {
+    user: "Michael Chen",
+    action: "Added 3 items to cart",
+    time: "12 minutes ago",
+    icon: "Package",
+    color: "bg-primary-purple-strong"
+  },
+  {
+    user: "Emma Williams",
+    action: "Updated profile settings",
+    time: "28 minutes ago",
+    icon: "Settings",
+    color: "bg-primary-sage-strong"
+  },
+  {
+    user: "James Martinez",
+    action: "Registered new account",
+    time: "1 hour ago",
+    icon: "User",
+    color: "bg-primary-black-strong dark:bg-primary-grey-strong"
+  },
+  {
+    user: "Olivia Brown",
+    action: "Requested refund",
+    time: "2 hours ago",
+    icon: "AlertCircle",
+    color: "bg-primary-orange-strong"
+  },
+  {
+    user: "David Lee",
+    action: "Left product review",
+    time: "3 hours ago",
+    icon: "Package",
+    color: "bg-primary-purple-strong"
+  },
+];
+
+export const MockPerformanceMetrics = [
+  { category: "Product Sales", value: 45, icon: "ShoppingCart", color: "bg-primary-orange-strong" },
+  { category: "User Growth", value: 62, icon: "Users", color: "bg-primary-purple-strong" },
+  { category: "Engagement", value: 78, icon: "Activity", color: "bg-primary-sage-strong" },
+  { category: "Market Share", value: 51, icon: "TrendingUp", color: "bg-primary-black-strong dark:bg-primary-grey-strong" },
+];
+
+export const MockKeyMetrics = [
+  { label: "Avg. Order Value", value: "$156.42", change: "+5.2%" },
+  { label: "Customer Retention", value: "87.3%", change: "+2.1%" },
+  { label: "Cart Abandonment", value: "22.5%", change: "-3.8%" },
+  { label: "Repeat Customers", value: "43.2%", change: "+7.4%" },
+];
+
+export const MockTopProducts = [
+  {
+    name: "Premium Analytics Dashboard",
+    category: "Software",
+    revenue: "$24,892",
+    orders: 156,
+    growth: "+15.3%",
+    trend: "up",
+  },
+  {
+    name: "Business Consulting Package",
+    category: "Services",
+    revenue: "$18,420",
+    orders: 42,
+    growth: "+8.7%",
+    trend: "up",
+  },
+  {
+    name: "Enterprise Solution",
+    category: "Software",
+    revenue: "$31,256",
+    orders: 28,
+    growth: "-2.4%",
+    trend: "down",
+  },
+  {
+    name: "Marketing Strategy Kit",
+    category: "Services",
+    revenue: "$12,890",
+    orders: 87,
+    growth: "+22.1%",
+    trend: "up",
+  },
+  {
+    name: "Development Tools Suite",
+    category: "Software",
+    revenue: "$9,345",
+    orders: 134,
+    growth: "+5.2%",
+    trend: "up",
+  },
+];
+
+// Analytics Chart Mock Data
+export const MockAnalyticsChartData = [
+  { month: "Jan", revenue: 18234, users: 612 },
+  { month: "Feb", revenue: 22156, users: 745 },
+  { month: "Mar", revenue: 25891, users: 891 },
+  { month: "Apr", revenue: 22156, users: 1023 },
+  { month: "May", revenue: 22156, users: 1156 },
+  { month: "Jun", revenue: 34567, users: 1289 },
+  { month: "Jul", revenue: 37891, users: 1434 },
+  { month: "Aug", revenue: 41234, users: 1567 },
+  { month: "Sep", revenue: 37891, users: 1723 },
+];

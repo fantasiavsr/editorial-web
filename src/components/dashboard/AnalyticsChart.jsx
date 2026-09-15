@@ -1,28 +1,9 @@
 import { useEffect, useRef } from "react";
-
-// Mock data for the chart
-const generateChartData = () => {
-  const months = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-  ];
-  return months.map((month, idx) => ({
-    month,
-    revenue: 15000 + Math.random() * 25000 + idx * 3000,
-    users: 500 + Math.random() * 1500 + idx * 200,
-  }));
-};
+import { MockAnalyticsChartData } from "../../data/exampleData";
 
 export default function AnalyticsChart() {
   const canvasRef = useRef(null);
-  const data = generateChartData();
+  const data = MockAnalyticsChartData;
 
   useEffect(() => {
     const canvas = canvasRef.current;

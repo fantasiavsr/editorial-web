@@ -1,37 +1,8 @@
 import { TrendingUp, TrendingDown, Minus } from "lucide-react";
-
-const stats = [
-  {
-    label: "Total Revenue",
-    value: "$124,592",
-    change: "+12.5%",
-    trend: "up",
-    color: "bg-primary-orange-strong",
-  },
-  {
-    label: "Active Users",
-    value: "8,234",
-    change: "+8.2%",
-    trend: "up",
-    color: "bg-primary-purple-strong",
-  },
-  {
-    label: "Total Orders",
-    value: "1,429",
-    change: "-2.4%",
-    trend: "down",
-    color: "bg-primary-sage-strong",
-  },
-  {
-    label: "Conversion Rate",
-    value: "3.24%",
-    change: "0.0%",
-    trend: "neutral",
-    color: "bg-primary-black-strong dark:bg-primary-grey-strong",
-  },
-];
+import { MockDashboardStats } from "../../data/exampleData";
 
 export default function StatOverview() {
+  const stats = MockDashboardStats;
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-8">
       {stats.map((stat, idx) => (

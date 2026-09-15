@@ -1,13 +1,18 @@
 import { ShoppingCart, Users, TrendingUp, Activity, ArrowUpRight, ArrowDownRight } from "lucide-react";
+import { MockPerformanceMetrics, MockKeyMetrics } from "../../data/exampleData";
 
-const performanceData = [
-  { category: "Product Sales", value: 45, icon: ShoppingCart, color: "bg-primary-orange-strong" },
-  { category: "User Growth", value: 62, icon: Users, color: "bg-primary-purple-strong" },
-  { category: "Engagement", value: 78, icon: Activity, color: "bg-primary-sage-strong" },
-  { category: "Market Share", value: 51, icon: TrendingUp, color: "bg-primary-black-strong dark:bg-primary-grey-strong" },
-];
+const iconMap = {
+  ShoppingCart,
+  Users,
+  TrendingUp,
+  Activity,
+};
 
 export default function PerformanceChart() {
+  const performanceData = MockPerformanceMetrics.map(metric => ({
+    ...metric,
+    icon: iconMap[metric.icon]
+  }));
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
       {/* Performance Metrics */}
@@ -51,12 +56,7 @@ export default function PerformanceChart() {
           Key Metrics
         </h3>
         <div className="space-y-4">
-          {[
-            { label: "Avg. Order Value", value: "$156.42", change: "+5.2%" },
-            { label: "Customer Retention", value: "87.3%", change: "+2.1%" },
-            { label: "Cart Abandonment", value: "22.5%", change: "-3.8%" },
-            { label: "Repeat Customers", value: "43.2%", change: "+7.4%" },
-          ].map((metric, idx) => (
+          {MockKeyMetrics.map((metric, idx) => (
             <div key={idx} className="flex items-center justify-between pb-4 border-b border-primary-black/10 dark:border-primary-white/10 last:border-b-0 last:pb-0">
               <span className="text-sm text-primary-black/60 dark:text-primary-white/60">
                 {metric.label}
