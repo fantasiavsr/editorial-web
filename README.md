@@ -24,10 +24,7 @@
 
 | Feature                        | Details                                               |
 | ------------------------------ | ----------------------------------------------------- |
-| 🌐 **Interactive 3D**          | React Three Fiber & Drei                              |
-| ✨ **Smooth Animations**       | GSAP powered scroll effects                           |
 | 🌓 **Dark / Light Mode**       | `next-themes` + Tailwind v4                           |
-| 📱 **Responsive Design**       | Landing, products, pricing, services, about pages     |
 | 🔗 **Hash Routing**            | Product, pricing, and service showcase pages          |
 | 🔐 **Authentication**          | Laravel Sanctum personal access tokens                |
 | 📊 **Admin Dashboard**         | CRUD management for products, services, pricing plans |
