@@ -8,17 +8,17 @@
 
 ## Current Status
 
-**Current Phase:** Phase 13 — Implement Current User & Logout
+**Current Phase:** Phase 14 — Integrate Profile Authentication
 **Status:** NOT STARTED
-**Last Completed:** Phase 12 — Implement Login (2026-09-14)
-**Next:** Phase 13 — Implement Current User & Logout
+**Last Completed:** Phase 13 — Implement Current User & Logout (2026-09-15)
+**Next:** Phase 14 — Integrate Profile Authentication
 **Blockers:** None
 
 | Phase Range | Status |
 | ----------- | ------ |
-| 0–11        | ✅ Complete |
-| 12          | ⬜ Current |
-| 13–17       | ⬜ Pending |
+| 0–12        | ✅ Complete |
+| 13          | ✅ Complete |
+| 14–17       | ⬜ Pending |
 | Deployment  | ⬜ Future |
 
 ---
@@ -118,12 +118,12 @@ All API functions accept optional `signal: AbortSignal` for timeout/cancellation
 | ------ | -------- | ---------- | ---- |
 | GET | `/api/health` | closure | No |
 | POST | `/api/register` | `AuthController@register` | No |
+| POST | `/api/login` | `AuthController@login` | No |
+| GET | `/api/user` | `AuthController@user` | Yes (sanctum) |
+| POST | `/api/logout` | `AuthController@logout` | Yes (sanctum) |
 | GET/POST/PUT/DELETE | `/api/products` | `ProductController` | No (Phase 16) |
 | GET/POST/PUT/DELETE | `/api/services` | `ServiceController` | No (Phase 16) |
 | GET/POST/PUT/DELETE | `/api/pricing` | `PricingPlanController` | No (Phase 16) |
-| POST | `/api/login` | — | ⬜ Phase 12 |
-| GET | `/api/user` | — | ⬜ Phase 13 |
-| POST | `/api/logout` | — | ⬜ Phase 13 |
 
 ### Local Development
 
@@ -232,6 +232,8 @@ Status: ✅ COMPLETE (Backend + Frontend)
 - [x] **Phase 9** — Update User Database & Model (completed 2026-09-14)
 - [x] **Phase 10** — Configure Authentication Infrastructure (completed 2026-09-14)
 - [x] **Phase 11** — Implement Registration (completed 2026-09-14)
+- [x] **Phase 12** — Implement Login (completed 2026-09-14)
+- [x] **Phase 13** — Implement Current User & Logout (completed 2026-09-15)
 
 ## Next Phase
 
@@ -411,29 +413,43 @@ Vercel mock deployment is already working as intended:
 - ✅ Error handling matches Register pattern
 - ✅ Token storage uses same localStorage keys
 
-### Phase 13 — Implement Current User & Logout — NOT STARTED
+### Phase 13 — Implement Current User & Logout ✅
 
 #### Backend
 
-- Add `GET /api/user` endpoint that returns the authenticated user's data.
-- Add `POST /api/logout` endpoint that revokes the current Sanctum token.
-- Protect both endpoints with Sanctum `auth:sanctum` middleware.
-- Return appropriate status codes for unauthenticated requests.
+- Added `AuthController::user()` method that returns the authenticated user's data
+- Added `AuthController::logout()` method that revokes the current Sanctum access token via `currentAccessToken()->delete()`
+- Protected both endpoints with `auth:sanctum` middleware in a route group
+- `GET /api/user` returns `{ user: {...} }` for authenticated requests
+- `POST /api/logout` returns `{ message: "Logged out successfully" }` and deletes the token
 
 #### Frontend
 
-- Add `getUser()` and `logout()` functions to `src/services/api/auth.js`.
-- On app load, check for stored token and fetch current user.
-- On logout, revoke token via API and clear local state.
-- Redirect to `/login` after logout.
+- Added `getUser()` and `logout()` functions to `src/services/api/auth.js`
+- Updated `request()` helper to accept `includeAuth` parameter for Bearer token injection
+- Both functions send `Authorization: Bearer <token>` header from localStorage
+- Integrated logout into `src/components/Navbar.jsx` with authentication state management
+- Navbar dynamically shows "Login" or "Logout" based on `isAuthenticated` from localStorage
+- Logout clears both `authToken` and `isAuthenticated` from localStorage and redirects to `/login`
+- Added mobile menu support for logout functionality
 
 #### Verification
 
-- Fetch user with valid token
-- Fetch user with expired/missing token
-- Logout revokes token
-- Frontend production build
-- Laravel tests
+- ✅ Backend routes registered: `GET /api/user` and `POST /api/logout` with `auth:sanctum` middleware
+- ✅ Laravel tests pass (2 passed, 2 assertions)
+- ✅ Frontend production build succeeds
+- ✅ Navbar correctly toggles between Login/Logout buttons
+- ✅ Logout handler clears local state and navigates to login page
+
+#### Files Changed
+
+**Backend:**
+- `app/Http/Controllers/AuthController.php` — added `user()` and `logout()` methods
+- `routes/api.php` — added protected route group with `auth:sanctum` middleware
+
+**Frontend:**
+- `src/services/api/auth.js` — added `getUser()` and `logout()` with Authorization headers
+- `src/components/Navbar.jsx` — integrated logout, authentication state, and conditional UI
 
 Next: Phase 14 — Integrate Profile Authentication
 
@@ -607,11 +623,9 @@ Never run `migrate:fresh`, destructive seeders, or force pushes against a produc
 ## Known Issues
 
 - **API fallback on mutations**: `fetchFromApiWithFallback` silently falls back to mock data on create/update/delete failures. A failed backend mutation appears successful to the user (mock array is modified, database is not).
-- **Login not connected**: `Login.jsx` uses `setTimeout` simulation, not the real API endpoint.
-- **No Authorization header**: Auth token is stored in localStorage after registration but never sent with API requests. Will be resolved in Phase 15.
+- **Authorization header only on auth endpoints**: Auth token is sent with `getUser()` and `logout()` requests, but not yet with CRUD API requests (products/services/pricing). Will be resolved in Phase 15.
 - **Dashboard routes unprotected**: All dashboard routes are public until Phase 16.
 - **ProtectedRoute inactive**: Component exists but is commented out in `App.jsx` routing.
-- **Navigation inconsistency**: Register navigates to `/dashboard`, Login navigates to `/` (Login is simulated).
 - **Console logging in production**: `data.js` logs data source info to console on every page load.
 - **`apiConfig.timeout` unused**: Defined in `config.js` but timeout logic lives separately in `data.js`.
 

@@ -3,6 +3,7 @@ import { useTheme } from "next-themes";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Menu, X, ChevronDown } from "lucide-react";
 import ThemeToggle from "./ThemeToggle";
+import { logout } from "../services/api/auth";
 
 export default function Navbar({ title, links }) {
   const { theme } = useTheme();
@@ -23,6 +24,28 @@ export default function Navbar({ title, links }) {
   const isAuthPage = ["/login", "/register", "/forgot-password"].includes(
     location.pathname,
   );
+
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    setIsAuthenticated(localStorage.getItem("isAuthenticated") === "true");
+  }, [location.pathname]);
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      localStorage.removeItem("authToken");
+      localStorage.removeItem("isAuthenticated");
+      setIsAuthenticated(false);
+      navigate("/login");
+    } catch (err) {
+      console.error("Logout failed:", err);
+      localStorage.removeItem("authToken");
+      localStorage.removeItem("isAuthenticated");
+      setIsAuthenticated(false);
+      navigate("/login");
+    }
+  };
 
   useEffect(() => {
     if (disableHide) return;
@@ -122,12 +145,21 @@ export default function Navbar({ title, links }) {
             >
               Dashboard
             </button>
-            <button
-              onClick={() => navigate("/login")}
-              className="hidden md:inline-flex px-4 py-2 rounded-lg border border-primary-orange/75 dark:border-primary-white/50 hover:bg-primary-black/5 dark:hover:bg-primary-white/5 text-sm md:text-base font-medium text-primary-black dark:text-primary-white transition-colors"
-            >
-              Login
-            </button>
+            {isAuthenticated ? (
+              <button
+                onClick={handleLogout}
+                className="hidden md:inline-flex px-4 py-2 rounded-lg border border-primary-orange/75 dark:border-primary-white/50 hover:bg-primary-black/5 dark:hover:bg-primary-white/5 text-sm md:text-base font-medium text-primary-black dark:text-primary-white transition-colors"
+              >
+                Logout
+              </button>
+            ) : (
+              <button
+                onClick={() => navigate("/login")}
+                className="hidden md:inline-flex px-4 py-2 rounded-lg border border-primary-orange/75 dark:border-primary-white/50 hover:bg-primary-black/5 dark:hover:bg-primary-white/5 text-sm md:text-base font-medium text-primary-black dark:text-primary-white transition-colors"
+              >
+                Login
+              </button>
+            )}
           </>
         )}
         <ThemeToggle />
@@ -176,20 +208,37 @@ export default function Navbar({ title, links }) {
               Dashboard
             </button>
             {!isAuthPage && (
-              <button
-                onClick={() => {
-                  navigate("/login");
-                  setMobileOpen(false);
-                }}
-                className="text-lg font-medium text-primary-black dark:text-primary-white hover:text-primary-orange transition-smooth text-left py-1"
-                style={{
-                  animation: "staggerReveal 0.3s ease-out forwards",
-                  animationDelay: `${links.length * 0.05}s`,
-                  opacity: 0,
-                }}
-              >
-                Login
-              </button>
+              isAuthenticated ? (
+                <button
+                  onClick={() => {
+                    handleLogout();
+                    setMobileOpen(false);
+                  }}
+                  className="text-lg font-medium text-primary-black dark:text-primary-white hover:text-primary-orange transition-smooth text-left py-1"
+                  style={{
+                    animation: "staggerReveal 0.3s ease-out forwards",
+                    animationDelay: `${links.length * 0.05}s`,
+                    opacity: 0,
+                  }}
+                >
+                  Logout
+                </button>
+              ) : (
+                <button
+                  onClick={() => {
+                    navigate("/login");
+                    setMobileOpen(false);
+                  }}
+                  className="text-lg font-medium text-primary-black dark:text-primary-white hover:text-primary-orange transition-smooth text-left py-1"
+                  style={{
+                    animation: "staggerReveal 0.3s ease-out forwards",
+                    animationDelay: `${links.length * 0.05}s`,
+                    opacity: 0,
+                  }}
+                >
+                  Login
+                </button>
+              )
             )}
           </div>
         )}

@@ -69,7 +69,7 @@ export default function ForgotPassword() {
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full flex items-center justify-center gap-2 py-3 rounded-lg bg-primary-orange text-primary-white font-medium hover:bg-primary-black dark:hover:bg-primary-white dark:hover:text-primary-black transition-all duration-700 hover:scale-105 disabled:opacity-70 disabled:cursor-not-allowed"
+                  className="w-full flex items-center justify-center gap-2 py-3 rounded-lg bg-primary-orange text-primary-white font-medium hover:bg-primary-black dark:hover:bg-primary-white dark:hover:text-primary-black transition-all duration-700 disabled:opacity-70 disabled:cursor-not-allowed"
                 >
                   {isLoading ? "Sending link..." : "Send Reset Link"}
                   {!isLoading && <ArrowRight size={18} />}

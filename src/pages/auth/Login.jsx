@@ -23,7 +23,9 @@ export default function Login() {
       localStorage.setItem("isAuthenticated", "true");
       navigate("/dashboard");
     } catch (err) {
-      const validation = Object.values(err.errors || {}).flat().join(" ");
+      const validation = Object.values(err.errors || {})
+        .flat()
+        .join(" ");
       setError(validation || err.message || "Login failed");
     } finally {
       setIsLoading(false);
@@ -53,10 +55,7 @@ export default function Login() {
           {error && (
             <div className="mb-6 p-3 rounded-lg bg-red-100 dark:bg-red-900/20 text-red-700 dark:text-red-300">
               {error}
-              <button
-                onClick={() => setError("")}
-                className="ml-3 underline"
-              >
+              <button onClick={() => setError("")} className="ml-3 underline">
                 Dismiss
               </button>
             </div>
@@ -128,7 +127,7 @@ export default function Login() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full flex items-center justify-center gap-2 py-3 rounded-lg bg-primary-orange text-primary-white font-medium hover:bg-primary-black dark:hover:bg-primary-white dark:hover:text-primary-black transition-all duration-700 hover:scale-105 disabled:opacity-70 disabled:cursor-not-allowed"
+              className="w-full flex items-center justify-center gap-2 py-3 rounded-lg bg-primary-orange text-primary-white font-medium hover:bg-primary-black dark:hover:bg-primary-white dark:hover:text-primary-black transition-all duration-700  disabled:opacity-70 disabled:cursor-not-allowed"
             >
               {isLoading ? "Signing in..." : "Sign In"}
               {!isLoading && <ArrowRight size={18} />}
