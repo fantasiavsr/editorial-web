@@ -59,7 +59,22 @@ function App() {
           <Route path="/pricing" element={<PricingPage />} />
           <Route path="/services" element={<ServicePage />} />
 
-          {/* Dashboard 1 - Public */}
+          {/* Dashboard 1 - Public (uses mock data fallback) */}
+          {/* TODO Phase 15/16: Wrap with ProtectedRoute for authentication */}
+          {/* All dashboard routes remain public during development. */}
+          {/* Profile page fetches real user data if authenticated, falls back to mock data otherwise. */}
+
+          {/* Example: Uncomment to enable authentication on dashboard routes
+          <Route element={<ProtectedRoute />}>
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/dashboard/profiles" element={<DashboardProfiles />} />
+            <Route path="/dashboard/products" element={<DashboardProducts />} />
+            <Route path="/dashboard/services" element={<DashboardServices />} />
+            <Route path="/dashboard/pricing" element={<DashboardPricing />} />
+            <Route path="/dashboard/settings" element={<DashboardSettings />} />
+          </Route>
+          */}
+
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/dashboard/profiles" element={<DashboardProfiles />} />
           <Route path="/dashboard/products" element={<DashboardProducts />} />

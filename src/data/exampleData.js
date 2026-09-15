@@ -147,3 +147,12 @@ export const MockProducts = [
     description: "Minimalist aluminum phone stand for desk.",
   },
 ];
+
+export const MockProfile = {
+  name: "Sarah Johnson",
+  email: "sarah@atelier.com",
+  phone: "+1 (555) 234-5678",
+  address: "142 Design District",
+  city: "San Francisco",
+  country: "United States",
+};

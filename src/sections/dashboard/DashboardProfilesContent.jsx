@@ -14,18 +14,20 @@ import {
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { getUser, updateProfile, changePassword } from "../../services/api/auth";
+import { MockProfile } from "../../data/exampleData";
 
 export default function DashboardProfilesContent() {
   const [profile, setProfile] = useState({
-    fullName: "",
-    email: "",
-    phone: "",
-    address: "",
-    city: "",
-    country: "",
+    fullName: MockProfile.name,
+    email: MockProfile.email,
+    phone: MockProfile.phone,
+    address: MockProfile.address,
+    city: MockProfile.city,
+    country: MockProfile.country,
   });
 
   const [isLoading, setIsLoading] = useState(true);
+  const [usingMockData, setUsingMockData] = useState(false);
 
   const [editMode, setEditMode] = useState(false);
   const [saveStatus, setSaveStatus] = useState({ msg: "", type: "" });
@@ -61,9 +63,19 @@ export default function DashboardProfilesContent() {
         setInitialProfile(profileData);
         setIsLoading(false);
       } catch (err) {
-        console.error("Failed to fetch user profile:", err);
+        console.log("Using mock data - not authenticated or API unavailable");
+        // Use mock data as fallback - matches pattern of other dashboard pages
+        const mockProfileData = {
+          fullName: MockProfile.name,
+          email: MockProfile.email,
+          phone: MockProfile.phone,
+          address: MockProfile.address,
+          city: MockProfile.city,
+          country: MockProfile.country,
+        };
+        setProfile(mockProfileData);
+        setInitialProfile(mockProfileData);
         setIsLoading(false);
-        navigate("/login");
       }
     };
 
@@ -96,7 +108,10 @@ export default function DashboardProfilesContent() {
       setTimeout(() => setSaveStatus({ msg: "", type: "" }), 3000);
     } catch (err) {
       const validation = Object.values(err.errors || {}).flat().join(" ");
-      setSaveStatus({ msg: validation || err.message || "Failed to save profile", type: "error" });
+      setSaveStatus({
+        msg: validation || err.message || "Failed to save profile. Please login to update your profile.",
+        type: "error"
+      });
     }
   };
 
@@ -139,7 +154,10 @@ export default function DashboardProfilesContent() {
       setTimeout(() => setSecurityStatus({ msg: "", type: "" }), 3000);
     } catch (err) {
       const validation = Object.values(err.errors || {}).flat().join(" ");
-      setSecurityStatus({ msg: validation || err.message || "Failed to change password", type: "error" });
+      setSecurityStatus({
+        msg: validation || err.message || "Failed to change password. Please login to update your password.",
+        type: "error"
+      });
     }
   };
 

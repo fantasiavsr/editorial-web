@@ -633,9 +633,10 @@ Never run `migrate:fresh`, destructive seeders, or force pushes against a produc
 
 1. **Two independent repos** — `editorial-web` (React) and `editorial-backend` (Laravel), not a monorepo
 2. **Mock data is NEVER deleted** — always available as fallback
-3. **Data source switching via env var** — `VITE_DATA_SOURCE=mock|api`
-4. **Native fetch()** — no Axios, no React Query; all API functions accept `AbortSignal`
-5. **Dashboard CRUD pages first** — connected to services layer; public pages use inline data
+3. **Fallback mock data on fetch failure** — all dashboard pages must use mock data as fallback when API requests fail (not authenticated, API unavailable, network error). Pages remain accessible without authentication.
+4. **Data source switching via env var** — `VITE_DATA_SOURCE=mock|api`
+5. **Native fetch()** — no Axios, no React Query; all API functions accept `AbortSignal`
+6. **Dashboard CRUD pages first** — connected to services layer; public pages use inline data
 6. **Sanctum personal access tokens** — for auth, not Passport or Breeze
 7. **Role is backend-controlled** — never assignable from frontend data
 8. **Products was first API resource** — simplest schema, now fully connected
