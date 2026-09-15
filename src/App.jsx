@@ -83,18 +83,6 @@ function App() {
           <Route path="/dashboard/settings" element={<DashboardSettings />} />
           <Route path="/dashboard/easter" element={<Unauthorized />} />
 
-          {/* Dashboard 2 - Protected */}
-          {/* <Route element={<ProtectedRoute />}>
-            <Route path="/dashboard2">
-              <Route index element={<Dashboard2 />} />
-              <Route path="profiles" element={<Dashboard2Profiles />} />
-              <Route path="products" element={<Dashboard2Products />} />
-              <Route path="services" element={<Dashboard2Services />} />
-              <Route path="pricing" element={<Dashboard2Pricing />} />
-              <Route path="settings" element={<Dashboard2Settings />} />
-            </Route>
-          </Route> */}
-
           <Route path="/dashboard2">
             <Route index element={<Dashboard2 />} />
             <Route path="profiles" element={<Dashboard2Profiles />} />

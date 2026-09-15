@@ -13,7 +13,11 @@ import {
   X,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { getUser, updateProfile, changePassword } from "../../services/api/auth";
+import {
+  getUser,
+  updateProfile,
+  changePassword,
+} from "../../services/api/auth";
 import { MockProfile } from "../../data/exampleData";
 
 export default function DashboardProfilesContent() {
@@ -107,10 +111,15 @@ export default function DashboardProfilesContent() {
       setEditMode(false);
       setTimeout(() => setSaveStatus({ msg: "", type: "" }), 3000);
     } catch (err) {
-      const validation = Object.values(err.errors || {}).flat().join(" ");
+      const validation = Object.values(err.errors || {})
+        .flat()
+        .join(" ");
       setSaveStatus({
-        msg: validation || err.message || "Failed to save profile. Please login to update your profile.",
-        type: "error"
+        msg:
+          validation ||
+          err.message ||
+          "Failed to save profile. Please login to update your profile.",
+        type: "error",
       });
     }
   };
@@ -153,10 +162,15 @@ export default function DashboardProfilesContent() {
       });
       setTimeout(() => setSecurityStatus({ msg: "", type: "" }), 3000);
     } catch (err) {
-      const validation = Object.values(err.errors || {}).flat().join(" ");
+      const validation = Object.values(err.errors || {})
+        .flat()
+        .join(" ");
       setSecurityStatus({
-        msg: validation || err.message || "Failed to change password. Please login to update your password.",
-        type: "error"
+        msg:
+          validation ||
+          err.message ||
+          "Failed to change password. Please login to update your password.",
+        type: "error",
       });
     }
   };
@@ -181,9 +195,12 @@ export default function DashboardProfilesContent() {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-[400px]">
-        <div className="text-primary-black/60 dark:text-primary-white/60">
-          Loading profile...
+      <div className="min-h-screen text-primary-black dark:text-primary-white font-sans transition-colors flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-orange mx-auto mb-4"></div>
+          <p className="text-primary-black/60 dark:text-primary-white/60">
+            Loading profile...
+          </p>
         </div>
       </div>
     );
@@ -482,12 +499,12 @@ export default function DashboardProfilesContent() {
                   Change Password
                 </button>
 
-                <button
+                {/* <button
                   onClick={() => navigate("/dashboard/easter")}
                   className="w-full md:w-auto px-4 py-2 rounded-lg border border-primary-black/10 dark:border-primary-white/10 text-primary-black dark:text-primary-white font-medium hover:bg-primary-black/5 dark:hover:bg-primary-white/5 transition-all duration-300"
                 >
                   Easter Egg
-                </button>
+                </button> */}
               </div>
             </div>
           </section>
