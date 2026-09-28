@@ -5,7 +5,7 @@
  * All functions use fetch() and return promises.
  */
 
-import { getApiEndpoint, handleApiResponse, apiConfig } from './config.js';
+import { getApiEndpoint, handleApiResponse, getHeaders } from './config.js';
 
 /**
  * Fetch all pricing plans from the API
@@ -15,7 +15,7 @@ import { getApiEndpoint, handleApiResponse, apiConfig } from './config.js';
 export async function getPricingPlans(signal) {
   const response = await fetch(getApiEndpoint('/pricing'), {
     method: 'GET',
-    headers: apiConfig.headers,
+    headers: getHeaders(),
     signal,
   });
   const data = await handleApiResponse(response);
@@ -31,7 +31,7 @@ export async function getPricingPlans(signal) {
 export async function getPricingPlan(id, signal) {
   const response = await fetch(getApiEndpoint(`/pricing/${id}`), {
     method: 'GET',
-    headers: apiConfig.headers,
+    headers: getHeaders(),
     signal,
   });
   const data = await handleApiResponse(response);
@@ -47,7 +47,7 @@ export async function getPricingPlan(id, signal) {
 export async function createPricingPlan(pricingData, signal) {
   const response = await fetch(getApiEndpoint('/pricing'), {
     method: 'POST',
-    headers: apiConfig.headers,
+    headers: getHeaders(),
     body: JSON.stringify(pricingData),
     signal,
   });
@@ -65,7 +65,7 @@ export async function createPricingPlan(pricingData, signal) {
 export async function updatePricingPlan(id, pricingData, signal) {
   const response = await fetch(getApiEndpoint(`/pricing/${id}`), {
     method: 'PUT',
-    headers: apiConfig.headers,
+    headers: getHeaders(),
     body: JSON.stringify(pricingData),
     signal,
   });
@@ -82,7 +82,7 @@ export async function updatePricingPlan(id, pricingData, signal) {
 export async function deletePricingPlan(id, signal) {
   const response = await fetch(getApiEndpoint(`/pricing/${id}`), {
     method: 'DELETE',
-    headers: apiConfig.headers,
+    headers: getHeaders(),
     signal,
   });
   return handleApiResponse(response);

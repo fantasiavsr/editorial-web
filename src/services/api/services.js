@@ -5,7 +5,7 @@
  * All functions use fetch() and return promises.
  */
 
-import { getApiEndpoint, handleApiResponse, apiConfig } from './config.js';
+import { getApiEndpoint, handleApiResponse, getHeaders } from './config.js';
 
 /**
  * Fetch all services from the API
@@ -15,7 +15,7 @@ import { getApiEndpoint, handleApiResponse, apiConfig } from './config.js';
 export async function getServices(signal) {
   const response = await fetch(getApiEndpoint('/services'), {
     method: 'GET',
-    headers: apiConfig.headers,
+    headers: getHeaders(),
     signal,
   });
   const data = await handleApiResponse(response);
@@ -31,7 +31,7 @@ export async function getServices(signal) {
 export async function getService(id, signal) {
   const response = await fetch(getApiEndpoint(`/services/${id}`), {
     method: 'GET',
-    headers: apiConfig.headers,
+    headers: getHeaders(),
     signal,
   });
   const data = await handleApiResponse(response);
@@ -47,7 +47,7 @@ export async function getService(id, signal) {
 export async function createService(serviceData, signal) {
   const response = await fetch(getApiEndpoint('/services'), {
     method: 'POST',
-    headers: apiConfig.headers,
+    headers: getHeaders(),
     body: JSON.stringify(serviceData),
     signal,
   });
@@ -65,7 +65,7 @@ export async function createService(serviceData, signal) {
 export async function updateService(id, serviceData, signal) {
   const response = await fetch(getApiEndpoint(`/services/${id}`), {
     method: 'PUT',
-    headers: apiConfig.headers,
+    headers: getHeaders(),
     body: JSON.stringify(serviceData),
     signal,
   });
@@ -82,7 +82,7 @@ export async function updateService(id, serviceData, signal) {
 export async function deleteService(id, signal) {
   const response = await fetch(getApiEndpoint(`/services/${id}`), {
     method: 'DELETE',
-    headers: apiConfig.headers,
+    headers: getHeaders(),
     signal,
   });
   return handleApiResponse(response);

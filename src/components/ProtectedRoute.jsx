@@ -1,16 +1,19 @@
-import { Navigate } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
-// Mock authentication check - replace with your actual auth logic
-const isAuthenticated = () => {
-  // Check if user is logged in (e.g., check localStorage, context, etc.)
-  return localStorage.getItem("isAuthenticated") === "true";
-};
+export default function ProtectedRoute() {
+  const { isAuthenticated, loading } = useAuth();
 
-export default function ProtectedRoute({ children }) {
-  if (!isAuthenticated()) {
-    // Redirect to login if not authenticated
+  // Show nothing while auth state is being validated
+  if (loading) {
+    return null;
+  }
+
+  // Redirect to login if not authenticated
+  if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
   }
 
-  return children;
+  // Render nested routes
+  return <Outlet />;
 }

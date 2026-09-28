@@ -18,6 +18,24 @@ export const apiConfig = {
 };
 
 /**
+ * Get headers with optional authentication token
+ * @param {boolean} includeAuth - Whether to include Authorization header
+ * @returns {Object} Headers object
+ */
+export function getHeaders(includeAuth = true) {
+  const headers = { ...apiConfig.headers };
+
+  if (includeAuth) {
+    const token = localStorage.getItem('authToken');
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
+  }
+
+  return headers;
+}
+
+/**
  * Helper to construct full API endpoint URLs
  */
 export function getApiEndpoint(path) {

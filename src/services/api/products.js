@@ -5,7 +5,7 @@
  * All functions use fetch() and return promises.
  */
 
-import { getApiEndpoint, handleApiResponse, apiConfig } from './config.js';
+import { getApiEndpoint, handleApiResponse, getHeaders } from './config.js';
 
 /**
  * Fetch all products from the API
@@ -15,7 +15,7 @@ import { getApiEndpoint, handleApiResponse, apiConfig } from './config.js';
 export async function getProducts(signal) {
   const response = await fetch(getApiEndpoint('/products'), {
     method: 'GET',
-    headers: apiConfig.headers,
+    headers: getHeaders(),
     signal,
   });
   const data = await handleApiResponse(response);
@@ -31,7 +31,7 @@ export async function getProducts(signal) {
 export async function getProduct(id, signal) {
   const response = await fetch(getApiEndpoint(`/products/${id}`), {
     method: 'GET',
-    headers: apiConfig.headers,
+    headers: getHeaders(),
     signal,
   });
   const data = await handleApiResponse(response);
@@ -47,7 +47,7 @@ export async function getProduct(id, signal) {
 export async function createProduct(productData, signal) {
   const response = await fetch(getApiEndpoint('/products'), {
     method: 'POST',
-    headers: apiConfig.headers,
+    headers: getHeaders(),
     body: JSON.stringify(productData),
     signal,
   });
@@ -65,7 +65,7 @@ export async function createProduct(productData, signal) {
 export async function updateProduct(id, productData, signal) {
   const response = await fetch(getApiEndpoint(`/products/${id}`), {
     method: 'PUT',
-    headers: apiConfig.headers,
+    headers: getHeaders(),
     body: JSON.stringify(productData),
     signal,
   });
@@ -82,7 +82,7 @@ export async function updateProduct(id, productData, signal) {
 export async function deleteProduct(id, signal) {
   const response = await fetch(getApiEndpoint(`/products/${id}`), {
     method: 'DELETE',
-    headers: apiConfig.headers,
+    headers: getHeaders(),
     signal,
   });
   return handleApiResponse(response);
