@@ -66,27 +66,15 @@ function App() {
             <Route path="/services" element={<ServicePage />} />
 
             {/* Admin Dashboard - Only accessible to admin role */}
-            <Route element={<RoleBasedRoute requiredRole="admin" />}>
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route
-                path="/dashboard/profiles"
-                element={<DashboardProfiles />}
-              />
-              <Route
-                path="/dashboard/products"
-                element={<DashboardProducts />}
-              />
-              <Route
-                path="/dashboard/services"
-                element={<DashboardServices />}
-              />
-              <Route path="/dashboard/pricing" element={<DashboardPricing />} />
-              <Route
-                path="/dashboard/settings"
-                element={<DashboardSettings />}
-              />
-              <Route path="/dashboard/easter" element={<Unauthorized />} />
-            </Route>
+            {/* <Route element={<RoleBasedRoute requiredRole="admin" />}> */}
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/dashboard/profiles" element={<DashboardProfiles />} />
+            <Route path="/dashboard/products" element={<DashboardProducts />} />
+            <Route path="/dashboard/services" element={<DashboardServices />} />
+            <Route path="/dashboard/pricing" element={<DashboardPricing />} />
+            <Route path="/dashboard/settings" element={<DashboardSettings />} />
+            <Route path="/dashboard/easter" element={<Unauthorized />} />
+            {/* </Route> */}
 
             {/* Admin Dashboard 2 - Only accessible to admin role */}
             <Route element={<RoleBasedRoute requiredRole="admin" />}>
